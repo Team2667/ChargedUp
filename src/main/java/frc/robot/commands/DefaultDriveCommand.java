@@ -2,8 +2,6 @@ package frc.robot.commands;
 import frc.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-//import edu.wpi.first.wpilibj.XboxController;
-//unused import
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import java.util.function.DoubleSupplier;

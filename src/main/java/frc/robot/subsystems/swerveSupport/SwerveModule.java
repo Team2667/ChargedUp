@@ -5,8 +5,6 @@ import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-//import com.revrobotics.CANSparkMax.ControlType;
-//Unused import
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -142,10 +140,4 @@ public class SwerveModule {
     private String getSteerLogLabel(String propertyName) {
        return cfg.label + "-Steer-" + propertyName;
     }
-    /*
-    Unused function
-    private String getDriveLogLabel(String propertyName) {
-        return cfg.label + "-Drive-" + propertyName;
-    }
-    */
 }

@@ -8,8 +8,6 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-//Unused import
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.swerveSupport.SwerveModule;
 import frc.robot.subsystems.swerveSupport.SwerveModuleConfiguration;
@@ -47,13 +45,11 @@ public class DriveTrain extends SubsystemBase {
     
        SmartDashboard.putBoolean("MagnetomitorCalibration", false);
         // We have to invert the angle of the NavX so that rotating the robot counter-clockwise makes the angle increase.
-        //return Rotation2d.fromDegrees(360.0 - m_navx.getYaw());
-        return Rotation2d.fromDegrees(m_navx.getFusedHeading());
+        return Rotation2d.fromDegrees(360.0 - m_navx.getYaw());
     }
       
     public DriveTrain(){
         m_navx.calibrate();
-
 
         m_frontLeftModule = new SwerveModule(SwerveModuleConfiguration.frontLeftConfig());
 

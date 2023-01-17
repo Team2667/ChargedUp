@@ -63,12 +63,6 @@ public class RobotContainer {
     leftCommand=new DriveFieldRelative(dt_sub,1.57,0.5);
     downCommand=new DriveFieldRelative(dt_sub,3.14,0.5);
     rightCommand=new DriveFieldRelative(dt_sub,4.71,0.5);
-    /**  TODO:
-     Create a command to move forward and bind it to the Y button while held. X
-     Create a command to move left and bind it to the X button while held. X
-     Create a command to move backwards and bind it to the A button while held. X
-     Create a command to move right and bind it to the B button while held. X 
-     Be sure to add drive train as a requirement for all commands. */
   
   }
   /**
