@@ -56,7 +56,7 @@ public class RobotContainer {
     dt_sub=new DriveTrain(); 
     dt_sub.setDefaultCommand(new DefaultDriveCommand(dt_sub,
         () -> -modifyAxis(m_controller.getLeftY()),
-        () -> -modifyAxis(m_controller.getLeftX()),
+        () -> modifyAxis(m_controller.getLeftX()),
         () -> -modifyAxis(m_controller.getRightX())
     ));
     forwardCommand=new DriveFieldRelative(dt_sub,0,0.5);

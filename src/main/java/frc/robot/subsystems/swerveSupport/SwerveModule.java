@@ -49,13 +49,18 @@ public class SwerveModule {
             resetSteerRelativeEncoder();
         }
 
-        SwerveModuleState state = SwerveModuleState.optimize(desiredState, new Rotation2d(getAbsoluteAngle()));
+        SwerveModuleState state = SwerveModuleState.optimize(desiredState, new Rotation2d(steerMotor.getEncoder().getPosition()));
+        if (Math.abs(state.speedMetersPerSecond) < 0.01) {
+            stop();
+            return;
+        }
         setDriveVelocity(state.speedMetersPerSecond);
         setReferenceAngle(state.angle.getRadians());
     }
 
     public void stop(){
-        setDriveVelocity(0.0);
+        driveMotor.set(0);
+        steerMotor.set(0);
     }
       
     public double getAbsoluteAngle() {

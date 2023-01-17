@@ -7,6 +7,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //Unused import
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -40,14 +41,19 @@ public class DriveTrain extends SubsystemBase {
 
     public Rotation2d getGyroscopeRotation() {    
         if (m_navx.isMagnetometerCalibrated()) {
+            SmartDashboard.putBoolean("MagnetomitorCalibration", true);
           return Rotation2d.fromDegrees(m_navx.getFusedHeading());
        }
     
+       SmartDashboard.putBoolean("MagnetomitorCalibration", false);
         // We have to invert the angle of the NavX so that rotating the robot counter-clockwise makes the angle increase.
-        return Rotation2d.fromDegrees(360.0 - m_navx.getYaw());
+        //return Rotation2d.fromDegrees(360.0 - m_navx.getYaw());
+        return Rotation2d.fromDegrees(m_navx.getFusedHeading());
     }
       
     public DriveTrain(){
+        m_navx.calibrate();
+
 
         m_frontLeftModule = new SwerveModule(SwerveModuleConfiguration.frontLeftConfig());
 
@@ -63,10 +69,10 @@ public class DriveTrain extends SubsystemBase {
         SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
         SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
 
-        m_frontLeftModule.setDesiredState(states[0]);
-        m_frontRightModule.setDesiredState(states[1]);
-        m_backLeftModule.setDesiredState(states[2]);
-        m_backRightModule.setDesiredState(states[3]);
+        m_frontLeftModule.setDesiredState(states[2]);
+        m_frontRightModule.setDesiredState(states[3]);
+        m_backLeftModule.setDesiredState(states[0]);
+        m_backRightModule.setDesiredState(states[1]);
     }
 
     public void moveFieldRelative(double speedMetersPerSecond, double angleInRadians) {
@@ -90,5 +96,6 @@ public class DriveTrain extends SubsystemBase {
         m_frontRightModule.outputSteerAnglesToDashboard();
         m_backLeftModule.outputSteerAnglesToDashboard();
         m_backRightModule.outputSteerAnglesToDashboard();
+        SmartDashboard.putNumber("NavX: ", m_navx.getFusedHeading());
     }
 }
