@@ -47,6 +47,6 @@ public final class Constants {
 
     public static final double WHEEL_REVOLUTIONS_PER_METER = 3.0;
 
-    
+    public static final double MAX_VELOCITY_METERS_PER_SECOND = 4.14528;
 
 }

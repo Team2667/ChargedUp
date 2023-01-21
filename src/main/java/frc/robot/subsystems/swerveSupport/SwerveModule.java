@@ -11,6 +11,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import frc.robot.Constants;
+
 public class SwerveModule {
 
     private RelativeEncoderResetTracker relativeEncoderTracker = new RelativeEncoderResetTracker();
@@ -19,7 +21,6 @@ public class SwerveModule {
     private CANSparkMax driveMotor;
     private RelativeEncoder steerRelativeEncoder;
     private SwerveModuleConfiguration cfg;
-    public static final double MAX_VELOCITY_METERS_PER_SECOND = 4.14528;
     private static final double MAX_VOLTAGE = 12.0;
 
     public SwerveModule(SwerveModuleConfiguration config) {
@@ -75,10 +76,10 @@ public class SwerveModule {
         SmartDashboard.putNumber(getSteerLogLabel("Absolute Encoder"), getAbsoluteAngle());
     }
 
-    private void setPIDValues(CANSparkMax motor, double proportional, double intigral, double derivative) {
+    private void setPIDValues(CANSparkMax motor, double proportional, double integral, double derivative) {
         var pidController = motor.getPIDController();
         pidController.setP(proportional);
-        pidController.setI(intigral);
+        pidController.setI(integral);
         pidController.setD(derivative);
     }
 
@@ -87,17 +88,9 @@ public class SwerveModule {
     }
 
     private void setDriveVelocity(double metersPerSecond) {
-       var voltage = metersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE;
-       driveMotor.setVoltage(voltage);
-
-  /*      if (metersPerSecond > 0) {
-            driveMotor.set(.25);
-        } else if (metersPerSecond < 0) {
-            driveMotor.set(-.25);
-        } else {
-            driveMotor.set(0);
-        } */
-    }
+        var voltage = metersPerSecond / Constants.MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE;
+        driveMotor.setVoltage(voltage);
+     }
 
     private void resetSteerRelativeEncoder() {
         steerRelativeEncoder.setPosition(getAbsoluteAngle());
