@@ -37,10 +37,22 @@ public class DriveTrainContainer {
 
     // TODO: Add code for creating the commands here
     private void createCommands(){
+      forwardCommand=new DriveFieldRelative(dt_sub,0,0.5);
+      leftCommand=new DriveFieldRelative(dt_sub,1.57,0.5);
+      downCommand=new DriveFieldRelative(dt_sub,3.14,0.5);
+      rightCommand=new DriveFieldRelative(dt_sub,4.71,0.5);
     }
 
     // TODO: Add code for binding buttons. Instead of calling whileHeld, call whileTrue
     private void configureButtonBindings() {
+      JoystickButton forwardCommandButton=new JoystickButton(m_controller, XboxController.Button.kY.value);
+      forwardCommandButton.whileTrue(forwardCommand);
+      JoystickButton leftCommandButton=new JoystickButton(m_controller, XboxController.Button.kB.value);
+      leftCommandButton.whileTrue(leftCommand);
+      JoystickButton downCommandButton=new JoystickButton(m_controller, XboxController.Button.kA.value);
+      downCommandButton.whileTrue(downCommand);
+      JoystickButton rightCommandButton=new JoystickButton(m_controller, XboxController.Button.kX.value);
+      rightCommandButton.whileTrue(rightCommand);
     }
 
     private double modifyAxis(double input)

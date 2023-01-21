@@ -79,13 +79,13 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     JoystickButton forwardCommandButton=new JoystickButton(m_controller, XboxController.Button.kY.value);
-    forwardCommandButton.whileHeld(forwardCommand);
+    forwardCommandButton.whileTrue(forwardCommand);
     JoystickButton leftCommandButton=new JoystickButton(m_controller, XboxController.Button.kB.value);
-    leftCommandButton.whileHeld(leftCommand);
+    leftCommandButton.whileTrue(leftCommand);
     JoystickButton downCommandButton=new JoystickButton(m_controller, XboxController.Button.kA.value);
-    downCommandButton.whileHeld(downCommand);
+    downCommandButton.whileTrue(downCommand);
     JoystickButton rightCommandButton=new JoystickButton(m_controller, XboxController.Button.kX.value);
-    rightCommandButton.whileHeld(rightCommand);
+    rightCommandButton.whileTrue(rightCommand);
   }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
