@@ -6,7 +6,7 @@ import frc.robot.commands.DriveFieldRelative;
 import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants;
-
+import org.photonvision.PhotonCamera;
 public class DriveTrainContainer {
     XboxController m_controller;
     DriveTrain dt_sub;
@@ -19,10 +19,10 @@ public class DriveTrainContainer {
     DefaultDriveCommand drivecmd;
 
 
-    public DriveTrainContainer(XboxController controller) {
+    public DriveTrainContainer(XboxController controller, PhotonCamera camera) {
         if (isSubsystemEnabled()){
             this.m_controller = controller;
-            dt_sub = new DriveTrain();
+            dt_sub = new DriveTrain(camera);
             dt_sub.setDefaultCommand(new DefaultDriveCommand(dt_sub,
               () -> -modifyAxis(m_controller.getLeftY()),
               () -> modifyAxis(m_controller.getLeftX()),

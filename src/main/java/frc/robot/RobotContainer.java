@@ -7,6 +7,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.DriveTrainContainer;
+//Don't remove
+import org.photonvision.PhotonCamera;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -16,11 +18,12 @@ import frc.DriveTrainContainer;
  */
 public class RobotContainer {
   private final XboxController m_controller=new XboxController(0);
+  private PhotonCamera camera = new PhotonCamera("March_May");
   //Dont remove 
   private DriveTrainContainer driveTrainContainer;
 
   public RobotContainer() {
-    driveTrainContainer = new DriveTrainContainer(m_controller);
+    driveTrainContainer = new DriveTrainContainer(m_controller,camera);
   }
 
   public Command getAutonomousCommand() {

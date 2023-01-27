@@ -11,11 +11,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.swerveSupport.SwerveModule;
 import frc.robot.subsystems.swerveSupport.SwerveModuleConfiguration;
-
+import org.photonvision.PhotonCamera;
 public class DriveTrain extends SubsystemBase {
     private final AHRS m_navx = new AHRS(SPI.Port.kMXP, (byte) 200); // NavX connected over MXP
 
-    
+    private PhotonCamera camera;
     private final SwerveModule m_frontLeftModule;
     private final SwerveModule m_frontRightModule;
     private final SwerveModule m_backLeftModule;
@@ -44,7 +44,9 @@ public class DriveTrain extends SubsystemBase {
         return Rotation2d.fromDegrees(m_navx.getFusedHeading());
     }
       
-    public DriveTrain(){
+    public DriveTrain(PhotonCamera camera){
+        this.camera=camera;
+
         m_navx.calibrate();
 
         m_frontLeftModule = new SwerveModule(SwerveModuleConfiguration.frontLeftConfig());
@@ -89,5 +91,7 @@ public class DriveTrain extends SubsystemBase {
         m_backLeftModule.outputSteerAnglesToDashboard();
         m_backRightModule.outputSteerAnglesToDashboard();
         SmartDashboard.putNumber("NavX: ", m_navx.getFusedHeading());
+
+        SmartDashboard.putNumber("AprilTag: ", camera.getLatestResult().getBestTarget().getFiducialId());
     }
 }
