@@ -12,9 +12,9 @@ public class JawsOfLife extends SubsystemBase {
 
     public JawsOfLife() {
         // Constants.PCM_CAN_ID
-        solenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 1,2);
-        solenoid.set(kReverse);
-        // Solenoid s = new Solenoid(0, null, 0);
+        // solenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 1,2);
+        // solenoid.set(kReverse);
+        Solenoid s = new Solenoid(0, PneumaticsModuleType.CTREPCM, 0);
     }
 
     public void toggle() {
