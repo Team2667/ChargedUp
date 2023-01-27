@@ -26,7 +26,7 @@ public class RobotContainer {
      driveTrainContainer = new DriveTrainContainer(m_controller);
     JawsOfLife jawsOfLifeSubsystem = new JawsOfLife();
     JawsCommand jawsCommand = new JawsCommand(jawsOfLifeSubsystem);
-    jawsOfLifeSubsystem.setDefaultCommand(jawsCommand);
+    // jawsOfLifeSubsystem.setDefaultCommand(jawsCommand);
     JoystickButton testToggleButton = new JoystickButton(m_controller, XboxController.Button.kRightBumper.value);
 testToggleButton.toggleOnTrue(jawsCommand);
  

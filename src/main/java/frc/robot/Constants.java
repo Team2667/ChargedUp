@@ -47,7 +47,7 @@ public final class Constants {
 
     public static final double WHEEL_REVOLUTIONS_PER_METER = 3.0;
 
-    public static final int PCM_CAN_ID = 0;
+    public static final int PCM_CAN_ID = 1;
     public static final double MAX_INPUT_SPEED = 1; //4.14528;
     public static final double PERCENTAGE_MAX_SPEED = 40;
 

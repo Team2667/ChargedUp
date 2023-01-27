@@ -8,13 +8,13 @@ import frc.robot.Constants;
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
 
 public class JawsOfLife extends SubsystemBase {
-    DoubleSolenoid solenoid;
+    Solenoid solenoid;
 
     public JawsOfLife() {
         // Constants.PCM_CAN_ID
         // solenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 1,2);
         // solenoid.set(kReverse);
-        Solenoid s = new Solenoid(0, PneumaticsModuleType.CTREPCM, 0);
+        solenoid = new Solenoid(1, PneumaticsModuleType.REVPH, 0);
     }
 
     public void toggle() {
