@@ -47,6 +47,9 @@ public final class Constants {
 
     public static final double WHEEL_REVOLUTIONS_PER_METER = 3.0;
 
-    public static final double MAX_VELOCITY_METERS_PER_SECOND = 4.14528;
+    public static final double MAX_INPUT_SPEED = 1; //4.14528;
+    public static final double PERCENTAGE_MAX_SPEED = 40;
+
+    public static final boolean DRIVE_TRAIN_ENABLED = true;
 
 }

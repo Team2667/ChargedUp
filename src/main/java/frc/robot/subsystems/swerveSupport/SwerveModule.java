@@ -88,7 +88,8 @@ public class SwerveModule {
     }
 
     private void setDriveVelocity(double metersPerSecond) {
-        var voltage = metersPerSecond / Constants.MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE;
+        var voltage = (metersPerSecond / Constants.MAX_INPUT_SPEED * MAX_VOLTAGE) * (Constants.PERCENTAGE_MAX_SPEED / 100);
+        SmartDashboard.putNumber(getVelocityLabel("Voltage"), voltage);
         driveMotor.setVoltage(voltage);
      }
 
@@ -133,4 +134,8 @@ public class SwerveModule {
     private String getSteerLogLabel(String propertyName) {
        return cfg.label + "-Steer-" + propertyName;
     }
+
+    private String getVelocityLabel(String propertyName) {
+        return cfg.label + "-Velocity-" + propertyName;
+     }
 }

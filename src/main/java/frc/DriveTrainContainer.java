@@ -5,6 +5,7 @@ import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.DriveFieldRelative;
 import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Constants;
 
 public class DriveTrainContainer {
     XboxController m_controller;
@@ -22,20 +23,20 @@ public class DriveTrainContainer {
         if (isSubsystemEnabled()){
             this.m_controller = controller;
             dt_sub = new DriveTrain();
+            dt_sub.setDefaultCommand(new DefaultDriveCommand(dt_sub,
+              () -> -modifyAxis(m_controller.getLeftY()),
+              () -> modifyAxis(m_controller.getLeftX()),
+              () -> -modifyAxis(m_controller.getRightX())
+            ));
             createCommands();
             configureButtonBindings();
         }
     }
 
     public boolean isSubsystemEnabled() {
-        //TODO: Return the value of a constant defined in Constants
-        return true;
+        return Constants.DRIVE_TRAIN_ENABLED;
     }
 
-    // TODO: Add public getter methods to return commands needed for autonomous
-
-
-    // TODO: Add code for creating the commands here
     private void createCommands(){
       forwardCommand=new DriveFieldRelative(dt_sub,0,0.5);
       leftCommand=new DriveFieldRelative(dt_sub,1.57,0.5);
@@ -43,7 +44,6 @@ public class DriveTrainContainer {
       rightCommand=new DriveFieldRelative(dt_sub,4.71,0.5);
     }
 
-    // TODO: Add code for binding buttons. Instead of calling whileHeld, call whileTrue
     private void configureButtonBindings() {
       JoystickButton forwardCommandButton=new JoystickButton(m_controller, XboxController.Button.kY.value);
       forwardCommandButton.whileTrue(forwardCommand);
