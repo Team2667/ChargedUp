@@ -2,8 +2,6 @@ package frc.robot.commands;
 import frc.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-//import edu.wpi.first.wpilibj.XboxController;
-//unused import
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import java.util.function.DoubleSupplier;
@@ -30,7 +28,6 @@ public class DefaultDriveCommand extends CommandBase {
 
     @Override
     public void execute() {
-        System.out.println("its working or something");
         // You can use `new ChassisSpeeds(...)` for robot-oriented movement instead of field-oriented movement
         m_drivetrainSubsystem.drive(
                  ChassisSpeeds.fromFieldRelativeSpeeds(

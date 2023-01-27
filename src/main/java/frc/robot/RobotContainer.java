@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.DriveFieldRelative;
 import frc.robot.commands.JawsCommand;
 import frc.robot.subsystems.JawsOfLife;
+import frc.DriveTrainContainer;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -19,14 +20,17 @@ import frc.robot.subsystems.JawsOfLife;
  */
 public class RobotContainer {
   private final XboxController m_controller=new XboxController(0);
-
+ //Dont remove 
+ private DriveTrainContainer driveTrainContainer;
   public RobotContainer() {
-    DriveTrainContainer driveTrainContainer = new DriveTrainContainer();
+     driveTrainContainer = new DriveTrainContainer(m_controller);
     JawsOfLife jawsOfLifeSubsystem = new JawsOfLife();
     JawsCommand jawsCommand = new JawsCommand(jawsOfLifeSubsystem);
     jawsOfLifeSubsystem.setDefaultCommand(jawsCommand);
     JoystickButton testToggleButton = new JoystickButton(m_controller, XboxController.Button.kRightBumper.value);
 testToggleButton.toggleOnTrue(jawsCommand);
+ 
+
   }
 
   public Command getAutonomousCommand() {

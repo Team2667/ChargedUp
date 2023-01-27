@@ -8,7 +8,7 @@ public class SwerveModuleConfiguration {
     public double steeringOffsetInRadians;
     public int driveMotorCanId;
     public double revolutionsPerMeter;
-    public double steerP = 1;
+    public double steerP = 0.5;
     public double steerI = 0.0;
     public double steerD = 0.0;
     public double driveP = 1;

@@ -5,13 +5,13 @@ import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-//import com.revrobotics.CANSparkMax.ControlType;
-//Unused import
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import frc.robot.Constants;
 
 public class SwerveModule {
 
@@ -21,7 +21,6 @@ public class SwerveModule {
     private CANSparkMax driveMotor;
     private RelativeEncoder steerRelativeEncoder;
     private SwerveModuleConfiguration cfg;
-    public static final double MAX_VELOCITY_METERS_PER_SECOND = 4.14528;
     private static final double MAX_VOLTAGE = 12.0;
 
     public SwerveModule(SwerveModuleConfiguration config) {
@@ -49,13 +48,18 @@ public class SwerveModule {
             resetSteerRelativeEncoder();
         }
 
-        SwerveModuleState state = SwerveModuleState.optimize(desiredState, new Rotation2d(getAbsoluteAngle()));
+        SwerveModuleState state = SwerveModuleState.optimize(desiredState, new Rotation2d(steerMotor.getEncoder().getPosition()));
+        if (Math.abs(state.speedMetersPerSecond) < 0.01) {
+            stop();
+            return;
+        }
         setDriveVelocity(state.speedMetersPerSecond);
         setReferenceAngle(state.angle.getRadians());
     }
 
     public void stop(){
-        setDriveVelocity(0.0);
+        driveMotor.set(0);
+        steerMotor.set(0);
     }
       
     public double getAbsoluteAngle() {
@@ -72,10 +76,10 @@ public class SwerveModule {
         SmartDashboard.putNumber(getSteerLogLabel("Absolute Encoder"), getAbsoluteAngle());
     }
 
-    private void setPIDValues(CANSparkMax motor, double proportional, double intigral, double derivative) {
+    private void setPIDValues(CANSparkMax motor, double proportional, double integral, double derivative) {
         var pidController = motor.getPIDController();
         pidController.setP(proportional);
-        pidController.setI(intigral);
+        pidController.setI(integral);
         pidController.setD(derivative);
     }
 
@@ -84,17 +88,10 @@ public class SwerveModule {
     }
 
     private void setDriveVelocity(double metersPerSecond) {
-       var voltage = metersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE;
-       driveMotor.setVoltage(voltage);
-
-  /*      if (metersPerSecond > 0) {
-            driveMotor.set(.25);
-        } else if (metersPerSecond < 0) {
-            driveMotor.set(-.25);
-        } else {
-            driveMotor.set(0);
-        } */
-    }
+        var voltage = (metersPerSecond / Constants.MAX_INPUT_SPEED * MAX_VOLTAGE) * (Constants.PERCENTAGE_MAX_SPEED / 100);
+        SmartDashboard.putNumber(getVelocityLabel("Voltage"), voltage);
+        driveMotor.setVoltage(voltage);
+     }
 
     private void resetSteerRelativeEncoder() {
         steerRelativeEncoder.setPosition(getAbsoluteAngle());
@@ -137,10 +134,8 @@ public class SwerveModule {
     private String getSteerLogLabel(String propertyName) {
        return cfg.label + "-Steer-" + propertyName;
     }
-    /*
-    Unused function
-    private String getDriveLogLabel(String propertyName) {
-        return cfg.label + "-Drive-" + propertyName;
-    }
-    */
+
+    private String getVelocityLabel(String propertyName) {
+        return cfg.label + "-Velocity-" + propertyName;
+     }
 }
