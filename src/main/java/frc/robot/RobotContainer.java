@@ -18,7 +18,7 @@ import org.photonvision.PhotonCamera;
  */
 public class RobotContainer {
   private final XboxController m_controller=new XboxController(0);
-  private PhotonCamera camera = new PhotonCamera("March_May");
+  private PhotonCamera camera = new PhotonCamera("Microsoft_LifeCam_HD-3000");
   //Dont remove 
   private DriveTrainContainer driveTrainContainer;
 
