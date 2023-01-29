@@ -91,7 +91,12 @@ public class DriveTrain extends SubsystemBase {
         m_backLeftModule.outputSteerAnglesToDashboard();
         m_backRightModule.outputSteerAnglesToDashboard();
         SmartDashboard.putNumber("NavX: ", m_navx.getFusedHeading());
-
-        SmartDashboard.putNumber("AprilTag: ", camera.getLatestResult().getBestTarget().getFiducialId());
+        var latestResult=camera.getLatestResult();
+        if (latestResult.hasTargets()) {
+            SmartDashboard.putNumber("AprilTag: ", latestResult.getBestTarget().getFiducialId());
+        }
+        else {
+            SmartDashboard.putNumber("AprilTag: ", 69);
+        }
     }
 }
