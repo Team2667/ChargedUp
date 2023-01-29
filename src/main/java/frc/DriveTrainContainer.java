@@ -16,6 +16,8 @@ public class DriveTrainContainer {
     DriveFieldRelative downCommand;
     DriveFieldRelative rightCommand;
 
+    // ToDo: add a turnToTarget command
+
     DefaultDriveCommand drivecmd;
 
 
@@ -42,6 +44,8 @@ public class DriveTrainContainer {
       leftCommand=new DriveFieldRelative(dt_sub,1.57,0.5);
       downCommand=new DriveFieldRelative(dt_sub,3.14,0.5);
       rightCommand=new DriveFieldRelative(dt_sub,4.71,0.5);
+
+      // TODO: create a TurnToTarget command
     }
 
     private void configureButtonBindings() {
@@ -53,6 +57,8 @@ public class DriveTrainContainer {
       downCommandButton.whileTrue(downCommand);
       JoystickButton rightCommandButton=new JoystickButton(m_controller, XboxController.Button.kX.value);
       rightCommandButton.whileTrue(rightCommand);
+
+      // todo Map the turnToTarget command to the right bumper that is activated when pressed (i.e. button.onTrue(turnToTargetCmd))
     }
 
     private double modifyAxis(double input)
