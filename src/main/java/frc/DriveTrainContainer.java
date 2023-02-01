@@ -3,6 +3,7 @@ package frc;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.DriveFieldRelative;
+import frc.robot.commands.TurnToTarget;
 import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants;
@@ -15,6 +16,8 @@ public class DriveTrainContainer {
     DriveFieldRelative leftCommand;
     DriveFieldRelative downCommand;
     DriveFieldRelative rightCommand;
+    TurnToTarget targetToTurn;
+    PhotonCamera camera;
 
     // ToDo: add a turnToTarget command
 
@@ -25,6 +28,7 @@ public class DriveTrainContainer {
         if (isSubsystemEnabled()){
             this.m_controller = controller;
             dt_sub = new DriveTrain(camera);
+            this.camera=camera;
             dt_sub.setDefaultCommand(new DefaultDriveCommand(dt_sub,
               () -> -modifyAxis(m_controller.getLeftY()),
               () -> modifyAxis(m_controller.getLeftX()),
@@ -45,6 +49,8 @@ public class DriveTrainContainer {
       downCommand=new DriveFieldRelative(dt_sub,3.14,0.5);
       rightCommand=new DriveFieldRelative(dt_sub,4.71,0.5);
 
+      targetToTurn=new TurnToTarget(camera, dt_sub, 4);
+
       // TODO: create a TurnToTarget command
     }
 
@@ -56,7 +62,8 @@ public class DriveTrainContainer {
       JoystickButton downCommandButton=new JoystickButton(m_controller, XboxController.Button.kA.value);
       downCommandButton.whileTrue(downCommand);
       JoystickButton rightCommandButton=new JoystickButton(m_controller, XboxController.Button.kX.value);
-      rightCommandButton.whileTrue(rightCommand);
+      rightCommandButton.whileTrue(targetToTurn);
+
 
       // todo Map the turnToTarget command to the right bumper that is activated when pressed (i.e. button.onTrue(turnToTargetCmd))
     }

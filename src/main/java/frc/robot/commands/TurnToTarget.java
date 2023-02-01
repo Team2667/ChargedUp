@@ -10,8 +10,8 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.utils.KnightsCameraUtils;
 
 public class TurnToTarget extends CommandBase{
-    private static final TrapezoidProfile.Constraints OMEGA_CONSTRAINTS = new TrapezoidProfile.Constraints(0.4, 0.4);
-    private final ProfiledPIDController omegaController = new ProfiledPIDController(2,0,0,OMEGA_CONSTRAINTS);
+    private static final TrapezoidProfile.Constraints OMEGA_CONSTRAINTS = new TrapezoidProfile.Constraints(1, 1);
+    private final ProfiledPIDController omegaController = new ProfiledPIDController(0.5,0,0,OMEGA_CONSTRAINTS);
     private KnightsCameraUtils kCameraUtils;
     private final DriveTrain driveTrain;
 
@@ -19,6 +19,8 @@ public class TurnToTarget extends CommandBase{
         this.kCameraUtils = new KnightsCameraUtils(camera, fiducialId);
         this.driveTrain = driveTrain;
         omegaController.setTolerance(.2);
+        omegaController.enableContinuousInput(-Math.PI, Math.PI);
+        addRequirements(driveTrain);
     
     }
 
@@ -27,14 +29,20 @@ public class TurnToTarget extends CommandBase{
         var targetOpt = kCameraUtils.getBestTargetForFiducialId();
         if (targetOpt.isPresent()){
             var target = targetOpt.get();
-            var turn = omegaController.calculate(target.getYaw(),0);
+            var turn = omegaController.calculate(Math.toRadians(target.getYaw()),0);
             var speeds = ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, turn, driveTrain.getGyroscopeRotation());
             driveTrain.drive(speeds);
+        }
+        else{
+            driveTrain.stop();
+            System.out.println("stopping");
         }
     }
 
     @Override 
     public boolean isFinished(){
-        return omegaController.atGoal() || !kCameraUtils.getBestTargetForFiducialId().isPresent();
+    return    !kCameraUtils.getBestTargetForFiducialId().isPresent();
     }
+
+
 }

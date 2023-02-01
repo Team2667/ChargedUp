@@ -14,15 +14,15 @@ public class KnightsCameraUtils {
 
     public KnightsCameraUtils(PhotonCamera camera, int fiducialId){
         this.camera = camera;
-        this.nullResult = Optional.of(null);
+        this.nullResult = Optional.ofNullable(null);
         this.currentTarget = nullResult;
         this.currentResultTS = 0;
         this.fiducialId = fiducialId;
     }
-
     public Optional<PhotonTrackedTarget> getBestTargetForFiducialId(){
         var latestResult = camera.getLatestResult();
-        Optional<PhotonTrackedTarget> target = latestResult.targets.stream()
+        if (latestResult.hasTargets()) {
+            Optional<PhotonTrackedTarget> target = latestResult.targets.stream()
             .filter(t -> t.getFiducialId() == fiducialId)
             .filter(t -> t.getPoseAmbiguity() <= 0.2)
             .findFirst();
@@ -31,6 +31,8 @@ public class KnightsCameraUtils {
             this.currentResultTS = latestResult.getTimestampSeconds();
             return target;
         }
-        return latestResult.getTimestampSeconds() - currentResultTS <= 200 ? currentTarget : nullResult;
+        }
+       // return latestResult.getTimestampSeconds() - currentResultTS <= 200 ? currentTarget : nullResult;
+       return nullResult;
     }
 }

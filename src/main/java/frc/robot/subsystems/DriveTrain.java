@@ -94,9 +94,11 @@ public class DriveTrain extends SubsystemBase {
         var latestResult=camera.getLatestResult();
         if (latestResult.hasTargets()) {
             SmartDashboard.putNumber("AprilTag: ", latestResult.getBestTarget().getFiducialId());
+            SmartDashboard.putNumber("Yaw", latestResult.getBestTarget().getYaw());
         }
         else {
             SmartDashboard.putNumber("AprilTag: ", 69);
+            SmartDashboard.putNumber("Yaw", 420);
         }
     }
-}
+    }
