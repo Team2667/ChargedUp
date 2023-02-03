@@ -11,7 +11,7 @@ import frc.robot.utils.KnightsCameraUtils;
 
 public class TurnToTarget extends CommandBase{
     private static final TrapezoidProfile.Constraints OMEGA_CONSTRAINTS = new TrapezoidProfile.Constraints(1, 1);
-    private final ProfiledPIDController omegaController = new ProfiledPIDController(0.5,0,0,OMEGA_CONSTRAINTS);
+    private final ProfiledPIDController omegaController = new ProfiledPIDController(2,0,0,OMEGA_CONSTRAINTS);
     private KnightsCameraUtils kCameraUtils;
     private final DriveTrain driveTrain;
 

@@ -15,6 +15,7 @@ import org.photonvision.PhotonCamera;
 public class DriveTrain extends SubsystemBase {
     private final AHRS m_navx = new AHRS(SPI.Port.kMXP, (byte) 200); // NavX connected over MXP
 
+    private double compass_at_startup;
     private PhotonCamera camera;
     private final SwerveModule m_frontLeftModule;
     private final SwerveModule m_frontRightModule;
@@ -40,21 +41,18 @@ public class DriveTrain extends SubsystemBase {
     public Rotation2d getGyroscopeRotation() {    
         SmartDashboard.putBoolean("MagnetomitorCalibration", m_navx.isMagnetometerCalibrated());
         // We have to invert the angle of the NavX so that rotating the robot counter-clockwise makes the angle increase.
-       // return Rotation2d.fromDegrees(360.0 - m_navx.getYaw());
-        return Rotation2d.fromDegrees(m_navx.getFusedHeading());
+        //return Rotation2d.fromDegrees(180 + m_navx.getYaw());
+        return Rotation2d.fromDegrees((180+m_navx.getYaw()));//-compass_at_startup);
+        //return Rotation2d.fromDegrees(m_navx.getFusedHeading());
     }
       
     public DriveTrain(PhotonCamera camera){
         this.camera=camera;
-
         m_navx.calibrate();
-
+        this.compass_at_startup=m_navx.getCompassHeading();
         m_frontLeftModule = new SwerveModule(SwerveModuleConfiguration.frontLeftConfig());
-
         m_frontRightModule = new SwerveModule(SwerveModuleConfiguration.frontRightConfig());
-
         m_backLeftModule  = new SwerveModule(SwerveModuleConfiguration.backLeftConfig());
-
         m_backRightModule = new SwerveModule(SwerveModuleConfiguration.backRightConfig());
     }
 
@@ -97,8 +95,14 @@ public class DriveTrain extends SubsystemBase {
             SmartDashboard.putNumber("Yaw", latestResult.getBestTarget().getYaw());
         }
         else {
-            SmartDashboard.putNumber("AprilTag: ", 69);
-            SmartDashboard.putNumber("Yaw", 420);
+            SmartDashboard.putNumber("AprilTag: ", 69); //rehehehe
+            SmartDashboard.putNumber("AprilTag-Yaw", 420);
         }
+        SmartDashboard.putNumber("Debug-Yaw: ", m_navx.getYaw());
+        SmartDashboard.putNumber("Debug-Fused-Heading: ", m_navx.getFusedHeading());
+        SmartDashboard.putNumber("Debug-Compass-Head", m_navx.getCompassHeading());
+        SmartDashboard.putNumber("Silly-Baro-Press",m_navx.getBarometricPressure());
+        SmartDashboard.putNumber("LazyMath(Compass-Fused)", (m_navx.getCompassHeading()-m_navx.getFusedHeading()));
+        SmartDashboard.putNumber("LazyMath(Fused-Yaw)", (m_navx.getFusedHeading()-m_navx.getYaw()));
     }
-    }
+}

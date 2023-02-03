@@ -32,8 +32,9 @@ public class SwerveModule {
         setPIDValues(driveMotor, cfg.driveP, cfg.driveI, cfg.driveD);
         driveMotor.setInverted(config.driveInverted);
         steerRelativeEncoder = steerMotor.getEncoder();
-        steerRelativeEncoder.setPositionConversionFactor(2.0 * Math.PI * cfg.steerReduction);
-        steerRelativeEncoder.setVelocityConversionFactor(2.0 * Math.PI * cfg.steerReduction / 60.0);
+        double temp_PosConvFactor=2.0 * Math.PI * cfg.steerReduction;//A silly code golf remove if code is more broken than is expected
+        steerRelativeEncoder.setPositionConversionFactor(temp_PosConvFactor);
+        steerRelativeEncoder.setVelocityConversionFactor(temp_PosConvFactor / 60.0);
         resetSteerRelativeEncoder();
 
         RelativeEncoder driveEncoder = driveMotor.getEncoder();
