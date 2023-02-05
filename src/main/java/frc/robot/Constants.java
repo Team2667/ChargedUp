@@ -3,6 +3,9 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
+
+import edu.wpi.first.math.util.Units;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -51,5 +54,10 @@ public final class Constants {
     public static final double PERCENTAGE_MAX_SPEED = 40;
 
     public static final boolean DRIVE_TRAIN_ENABLED = true;
+
+    public static  double CAMERA_HEIGHT_METERS = Units.inchesToMeters(24);
+    public static double TARGET_HEIGHT_METERS = Units.feetToMeters(5);
+    // Angle between horizontal and the camera.
+    public static double CAMERA_PITCH_RADIANS = Units.degreesToRadians(0);
 
 }
