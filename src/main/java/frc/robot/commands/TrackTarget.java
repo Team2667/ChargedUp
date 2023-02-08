@@ -14,18 +14,19 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.utils.KnightsCameraUtils;
 
-//
+/*
 // NOT READY TO USE
-// An example class for tracking a target that is not ready for use but included as example code to refer to.
-// The code was obtained from the following youtube video https://www.youtube.com/watch?v=TG9KAa2EGzQ&t=1807s 
-// This example relies on a field estimator which
-// we need to figure out how to use or find an alternative.
-//
-//
+ An example class for tracking a target that is not ready for use but included as example code to refer to.
+ The code was obtained from the following youtube video https://www.youtube.com/watch?v=TG9KAa2EGzQ&t=1807s 
+ This example relies on a field estimator which
+ we need to figure out how to use or find an alternative.
+
+*/
 public class TrackTarget extends CommandBase {
     private final KnightsCameraUtils kCameraUtils;
     private DriveTrain driveTrain;
@@ -84,7 +85,7 @@ public class TrackTarget extends CommandBase {
             var ySpeed = yController.atGoal() ? 0.0 : yController.calculate(robotPos.getX());
             var xSpeed = xController.atGoal() ? 0.0 : xController.calculate(robotPos.getX());
             var omegaSpeed = omegaController.atGoal() ? 0.0 : omegaController.calculate(robotPos2d.getRotation().getRadians());
-
+            
             driveTrain.drive(ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, omegaSpeed, robotPos2d.getRotation()));
         } else {
             driveTrain.stop();
