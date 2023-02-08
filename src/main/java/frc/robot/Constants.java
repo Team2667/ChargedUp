@@ -55,8 +55,8 @@ public final class Constants {
 
     public static final boolean DRIVE_TRAIN_ENABLED = true;
 
-    public static  double CAMERA_HEIGHT_METERS = Units.inchesToMeters(24);
-    public static double TARGET_HEIGHT_METERS = Units.feetToMeters(5);
+    public static  double CAMERA_HEIGHT_METERS = Units.inchesToMeters(18.375);
+    public static double TARGET_HEIGHT_METERS = Units.inchesToMeters(14.25);
     // Angle between horizontal and the camera.
     public static double CAMERA_PITCH_RADIANS = Units.degreesToRadians(0);
 

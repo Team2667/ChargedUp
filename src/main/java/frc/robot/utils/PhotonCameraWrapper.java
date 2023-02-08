@@ -24,7 +24,8 @@ public class PhotonCameraWrapper {
     }
 
 
-    // Put tags  1 ft. 2¼ in from carpet to bottom of plate (manual page 41)
+    // Put tags 14 ¼ inches from carpet to bottom of plate (manual page 41)
+    // camera is 18 3/8 inches from the ground
     public static AprilTagFieldLayout getFieldLayout() {
         try {
             return AprilTagFields.k2023ChargedUp.loadAprilTagLayoutField();

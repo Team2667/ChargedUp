@@ -5,9 +5,11 @@
 package frc.robot;
 
 import org.photonvision.PhotonCamera;
-
+//import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
+//import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.math.trajectory.Trajectory;
 import frc.DriveTrainContainer;
 
 /**
@@ -19,15 +21,14 @@ import frc.DriveTrainContainer;
 public class RobotContainer {
   private final XboxController m_controller=new XboxController(0);
   private PhotonCamera camera = new PhotonCamera("Microsoft_LifeCam_HD-3000"); //Used to be called "March_May". I weep that my creativity is wasted. :(
-  //Dont remove 
-  private DriveTrainContainer driveTrainContainer;
+  private DriveTrainContainer driveTrainContainer; //Dont remove 
 
   public RobotContainer() {
     driveTrainContainer = new DriveTrainContainer(m_controller,camera);
   }
 
   public Command getAutonomousCommand() {
+    // 1. Create trajectory settings
     return null;
-    // An ExampleCommand will run in autonomous
   }
 }
