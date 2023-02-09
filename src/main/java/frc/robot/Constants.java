@@ -50,10 +50,11 @@ public final class Constants {
 
     public static final double WHEEL_REVOLUTIONS_PER_METER = 3.0;
 
+    public static final int PCM_CAN_ID = 1;
     public static final double MAX_INPUT_SPEED = 1; //4.14528;
     public static final double PERCENTAGE_MAX_SPEED = 40;
 
-    public static final boolean DRIVE_TRAIN_ENABLED = true;
+    public static final boolean DRIVE_TRAIN_ENABLED = false;
 
     public static  double CAMERA_HEIGHT_METERS = Units.inchesToMeters(18.375);
     public static double TARGET_HEIGHT_METERS = Units.inchesToMeters(14.25);
