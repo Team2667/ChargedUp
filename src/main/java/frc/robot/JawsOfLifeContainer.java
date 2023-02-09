@@ -11,14 +11,20 @@ public class JawsOfLifeContainer {
     XboxController controller;
 
     public JawsOfLifeContainer(XboxController controller) {
-        this.controller = controller;
-        jawsOfLifeSubsystem  = new JawsOfLife();
-        createCommands();
-        configureButtonBindings();
+        if (isSubsystemEnabled()){
+            this.controller = controller;
+            jawsOfLifeSubsystem  = new JawsOfLife();
+            createCommands();
+            configureButtonBindings();
+        }
+    }
+
+    public boolean isSubsystemEnabled() {
+        return Constants.JAWS_OF_LIFE_ENABLED;
     }
 
     private void createCommands() {
-        JawsCommand jawsCommand = new JawsCommand(jawsOfLifeSubsystem);
+        jawsCommand = new JawsCommand(jawsOfLifeSubsystem);
     }
 
     private void configureButtonBindings() {
