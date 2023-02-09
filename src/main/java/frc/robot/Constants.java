@@ -56,6 +56,8 @@ public final class Constants {
 
     public static final boolean DRIVE_TRAIN_ENABLED = true;
     public static final boolean JAWS_OF_LIFE_ENABLED = true;
+    public static final boolean PIVOT_ENABLED = true;
+    public static final boolean ARM_EXTENDER_ENABLED = true;
 
     public static  double CAMERA_HEIGHT_METERS = Units.inchesToMeters(18.375);
     public static double TARGET_HEIGHT_METERS = Units.inchesToMeters(14.25);
