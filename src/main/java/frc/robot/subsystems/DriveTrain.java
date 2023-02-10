@@ -1,17 +1,25 @@
 package frc.robot.subsystems;
 import com.kauailabs.navx.frc.*;
 import static frc.robot.Constants.*;
+
+import java.util.Arrays;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.swerveSupport.SwerveModule;
 import frc.robot.subsystems.swerveSupport.SwerveModuleConfiguration;
+import frc.robot.utils.PhotonCameraWrapper;
+
 import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonUtils;
 public class DriveTrain extends SubsystemBase {
     private final AHRS m_navx = new AHRS(SPI.Port.kMXP, (byte) 200); // NavX connected over MXP
 
@@ -94,15 +102,20 @@ public class DriveTrain extends SubsystemBase {
             SmartDashboard.putNumber("AprilTag: ", latestResult.getBestTarget().getFiducialId());
             SmartDashboard.putNumber("Yaw", latestResult.getBestTarget().getYaw());
         }
-        else {
-            SmartDashboard.putNumber("AprilTag: ", 69); //rehehehe
-            SmartDashboard.putNumber("AprilTag-Yaw", 420);
+        var targetO = PhotonCameraWrapper.getBestTargetForFiducialId(camera,Arrays.asList(1,2,3,6,7,8));
+        if (targetO.isPresent()) {
+            var target = targetO.get();
+            var targetpos = PhotonCameraWrapper.getFieldLayout().getTagPose(target.getFiducialId());
+            var targetHeight = targetpos.map(p -> p.getZ()).orElse(9.9999999);
+            double range =
+                PhotonUtils.calculateDistanceToTargetMeters(
+                    Constants.CAMERA_HEIGHT_METERS,
+                    targetHeight,
+                    Constants.CAMERA_PITCH_RADIANS,
+                    Units.degreesToRadians(target.getPitch()));
+            SmartDashboard.putNumber("MarchJune-range",range);
+            SmartDashboard.putNumber("MarchJuly-targetHeight", targetHeight);
         }
-        SmartDashboard.putNumber("Debug-Yaw: ", m_navx.getYaw());
-        SmartDashboard.putNumber("Debug-Fused-Heading: ", m_navx.getFusedHeading());
-        SmartDashboard.putNumber("Debug-Compass-Head", m_navx.getCompassHeading());
-        SmartDashboard.putNumber("Silly-Baro-Press",m_navx.getBarometricPressure());
-        SmartDashboard.putNumber("LazyMath(Compass-Fused)", (m_navx.getCompassHeading()-m_navx.getFusedHeading()));
-        SmartDashboard.putNumber("LazyMath(Fused-Yaw)", (m_navx.getFusedHeading()-m_navx.getYaw()));
     }
+
 }

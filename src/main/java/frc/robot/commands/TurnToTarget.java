@@ -18,7 +18,7 @@ public class TurnToTarget extends CommandBase{
     public TurnToTarget(PhotonCamera camera, DriveTrain driveTrain, int fiducialId){
         this.kCameraUtils = new KnightsCameraUtils(camera, fiducialId);
         this.driveTrain = driveTrain;
-        omegaController.setTolerance(.2);
+        omegaController.setTolerance(.05);
         omegaController.enableContinuousInput(-Math.PI, Math.PI);
         addRequirements(driveTrain);
     

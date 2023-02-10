@@ -36,7 +36,7 @@ public class TrackTarget extends CommandBase {
     private static final TrapezoidProfile.Constraints OMEGA_CONSTRAINTS = new TrapezoidProfile.Constraints(8, 8);
     private final ProfiledPIDController xController = new ProfiledPIDController(3,0,0,X_CONSTRAINTS);
     private final ProfiledPIDController yController = new ProfiledPIDController(3,0,0,Y_CONSTRAINTS);
-    private final ProfiledPIDController omegaController = new ProfiledPIDController(2,0,0,OMEGA_CONSTRAINTS);
+    private final ProfiledPIDController omegaController = new ProfiledPIDController(3,0,0,OMEGA_CONSTRAINTS);
 
     private static final Transform3d TAG_TO_GOAL = new Transform3d(
         new Translation3d(1.5, 0.0,0.0),

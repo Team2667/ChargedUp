@@ -17,7 +17,7 @@ public class DriveTrainContainer {
     DriveFieldRelative leftCommand;
     DriveFieldRelative downCommand;
     DriveFieldRelative rightCommand;
-    GetInRangeOfTarget findAprilTag;
+    public GetInRangeOfTarget findAprilTag;
     TurnToTarget targetToTurn;
     PhotonCamera camera;
 
@@ -51,7 +51,7 @@ public class DriveTrainContainer {
       downCommand=new DriveFieldRelative(dt_sub,3.14,0.5);
       rightCommand=new DriveFieldRelative(dt_sub,4.71,0.5);
       findAprilTag=new GetInRangeOfTarget(dt_sub, camera);
-      targetToTurn=new TurnToTarget(camera, dt_sub, 4);
+      targetToTurn=new TurnToTarget(camera, dt_sub, 6);
     }
 
     private void configureButtonBindings() {

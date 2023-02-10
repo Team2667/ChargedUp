@@ -18,14 +18,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class GetInRangeOfTarget extends CommandBase {
     private PhotonCamera photonCamera;
     private DriveTrain driveTrain;
-    private PIDController controller = new PIDController(1, 0, 0.0);
+    private PIDController controller = new PIDController(0.3, 0, 0.0);
     private List<Integer> fiducialIds  = Arrays.asList(1,2,3,6,7,8);
     private double goalRange = Units.feetToMeters(2);
 
     public GetInRangeOfTarget(DriveTrain driveTrain, PhotonCamera camera){
         this.driveTrain = driveTrain;
         this.photonCamera = camera;
-        controller.setTolerance(.1);
+        controller.setTolerance(1);
         controller.enableContinuousInput(-1, 1);
     }
 /*
