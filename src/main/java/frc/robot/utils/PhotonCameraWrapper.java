@@ -19,6 +19,7 @@ public class PhotonCameraWrapper {
     public PhotonCameraWrapper(PhotonCamera camera) {
         this.camera = camera;
     }
+
     public Optional<PhotonTrackedTarget> getBestTargetForFiducialId(List<Integer> tagIds){
         var latestResult = camera.getLatestResult();
         if (latestResult.hasTargets()) {
@@ -30,13 +31,21 @@ public class PhotonCameraWrapper {
         }
        return Optional.ofNullable(null);
     }
+
+    public Optional<PhotonTrackedTarget> getBestTarget() {
+        var latestResult = camera.getLatestResult();
+        if (latestResult.hasTargets()){
+            return Optional.of(latestResult.getBestTarget());
+        }
+        return Optional.ofNullable(null);
+    }
     
     public Optional<Pose3d> getRobotPosFromCamera(){
         var latestResults = camera.getLatestResult();
         if (latestResults.hasTargets()){
             lastResultTimeStamp = latestResults.getTimestampSeconds();
             var target = latestResults.getBestTarget();
-            var targetPos = getFieldLayout().getTagPose(target.getFiducialId()).get();
+            var targetPos = getLayout().getTagPose(target.getFiducialId()).get();
             var camToTargetTrans = target.getBestCameraToTarget();
             var camPos = targetPos.transformBy(camToTargetTrans.inverse());
             return Optional.of(camPos);
@@ -46,6 +55,10 @@ public class PhotonCameraWrapper {
 
     public double getLatestResultTimestamp() {
         return lastResultTimeStamp;
+    }
+
+    public Optional<Pose3d> getAprilTagPos(int fiducialId) {
+        return getLayout().getTagPose(fiducialId);
     }
 
     private AprilTagFieldLayout getLayout(){

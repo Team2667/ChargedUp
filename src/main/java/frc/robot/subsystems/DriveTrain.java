@@ -10,14 +10,17 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.swerveSupport.SwerveModule;
 import frc.robot.subsystems.swerveSupport.SwerveModuleConfiguration;
 import frc.robot.utils.PhotonCameraWrapper;
 
 import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonUtils;
 public class DriveTrain extends SubsystemBase {
     private final AHRS m_navx = new AHRS(SPI.Port.kMXP, (byte) 200); // NavX connected over MXP
 
@@ -91,12 +94,17 @@ public class DriveTrain extends SubsystemBase {
         m_backLeftModule.stop();
     }
 
+    public Pose2d getEstimatedPosition(){
+        return m_PoseEstimator.getEstimatedPosition();
+    }
+
     @Override
     public void periodic() {
         m_PoseEstimator.update(getGyroscopeRotation(), getSwerveModulePositions());
         cameraWrapper.getRobotPosFromCamera().ifPresent(pos -> {
             m_PoseEstimator.addVisionMeasurement(pos.toPose2d(), cameraWrapper.getLatestResultTimestamp());
         });
+        postDataToSmartDashboard();
     }
 
     public SwerveModulePosition[] getSwerveModulePositions() {
@@ -108,5 +116,24 @@ public class DriveTrain extends SubsystemBase {
             new SwerveModulePosition(m_backRightModule.getWheelPosition(), Rotation2d.fromRadians(m_backRightModule.getAbsoluteAngle()))
         };
         return modulePositions;
+    }
+
+    private void postDataToSmartDashboard(){
+        SmartDashboard.putNumber("To Tag Inches", distanceToBestTargetInInches());
+
+    }
+
+    private double distanceToBestTargetInInches(){
+        var targetO = cameraWrapper.getBestTarget();
+        if (targetO.isPresent()){
+            var target = targetO.get();
+            double targetHeight = cameraWrapper.getAprilTagPos(target.getFiducialId())
+                                .map(pos -> pos.getZ())
+                                .orElse(0.462788);
+            return Units.metersToInches(PhotonUtils.calculateDistanceToTargetMeters(
+                Constants.CAMERA_HEIGHT_METERS, 
+                targetHeight, Constants.CAMERA_PITCH_RADIANS, Units.degreesToRadians(target.getPitch())));
+        }
+        return Integer.MAX_VALUE;
     }
 }
