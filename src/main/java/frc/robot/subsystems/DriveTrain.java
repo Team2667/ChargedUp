@@ -3,6 +3,7 @@ import com.kauailabs.navx.frc.*;
 import static frc.robot.Constants.*;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -14,12 +15,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.swerveSupport.SwerveModule;
 import frc.robot.subsystems.swerveSupport.SwerveModuleConfiguration;
+import frc.robot.utils.PhotonCameraWrapper;
+
 import org.photonvision.PhotonCamera;
 public class DriveTrain extends SubsystemBase {
     private final AHRS m_navx = new AHRS(SPI.Port.kMXP, (byte) 200); // NavX connected over MXP
 
     private double compass_at_startup;
-    private PhotonCamera camera;
+    private PhotonCameraWrapper cameraWrapper;
     private final SwerveModule m_frontLeftModule;
     private final SwerveModule m_frontRightModule;
     private final SwerveModule m_backLeftModule;
@@ -51,7 +54,7 @@ public class DriveTrain extends SubsystemBase {
     }
       
     public DriveTrain(PhotonCamera camera){
-        this.camera=camera;
+        this.cameraWrapper = new PhotonCameraWrapper(camera);
         m_navx.calibrate();
         this.compass_at_startup=m_navx.getCompassHeading();
         m_frontLeftModule = new SwerveModule(SwerveModuleConfiguration.frontLeftConfig());
@@ -59,7 +62,7 @@ public class DriveTrain extends SubsystemBase {
         m_backLeftModule  = new SwerveModule(SwerveModuleConfiguration.backLeftConfig());
         m_backRightModule = new SwerveModule(SwerveModuleConfiguration.backRightConfig());
         m_PoseEstimator = new SwerveDrivePoseEstimator(m_kinematics, 
-        getGyroscopeRotation(), getSwerveModulePositions(), new Pose2d());
+                                    getGyroscopeRotation(), getSwerveModulePositions(), new Pose2d());
     }
 
     public void drive (ChassisSpeeds chassisSpeeds){
@@ -90,26 +93,10 @@ public class DriveTrain extends SubsystemBase {
 
     @Override
     public void periodic() {
-        m_frontLeftModule.outputSteerAnglesToDashboard();
-        m_frontRightModule.outputSteerAnglesToDashboard();
-        m_backLeftModule.outputSteerAnglesToDashboard();
-        m_backRightModule.outputSteerAnglesToDashboard();
-        SmartDashboard.putNumber("NavX: ", m_navx.getFusedHeading());
-        var latestResult=camera.getLatestResult();
-        if (latestResult.hasTargets()) {
-            SmartDashboard.putNumber("AprilTag: ", latestResult.getBestTarget().getFiducialId());
-            SmartDashboard.putNumber("Yaw", latestResult.getBestTarget().getYaw());
-        }
-        else {
-            SmartDashboard.putNumber("AprilTag: ", 69); //rehehehe
-            SmartDashboard.putNumber("AprilTag-Yaw", 420);
-        }
-        SmartDashboard.putNumber("Debug-Yaw: ", m_navx.getYaw());
-        SmartDashboard.putNumber("Debug-Fused-Heading: ", m_navx.getFusedHeading());
-        SmartDashboard.putNumber("Debug-Compass-Head", m_navx.getCompassHeading());
-        SmartDashboard.putNumber("Silly-Baro-Press",m_navx.getBarometricPressure());
-        SmartDashboard.putNumber("LazyMath(Compass-Fused)", (m_navx.getCompassHeading()-m_navx.getFusedHeading()));
-        SmartDashboard.putNumber("LazyMath(Fused-Yaw)", (m_navx.getFusedHeading()-m_navx.getYaw()));
+        m_PoseEstimator.update(getGyroscopeRotation(), getSwerveModulePositions());
+        cameraWrapper.getRobotPosFromCamera().ifPresent(pos -> {
+            m_PoseEstimator.addVisionMeasurement(pos.toPose2d(), cameraWrapper.getLatestResultTimestamp());
+        });
     }
 
     public SwerveModulePosition[] getSwerveModulePositions() {
