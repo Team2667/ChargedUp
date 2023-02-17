@@ -3,6 +3,7 @@ import com.kauailabs.navx.frc.*;
 import static frc.robot.Constants.*;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -14,20 +15,23 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.swerveSupport.SwerveModule;
 import frc.robot.subsystems.swerveSupport.SwerveModuleConfiguration;
+import frc.robot.utils.KnightsCameraUtils;
+
 import org.photonvision.PhotonCamera;
-public class DriveTrain extends SubsystemBase {
+public class TempDT extends SubsystemBase {
     private final AHRS m_navx = new AHRS(SPI.Port.kMXP, (byte) 200); // NavX connected over MXP
 
-    private double compass_at_startup;
     private PhotonCamera camera;
     private final SwerveModule m_frontLeftModule;
     private final SwerveModule m_frontRightModule;
     private final SwerveModule m_backLeftModule;
     private final SwerveModule m_backRightModule;
     private ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
-    SwerveDrivePoseEstimator m_PoseEstimator;
     public static final double MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0 *
                             (14.0 / 50.0) * (25.0 / 19.0) * (15.0 / 45.0) * 0.10033 * Math.PI;
+
+    SwerveDrivePoseEstimator m_PoseEstimator;
+    KnightsCameraUtils camperaUtils;
 
     public static final double MAX_VOLTAGE = 12.0;
 
@@ -45,21 +49,25 @@ public class DriveTrain extends SubsystemBase {
     public Rotation2d getGyroscopeRotation() {    
         SmartDashboard.putBoolean("MagnetomitorCalibration", m_navx.isMagnetometerCalibrated());
         // We have to invert the angle of the NavX so that rotating the robot counter-clockwise makes the angle increase.
-        //return Rotation2d.fromDegrees(180 + m_navx.getYaw());
-        return Rotation2d.fromDegrees((180+m_navx.getYaw()));//-compass_at_startup);
-        //return Rotation2d.fromDegrees(m_navx.getFusedHeading());
+       // return Rotation2d.fromDegrees(360.0 - m_navx.getYaw());
+        return Rotation2d.fromDegrees(m_navx.getFusedHeading());
     }
       
     public DriveTrain(PhotonCamera camera){
         this.camera=camera;
+
         m_navx.calibrate();
-        this.compass_at_startup=m_navx.getCompassHeading();
+
         m_frontLeftModule = new SwerveModule(SwerveModuleConfiguration.frontLeftConfig());
+
         m_frontRightModule = new SwerveModule(SwerveModuleConfiguration.frontRightConfig());
+
         m_backLeftModule  = new SwerveModule(SwerveModuleConfiguration.backLeftConfig());
+
         m_backRightModule = new SwerveModule(SwerveModuleConfiguration.backRightConfig());
+
         m_PoseEstimator = new SwerveDrivePoseEstimator(m_kinematics, 
-        getGyroscopeRotation(), getSwerveModulePositions(), new Pose2d());
+            getGyroscopeRotation(), getSwerveModulePositions(), new Pose2d());
     }
 
     public void drive (ChassisSpeeds chassisSpeeds){
@@ -101,15 +109,36 @@ public class DriveTrain extends SubsystemBase {
             SmartDashboard.putNumber("Yaw", latestResult.getBestTarget().getYaw());
         }
         else {
-            SmartDashboard.putNumber("AprilTag: ", 69); //rehehehe
-            SmartDashboard.putNumber("AprilTag-Yaw", 420);
+            SmartDashboard.putNumber("AprilTag: ", 69);
+            SmartDashboard.putNumber("Yaw", 420);
         }
-        SmartDashboard.putNumber("Debug-Yaw: ", m_navx.getYaw());
-        SmartDashboard.putNumber("Debug-Fused-Heading: ", m_navx.getFusedHeading());
-        SmartDashboard.putNumber("Debug-Compass-Head", m_navx.getCompassHeading());
-        SmartDashboard.putNumber("Silly-Baro-Press",m_navx.getBarometricPressure());
-        SmartDashboard.putNumber("LazyMath(Compass-Fused)", (m_navx.getCompassHeading()-m_navx.getFusedHeading()));
-        SmartDashboard.putNumber("LazyMath(Fused-Yaw)", (m_navx.getFusedHeading()-m_navx.getYaw()));
+    }
+
+    public void updateOdometry() {
+        m_PoseEstimator.update(getGyroscopeRotation(), getSwerveModulePositions());
+
+        
+        m_poseEstimator.update(
+                m_gyro.getRotation2d(), m_leftEncoder.getDistance(), m_rightEncoder.getDistance());
+
+        // Also apply vision measurements. We use 0.3 seconds in the past as an example
+        // -- on
+        // a real robot, this must be calculated based either on latency or timestamps.
+        Optional<EstimatedRobotPose> result =
+                pcw.getEstimatedGlobalPose(m_poseEstimator.getEstimatedPosition());
+
+        if (result.isPresent()) {
+            EstimatedRobotPose camPose = result.get();
+            m_poseEstimator.addVisionMeasurement(
+                    camPose.estimatedPose.toPose2d(), camPose.timestampSeconds);
+            m_fieldSim.getObject("Cam Est Pos").setPose(camPose.estimatedPose.toPose2d());
+        } else {
+            // move it way off the screen to make it disappear
+            m_fieldSim.getObject("Cam Est Pos").setPose(new Pose2d(-100, -100, new Rotation2d()));
+        }
+
+        m_fieldSim.getObject("Actual Pos").setPose(m_drivetrainSimulator.getPose());
+        m_fieldSim.setRobotPose(m_poseEstimator.getEstimatedPosition());
     }
 
     public SwerveModulePosition[] getSwerveModulePositions() {
