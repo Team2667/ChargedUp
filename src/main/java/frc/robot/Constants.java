@@ -54,7 +54,10 @@ public final class Constants {
     public static final double MAX_INPUT_SPEED = 1; //4.14528;
     public static final double PERCENTAGE_MAX_SPEED = 40;
 
-    public static final boolean DRIVE_TRAIN_ENABLED = true;
+    public static final int PNEU_GRAB_CHNL = 0;
+    public static final int extenderMotor=16;
+
+    public static final boolean DRIVE_TRAIN_ENABLED = false;//no touch
     public static final boolean JAWS_OF_LIFE_ENABLED = true;
     public static final boolean PIVOT_ENABLED = true;
     public static final boolean ARM_EXTENDER_ENABLED = true;
@@ -63,5 +66,7 @@ public final class Constants {
     public static double TARGET_HEIGHT_METERS = Units.inchesToMeters(14.25);
     // Angle between horizontal and the camera.
     public static double CAMERA_PITCH_RADIANS = Units.degreesToRadians(0);
+
+    public static int ARM_CANID=17;
 
 }

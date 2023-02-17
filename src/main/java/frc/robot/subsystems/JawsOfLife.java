@@ -14,7 +14,7 @@ public class JawsOfLife extends SubsystemBase {
         // Constants.PCM_CAN_ID
         // solenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 1,2);
         // solenoid.set(kReverse);
-        solenoid = new Solenoid(1, PneumaticsModuleType.REVPH, 0);
+        solenoid = new Solenoid(Constants.PCM_CAN_ID, PneumaticsModuleType.REVPH, Constants.PNEU_GRAB_CHNL);
     }
 
     public void toggle() {
