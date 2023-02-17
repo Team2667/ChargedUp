@@ -15,9 +15,6 @@ public class ArmExtenderContainer {
             armExtender=new ArmExtender();
             createCommands();
             armExtender.setDefaultCommand(extendCommand);
-            /* create arm extender
-             create commands
-             configure button bindings */
         }
 
     }
