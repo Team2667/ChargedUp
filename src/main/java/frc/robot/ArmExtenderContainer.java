@@ -27,6 +27,5 @@ public class ArmExtenderContainer {
         extendCommand=new ExtendCommand(armExtender, controller);
     }
 
-    private void configureButtonBindings() {
-    }
+    private void configureButtonBindings() {;}
 }
