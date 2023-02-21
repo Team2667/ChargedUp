@@ -13,6 +13,7 @@ public class ExtendCommand extends CommandBase{
     private int dPadDir;
     private int prevDir=-1;
     private int usableDpad;
+    private int lengths[]={12,34,2};
     public ExtendCommand(ArmExtender Inspector,XboxController joystick)
     {
         addRequirements(Inspector);
@@ -37,14 +38,14 @@ public class ExtendCommand extends CommandBase{
         switch(usableDpad)
         {
             case 0:
-            Inspector.set(-0.1);
             break;
             case 90:
-            Inspector.set(0.1);
+            Inspector.set(0.3);
             break;
             case 180:
             break;
             case 270:
+            Inspector.set(-0.3);
             break;
             default:
 

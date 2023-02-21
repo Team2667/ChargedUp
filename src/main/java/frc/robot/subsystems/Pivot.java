@@ -29,6 +29,7 @@ public class Pivot  extends SubsystemBase{
         extenderMotor=new CANSparkMax(Constants.extenderMotor,MotorType.kBrushless);
         extenderEncoder=extenderMotor.getEncoder();
         sparkPidController=extenderMotor.getPIDController();
+        updatePidVals();
 
     }
 
@@ -40,12 +41,9 @@ public class Pivot  extends SubsystemBase{
         // set the pid values in the controller
     }
 
-    private void setPosition(int numRevs){
-        //sparkPidController.setReference
-        // update pid values
+    public void setPosition(double numRevs){
         updatePidVals();
         sparkPidController.setReference(numRevs, CANSparkMax.ControlType.kPosition);
-        // setReference
     }
 
     public void stop() {
@@ -64,8 +62,6 @@ public class Pivot  extends SubsystemBase{
         double sp=SmartDashboard.getNumber("Pivot P", pV);
         double si=SmartDashboard.getNumber("Pivot I", iV);
         double sd=SmartDashboard.getNumber("Pivot D", dV);
-
-        
         if(sp!=pV || si!=pV || sd!=dV)
         {
             pV=sp;

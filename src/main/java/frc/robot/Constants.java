@@ -50,16 +50,17 @@ public final class Constants {
 
     public static final double WHEEL_REVOLUTIONS_PER_METER = 3.0;
 
-    public static final int PCM_CAN_ID = 1;
+    public static final int PCM_CAN_ID = 36;
     public static final double MAX_INPUT_SPEED = 1; //4.14528;
-    public static final double PERCENTAGE_MAX_SPEED = 40;
+    public static final double PERCENTAGE_MAX_SPEED = 60;
 
     public static final int PNEU_GRAB_CHNL = 0;
     public static final int extenderMotor=16;
 
-    public static final boolean DRIVE_TRAIN_ENABLED = false;//no touch
-    public static final boolean JAWS_OF_LIFE_ENABLED = true;
+    public static final boolean DRIVE_TRAIN_ENABLED = true;
+    public static final boolean JAWS_OF_LIFE_ENABLED = true;    
     public static final boolean PIVOT_ENABLED = true;
+    public static final boolean PINCH_ENABLED = true;
     public static final boolean ARM_EXTENDER_ENABLED = true;
 
     public static  double CAMERA_HEIGHT_METERS = Units.inchesToMeters(18.375);
@@ -69,4 +70,12 @@ public final class Constants {
 
     public static int ARM_CANID=17;
 
+    public static int LEFT_PINCHY_ID=18;
+    public static int RIGHT_PINCHY_ID=19;
+
+    public static double PINCHY_PERCENTAGE=20;
+
+    public static double ARM_ROTATIONS[]={6,9,4.2};
+    public static double PIVOT_ROTATIONS[]={6,9,4.2};
+    //Obviously these are not the actual lengths replace these later
 }

@@ -8,6 +8,7 @@ import org.photonvision.PhotonCamera;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.DriveTrainContainer;
+import frc.robot.subsystems.Pinchy;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -26,12 +27,14 @@ public class RobotContainer {
   private JawsOfLifeContainer jolContainer;
   private PivotContainer pivotContainer;
   private ArmExtenderContainer armExtenderContainer;
+  private PinchyContainer pinchyContainer;
 
   public RobotContainer() {
     driveTrainContainer = new DriveTrainContainer(m_controller, camera);
     jolContainer = new JawsOfLifeContainer(m_controller);
     pivotContainer = new PivotContainer(m_controller);
     armExtenderContainer= new ArmExtenderContainer(m_controller);
+    pinchyContainer = new PinchyContainer(m_controller);
   }
 
   public Command getAutonomousCommand() {
