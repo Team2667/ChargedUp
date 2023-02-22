@@ -1,7 +1,5 @@
 package frc.robot.commands;
 
-import java.lang.reflect.Executable;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Pivot;
 public class Pivot2Angle extends CommandBase {
@@ -15,12 +13,12 @@ public class Pivot2Angle extends CommandBase {
     }
 
     @Override
-    public void execute() {
+    public void initialize() {
         pivot.setPosition(rotations);
     }
     
     @Override
     public boolean isFinished() {
-        return true;
+        return pivot.isAtSetPoint(rotations);
     }
 }

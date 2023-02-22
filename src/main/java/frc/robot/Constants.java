@@ -55,7 +55,7 @@ public final class Constants {
     public static final double PERCENTAGE_MAX_SPEED = 60;
 
     public static final int PNEU_GRAB_CHNL = 0;
-    public static final int extenderMotor=16;
+    
 
     public static final boolean DRIVE_TRAIN_ENABLED = true;
     public static final boolean JAWS_OF_LIFE_ENABLED = true;    
@@ -67,7 +67,7 @@ public final class Constants {
     public static double TARGET_HEIGHT_METERS = Units.inchesToMeters(14.25);
     // Angle between horizontal and the camera.
     public static double CAMERA_PITCH_RADIANS = Units.degreesToRadians(0);
-
+    public static final int rotatorMotor=16;
     public static int ARM_CANID=17;
 
     public static int LEFT_PINCHY_ID=18;
@@ -76,6 +76,11 @@ public final class Constants {
     public static double PINCHY_PERCENTAGE=20;
 
     public static double ARM_ROTATIONS[]={6,9,4.2};
-    public static double PIVOT_ROTATIONS[]={6,9,4.2};
+    public static double PIVOT_ROT_LOW=7;
+    public static double PIVOT_ROT_MEDIUM=7;
+    public static double PIVOT_ROT_HIGH=7;
+    public static double PIVOT_ROT_HOME=83;
+
+    public static final double ROTATIONAL_LENIENCY=5;
     //Obviously these are not the actual lengths replace these later
 }

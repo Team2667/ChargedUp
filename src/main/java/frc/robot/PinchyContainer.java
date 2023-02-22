@@ -10,19 +10,19 @@ public class PinchyContainer {
     private Pinchy pinchy;
 
     public PinchyContainer(XboxController controller) {
-        if (isSubsystemEnabled()){
+        if (isSubsystemEnabled()) {
             this.controller = controller;
-            pinchy=new Pinchy();
+            pinchy = new Pinchy();
             createCommands();
         }
     }
-    
+
     public boolean isSubsystemEnabled() {
         return Constants.PINCH_ENABLED;
     }
 
     private void createCommands() {
-        pinchyCommand=new PinchyCommand(controller,pinchy);
+        pinchyCommand = new PinchyCommand(controller, pinchy);
         pinchy.setDefaultCommand(pinchyCommand);
     }
 

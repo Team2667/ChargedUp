@@ -6,6 +6,7 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
+import java.lang.Math;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -14,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 // As a guide
 // 
 public class Pivot  extends SubsystemBase{
-    private CANSparkMax extenderMotor;
+    private CANSparkMax rotatorMotor;
     private RelativeEncoder extenderEncoder;
     private SparkMaxPIDController sparkPidController;
 
@@ -23,12 +24,12 @@ public class Pivot  extends SubsystemBase{
     private double dV = 0;
 
     public Pivot() {
-        // Initialize extenderMotor
+        // Initialize rotatorMotor
         // Initialize sparkPidController
         // May need to invert the motor
-        extenderMotor=new CANSparkMax(Constants.extenderMotor,MotorType.kBrushless);
-        extenderEncoder=extenderMotor.getEncoder();
-        sparkPidController=extenderMotor.getPIDController();
+        rotatorMotor=new CANSparkMax(Constants.rotatorMotor,MotorType.kBrushless);
+        extenderEncoder=rotatorMotor.getEncoder();
+        sparkPidController=rotatorMotor.getPIDController();
         updatePidVals();
 
     }
@@ -46,13 +47,17 @@ public class Pivot  extends SubsystemBase{
         sparkPidController.setReference(numRevs, CANSparkMax.ControlType.kPosition);
     }
 
+    public boolean isAtSetPoint(double rotations) {
+        return (Math.abs(extenderEncoder.getPosition()-rotations) < Constants.ROTATIONAL_LENIENCY);
+    }
+
     public void stop() {
         // code to stop the motor
-        extenderMotor.stopMotor();
+        rotatorMotor.stopMotor();
     }
     public void set(double speed)
     {
-        extenderMotor.set(speed);
+        rotatorMotor.set(speed);
     }
     @Override
     public void periodic()

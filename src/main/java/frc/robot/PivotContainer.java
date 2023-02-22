@@ -1,34 +1,54 @@
 package frc.robot;
 
+import frc.robot.Constants;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.PivotCommand;
 import frc.robot.subsystems.Pivot;
+import frc.robot.commands.Pivot2Angle;
 
 public class PivotContainer {
     private XboxController controller;
     private Pivot pivot;
     private PivotCommand pivotCommand;
-
-    public PivotContainer(XboxController controller){
-        if (isSubsystemEnabled()){
+    private Pivot2Angle pivot2Home;
+    private Pivot2Angle pivot2Low;
+    private Pivot2Angle pivot2Med;
+    private Pivot2Angle pivot2High;
+    public PivotContainer(XboxController controller) {
+        if (isSubsystemEnabled()) {
             this.controller = controller;
-            pivot=new Pivot();
+            pivot = new Pivot();
             createCommands();
+            configureButtonBindings();
             // create the subsystem
             // create the commands
             // configure the button bindings
         }
     }
-    
+
     public boolean isSubsystemEnabled() {
         return Constants.PIVOT_ENABLED;
     }
 
     private void createCommands() {
-        pivotCommand=new PivotCommand(pivot, controller);
+        pivotCommand = new PivotCommand(pivot, controller);
         pivot.setDefaultCommand(pivotCommand);
+        pivot2Low = new Pivot2Angle(pivot, Constants.PIVOT_ROT_LOW);
+        pivot2Med = new Pivot2Angle(pivot, Constants.PIVOT_ROT_MEDIUM);
+        pivot2High = new Pivot2Angle(pivot, Constants.PIVOT_ROT_HIGH);
+        pivot2Home = new Pivot2Angle(pivot, Constants.PIVOT_ROT_HOME);
     }
 
     private void configureButtonBindings() {
+        
+        JoystickButton forwardCommandButton = new JoystickButton(controller, XboxController.Button.kX.value);
+        forwardCommandButton.onTrue(pivot2Low);
+        JoystickButton leftCommandButton = new JoystickButton(controller, XboxController.Button.kY.value);
+        leftCommandButton.onTrue(pivot2Med);
+        JoystickButton downCommandButton = new JoystickButton(controller, XboxController.Button.kB.value);
+        downCommandButton.onTrue(pivot2High);
+        JoystickButton rightCommandButton = new JoystickButton(controller, XboxController.Button.kA.value);
+        rightCommandButton.onTrue(pivot2Home);
     }
 }
