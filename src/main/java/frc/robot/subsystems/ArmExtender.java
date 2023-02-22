@@ -65,10 +65,14 @@ public class ArmExtender  extends SubsystemBase{
         GoGoGadgetPID.setD(dV);
     }
 
-    private void setPosition(Double numRevs) {
+    public void setPosition(Double numRevs) {
         GoGoGadgetPID.setReference(numRevs, CANSparkMax.ControlType.kPosition);
         // update pid values
         // setReference
+    }
+
+    public boolean isAtSetPoint(double rotations) {
+        return (Math.abs(extenderEncoder.getPosition()-rotations) < Constants.PROTRUSION_LENIENCY);
     }
 
     public void stop() {

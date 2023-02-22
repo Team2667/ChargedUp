@@ -82,5 +82,6 @@ public final class Constants {
     public static double PIVOT_ROT_HOME=83;
 
     public static final double ROTATIONAL_LENIENCY=5;
+    public static final double PROTRUSION_LENIENCY=5;
     //Obviously these are not the actual lengths replace these later
 }

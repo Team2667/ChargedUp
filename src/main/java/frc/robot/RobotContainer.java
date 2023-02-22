@@ -9,7 +9,9 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.DriveTrainContainer;
 import frc.robot.subsystems.Pinchy;
-
+import frc.robot.commands.Pivot2Angle;
+import frc.robot.subsystems.Pivot;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a
@@ -28,6 +30,8 @@ public class RobotContainer {
   private PivotContainer pivotContainer;
   private ArmExtenderContainer armExtenderContainer;
   private PinchyContainer pinchyContainer;
+  private Pivot pivot;
+  
 
   public RobotContainer() {
     driveTrainContainer = new DriveTrainContainer(m_controller, camera);
@@ -35,10 +39,23 @@ public class RobotContainer {
     pivotContainer = new PivotContainer(m_controller);
     armExtenderContainer= new ArmExtenderContainer(m_controller);
     pinchyContainer = new PinchyContainer(m_controller);
+    configButtonBindings();
   }
 
   public Command getAutonomousCommand() {
     // 1. Create trajectory settings
     return null;
+  }
+
+  public void configButtonBindings(){
+    JoystickButton lowCommand = new JoystickButton(m_controller, XboxController.Button.kX.value);
+    JoystickButton medCommand = new JoystickButton(m_controller, XboxController.Button.kY.value);
+    JoystickButton highCommand = new JoystickButton(m_controller, XboxController.Button.kB.value);
+    JoystickButton homeCommand = new JoystickButton(m_controller, XboxController.Button.kA.value);
+    
+    lowCommand.onTrue(pivotContainer.getPivot2Low())/*.andThen(armExtenderContainer.getExt2Low())*/;
+    medCommand.onTrue(pivotContainer.getPivot2Med())/*.andThen(armExtenderContainer.getExt2Med())*/;
+    highCommand.onTrue(pivotContainer.getPivot2High())/*.andThen(armExtenderContainer.getExt2High())*/;
+    homeCommand.onTrue(pivotContainer.getPivot2Home())/*.andThen(armExtenderContainer.getExt2Home())*/;
   }
 }
