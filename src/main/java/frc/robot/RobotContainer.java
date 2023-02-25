@@ -6,9 +6,11 @@ package frc.robot;
 
 import org.photonvision.PhotonCamera;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.DriveTrainContainer;
 import frc.robot.subsystems.Pinchy;
+import frc.robot.commands.CalibratePivot;
 import frc.robot.commands.Pivot2Angle;
 import frc.robot.subsystems.Pivot;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -48,14 +50,18 @@ public class RobotContainer {
   }
 
   public void configButtonBindings(){
-    JoystickButton lowCommand = new JoystickButton(m_controller, XboxController.Button.kX.value);
-    JoystickButton medCommand = new JoystickButton(m_controller, XboxController.Button.kY.value);
-    JoystickButton highCommand = new JoystickButton(m_controller, XboxController.Button.kB.value);
-    JoystickButton homeCommand = new JoystickButton(m_controller, XboxController.Button.kA.value);
-    
-    lowCommand.onTrue(pivotContainer.getPivot2Low())/*.andThen(armExtenderContainer.getExt2Low())*/;
-    medCommand.onTrue(pivotContainer.getPivot2Med())/*.andThen(armExtenderContainer.getExt2Med())*/;
-    highCommand.onTrue(pivotContainer.getPivot2High())/*.andThen(armExtenderContainer.getExt2High())*/;
-    homeCommand.onTrue(pivotContainer.getPivot2Home())/*.andThen(armExtenderContainer.getExt2Home())*/;
+
+    if (pivotContainer.isSubsystemEnabled()){
+      JoystickButton lowCommand = new JoystickButton(m_controller, XboxController.Button.kX.value);
+      JoystickButton medCommand = new JoystickButton(m_controller, XboxController.Button.kY.value);
+      JoystickButton highCommand = new JoystickButton(m_controller, XboxController.Button.kB.value);
+      JoystickButton homeCommand = new JoystickButton(m_controller, XboxController.Button.kA.value);
+      JoystickButton calibCommand = new JoystickButton(m_controller, XboxController.Button.kStart.value);
+      lowCommand.onTrue(pivotContainer.getPivot2Low())/*.andThen(armExtenderContainer.getExt2Low())*/;
+      medCommand.onTrue(pivotContainer.getPivot2Med())/*.andThen(armExtenderContainer.getExt2Med())*/;
+      highCommand.onTrue(pivotContainer.getPivot2High())/*.andThen(armExtenderContainer.getExt2High())*/;
+      homeCommand.onTrue(pivotContainer.getPivot2Home())/*.andThen(armExtenderContainer.getExt2Home())*/;
+      calibCommand.onTrue(pivotContainer.getCalibratePivot());
+    }
   }
 }

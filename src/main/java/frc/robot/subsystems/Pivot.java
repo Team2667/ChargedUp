@@ -3,22 +3,26 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import frc.robot.Constants;
 import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxAbsoluteEncoder;
+import com.revrobotics.SparkMaxLimitSwitch;
+
 import java.lang.Math;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import frc.robot.commands.CalibratePivot;
 // See https://github.com/Team2667/RapidReact2022/blob/master/src/main/java/frc/robot/subsystems/Arms.java
 // As a guide
-// 
 public class Pivot  extends SubsystemBase{
     private CANSparkMax rotatorMotor;
     private RelativeEncoder extenderEncoder;
     private SparkMaxPIDController sparkPidController;
-
+    public SparkMaxLimitSwitch ReverseLimitSwitch;
+    public CalibratePivot Calibpivot;
     private double pV = 0.08;
     private double iV = 0;
     private double dV = 0;
@@ -31,7 +35,7 @@ public class Pivot  extends SubsystemBase{
         extenderEncoder=rotatorMotor.getEncoder();
         sparkPidController=rotatorMotor.getPIDController();
         updatePidVals();
-
+        ReverseLimitSwitch=rotatorMotor.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
     }
 
     private void updatePidVals()
@@ -59,6 +63,9 @@ public class Pivot  extends SubsystemBase{
     {
         rotatorMotor.set(speed);
     }
+    public boolean getLitch() {
+        return ReverseLimitSwitch.isPressed();
+    }
     @Override
     public void periodic()
     {
@@ -67,7 +74,7 @@ public class Pivot  extends SubsystemBase{
         double sp=SmartDashboard.getNumber("Pivot P", pV);
         double si=SmartDashboard.getNumber("Pivot I", iV);
         double sd=SmartDashboard.getNumber("Pivot D", dV);
-        if(sp!=pV || si!=pV || sd!=dV)
+        if(sp!=pV||si!=pV||sd!=dV)
         {
             pV=sp;
             iV=si;

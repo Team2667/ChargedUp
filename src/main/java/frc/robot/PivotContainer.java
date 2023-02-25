@@ -8,6 +8,8 @@ import frc.robot.subsystems.Pivot;
 import frc.robot.commands.Pivot2Angle;
 import edu.wpi.first.wpilibj2.command.Command;
 
+import frc.robot.commands.CalibratePivot;
+
 public class PivotContainer {
     private XboxController controller;
     private Pivot pivot;
@@ -16,6 +18,7 @@ public class PivotContainer {
     private Pivot2Angle pivot2Low;
     private Pivot2Angle pivot2Med;
     private Pivot2Angle pivot2High;
+    private CalibratePivot calibPivot;
     public PivotContainer(XboxController controller) {
         if (isSubsystemEnabled()) {
             this.controller = controller;
@@ -39,6 +42,8 @@ public class PivotContainer {
         pivot2Med = new Pivot2Angle(pivot, Constants.PIVOT_ROT_MEDIUM);
         pivot2High = new Pivot2Angle(pivot, Constants.PIVOT_ROT_HIGH);
         pivot2Home = new Pivot2Angle(pivot, Constants.PIVOT_ROT_HOME);
+
+        calibPivot = new CalibratePivot(pivot);
     }
 
     public Command getPivot2Low() {
@@ -52,6 +57,10 @@ public class PivotContainer {
     }
     public Command getPivot2Home() {
         return pivot2Home;
+    }
+
+    public Command getCalibratePivot() {
+        return calibPivot;
     }
 
     private void configureButtonBindings() {
