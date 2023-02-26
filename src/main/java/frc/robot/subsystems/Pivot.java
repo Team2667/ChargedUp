@@ -23,8 +23,8 @@ public class Pivot  extends SubsystemBase{
     private SparkMaxPIDController sparkPidController;
     public SparkMaxLimitSwitch ReverseLimitSwitch;
     public CalibratePivot Calibpivot;
-    private double pV = 0.08;
-    private double iV = 0;
+    private double pV = 0.04;
+    private double iV = .0001;
     private double dV = 0;
 
     public Pivot() {

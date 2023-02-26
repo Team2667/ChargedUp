@@ -76,12 +76,12 @@ public final class Constants {
     public static double PINCHY_PERCENTAGE=20;
 
     public static double ARM_ROTATIONS[]={6,9,4.2};
-    public static double PIVOT_ROT_LOW=7;
-    public static double PIVOT_ROT_MEDIUM=7;
-    public static double PIVOT_ROT_HIGH=7;
-    public static double PIVOT_ROT_HOME=83;
+    public static double PIVOT_ROT_LOW=14;
+    public static double PIVOT_ROT_MEDIUM=37;
+    public static double PIVOT_ROT_HIGH=50;
+    public static double PIVOT_ROT_HOME=7;
 
-    public static final double ROTATIONAL_LENIENCY=5;
-    public static final double PROTRUSION_LENIENCY=5;
+    public static final double ROTATIONAL_LENIENCY=.5;
+    public static final double PROTRUSION_LENIENCY=.5;
     //Obviously these are not the actual lengths replace these later
 }
