@@ -78,7 +78,7 @@ public final class Constants {
     public static double ARM_ROTATIONS[]={6,9,4.2};
     public static double PIVOT_ROT_LOW=14;
     public static double PIVOT_ROT_MEDIUM=37;
-    public static double PIVOT_ROT_HIGH=50;
+    public static double PIVOT_ROT_HIGH=54;
     public static double PIVOT_ROT_HOME=7;
 
     public static final double ROTATIONAL_LENIENCY=.5;

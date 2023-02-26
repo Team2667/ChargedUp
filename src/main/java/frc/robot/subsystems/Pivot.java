@@ -24,7 +24,7 @@ public class Pivot  extends SubsystemBase{
     public SparkMaxLimitSwitch ReverseLimitSwitch;
     public CalibratePivot Calibpivot;
     private double pV = 0.04;
-    private double iV = .0001;
+    private double iV = .00005;
     private double dV = 0;
 
     public Pivot() {
@@ -49,6 +49,7 @@ public class Pivot  extends SubsystemBase{
 
     public void setPosition(double numRevs){
         updatePidVals();
+        sparkPidController.setIAccum(0);
         sparkPidController.setReference(numRevs, CANSparkMax.ControlType.kPosition);
     }
 
