@@ -56,12 +56,12 @@ public class RobotContainer {
       JoystickButton medCommand = new JoystickButton(m_controller, XboxController.Button.kY.value);
       JoystickButton highCommand = new JoystickButton(m_controller, XboxController.Button.kB.value);
       JoystickButton homeCommand = new JoystickButton(m_controller, XboxController.Button.kA.value);
-      JoystickButton calibCommand = new JoystickButton(m_controller, XboxController.Button.kStart.value);
+      //JoystickButton calibCommand = new JoystickButton(m_controller, XboxController.Button.kStart.value);
       lowCommand.onTrue(pivotContainer.getPivot2Low())/*.andThen(armExtenderContainer.getExt2Low())*/;
       medCommand.onTrue(pivotContainer.getPivot2Med())/*.andThen(armExtenderContainer.getExt2Med())*/;
       highCommand.onTrue(pivotContainer.getPivot2High())/*.andThen(armExtenderContainer.getExt2High())*/;
       homeCommand.onTrue(pivotContainer.getPivot2Home())/*.andThen(armExtenderContainer.getExt2Home())*/;
-      calibCommand.onTrue(pivotContainer.getCalibratePivot());
+      //calibCommand.onTrue(pivotContainer.getCalibratePivot());
     }
   }
 }

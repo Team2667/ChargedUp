@@ -17,6 +17,7 @@ public class PivotCommand extends CommandBase{
         addRequirements(pivot);
         this.pivot=pivot;
         this.joystick=joystick;
+        //pivot.setDefaultCommand(this);
     }
     @Override
     public void execute()
@@ -35,12 +36,12 @@ public class PivotCommand extends CommandBase{
         switch(usableDpad)
         {
             case 0:
-            pivot.set(-0.25);
+            pivot.set(0.25);
             break;
             case 90:
             break;
             case 180:
-            pivot.set(0.25);
+            pivot.set(-0.25);
             break;
             case 270:
             //nothing

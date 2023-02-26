@@ -35,6 +35,7 @@ public class Pivot  extends SubsystemBase{
         extenderEncoder=rotatorMotor.getEncoder();
         sparkPidController=rotatorMotor.getPIDController();
         updatePidVals();
+        rotatorMotor.setInverted(false);
         ReverseLimitSwitch=rotatorMotor.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
     }
 
@@ -53,6 +54,10 @@ public class Pivot  extends SubsystemBase{
 
     public boolean isAtSetPoint(double rotations) {
         return (Math.abs(extenderEncoder.getPosition()-rotations) < Constants.ROTATIONAL_LENIENCY);
+    }
+
+    public double getPos() {
+        return extenderEncoder.getPosition();
     }
 
     public void stop() {

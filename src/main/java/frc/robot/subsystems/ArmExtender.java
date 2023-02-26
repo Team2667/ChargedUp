@@ -25,6 +25,7 @@ public class ArmExtender  extends SubsystemBase{
         extenderEncoder=extenderMotor.getEncoder();
         sparkPidController=extenderMotor.getPIDController();
         GoGoGadgetPID=sparkPidController;
+        extenderMotor.setInverted(true);
         
         // Initialize sparkPidController
         // May need to invert the motor
