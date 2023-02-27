@@ -26,6 +26,12 @@ public class Pivot  extends SubsystemBase{
     private double pV = 0.04;
     private double iV = .00005;
     private double dV = 0;
+    private GamePiece currentGamePiece = GamePiece.cube;
+
+    public enum GamePiece{
+        cone,
+        cube
+    }
 
     public Pivot() {
         // Initialize rotatorMotor
@@ -51,6 +57,38 @@ public class Pivot  extends SubsystemBase{
         updatePidVals();
         sparkPidController.setIAccum(0);
         sparkPidController.setReference(numRevs, CANSparkMax.ControlType.kPosition);
+    }
+
+    public void toggleGamePiece(){
+        currentGamePiece = currentGamePiece == GamePiece.cone ? GamePiece.cube : GamePiece.cone;
+    }
+
+    public double getRotationsToGoalPosition(Constants.GoalPos goalPos){
+        if (goalPos == Constants.GoalPos.low) {
+            return getLowPositon();
+        }
+        if (goalPos == Constants.GoalPos.med) {
+           return getMedPositon();
+        }
+        if (goalPos == Constants.GoalPos.high){
+            return getHighPosition();
+        }
+        if (goalPos == Constants.GoalPos.feeder){
+            return Constants.PIVOT_ROT_FEEDER;
+        }
+        return Constants.PIVOT_ROT_HOME;
+    }
+
+    public double getLowPositon(){
+        return currentGamePiece == GamePiece.cube ? Constants.PIVOT_CUBE_ROT_LOW : Constants.PIVOT_CONE_ROT_LOW;
+    }
+
+    public double getMedPositon(){
+        return currentGamePiece == GamePiece.cube ? Constants.PIVOT_CUBE_ROT_MEDIUM : Constants.PIVOT_CONE_ROT_MEDIUM;
+    }
+
+    public double getHighPosition(){
+        return currentGamePiece == GamePiece.cube ? Constants.PIVOT_CUBE_ROT_HIGH : Constants.PIVOT_CONE_ROT_HIGH;
     }
 
     public boolean isAtSetPoint(double rotations) {
@@ -91,7 +129,6 @@ public class Pivot  extends SubsystemBase{
         SmartDashboard.putNumber("Pivot I", iV);
         SmartDashboard.putNumber("Pivot D", dV);
 
-
-        
+        SmartDashboard.putString("Game Piece", currentGamePiece == GamePiece.cone ? "Cone" : "Cube");
     }
 }

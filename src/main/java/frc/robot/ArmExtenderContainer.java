@@ -14,6 +14,7 @@ public class ArmExtenderContainer {
     public Protrude2Angle ext2Low;
     public Protrude2Angle ext2Med;
     public Protrude2Angle ext2High;
+    public Protrude2Angle ext2Feeder;
 
     public ArmExtenderContainer(XboxController controller) {
         if (isSubsystemEnabled()){
@@ -32,10 +33,11 @@ public class ArmExtenderContainer {
 
     private void createCommands() {
         extendCommand=new ExtendCommand(armExtender, controller);
-        ext2Low = new Protrude2Angle(armExtender, Constants.PIVOT_ROT_LOW);
-        ext2Med = new Protrude2Angle(armExtender, Constants.PIVOT_ROT_MEDIUM);
-        ext2High = new Protrude2Angle(armExtender, Constants.PIVOT_ROT_HIGH);
-        ext2Home = new Protrude2Angle(armExtender, Constants.PIVOT_ROT_HOME);
+        ext2Low = new Protrude2Angle(armExtender, Constants.EXTEND_LOW);
+        ext2Med = new Protrude2Angle(armExtender, Constants.EXTEND_MEDIUM);
+        ext2High = new Protrude2Angle(armExtender, Constants.EXTEND_HIGH);
+        ext2Home = new Protrude2Angle(armExtender, Constants.EXTEND_HOME);
+        ext2Feeder = new Protrude2Angle(armExtender, Constants.EXTEND_FEEDER);
     }
 
     public Command getExt2Low() {
@@ -50,6 +52,11 @@ public class ArmExtenderContainer {
     public Command getExt2Home() {
         return ext2Home;
     }
+
+    public Command getExtendToFeeder(){
+        return ext2Feeder;
+    }
+    
     private void configureButtonBindings() {
         /*JoystickButton leftCommandButton = new JoystickButton(controller, XboxController.Button.kY.value);
         leftCommandButton.onTrue(ext2Low);*/

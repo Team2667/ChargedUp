@@ -4,6 +4,7 @@ import frc.robot.Constants;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.PivotCommand;
+import frc.robot.commands.PivotToggleGamePiece;
 import frc.robot.subsystems.Pivot;
 import frc.robot.commands.Pivot2Angle;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -15,10 +16,12 @@ public class PivotContainer {
     private Pivot pivot;
     private PivotCommand pivotCommand;
     private Pivot2Angle pivot2Home;
+    private Pivot2Angle pivot2Feeder;
     private Pivot2Angle pivot2Low;
     private Pivot2Angle pivot2Med;
     private Pivot2Angle pivot2High;
     private HoldInPlace holdInPlace;
+    private PivotToggleGamePiece toggleGamePiece;
     private CalibratePivot calibPivot;
     public PivotContainer(XboxController controller) {
         if (isSubsystemEnabled()) {
@@ -38,10 +41,12 @@ public class PivotContainer {
 
     private void createCommands() {
         pivotCommand = new PivotCommand(pivot, controller);
-        pivot2Low = new Pivot2Angle(pivot, Constants.PIVOT_ROT_LOW);
-        pivot2Med = new Pivot2Angle(pivot, Constants.PIVOT_ROT_MEDIUM);
-        pivot2High = new Pivot2Angle(pivot, Constants.PIVOT_ROT_HIGH);
-        pivot2Home = new Pivot2Angle(pivot, Constants.PIVOT_ROT_HOME);
+        pivot2Low = new Pivot2Angle(pivot, Constants.GoalPos.low);
+        pivot2Med = new Pivot2Angle(pivot, Constants.GoalPos.med);
+        pivot2High = new Pivot2Angle(pivot, Constants.GoalPos.high);
+        pivot2Home = new Pivot2Angle(pivot, Constants.GoalPos.home);
+        pivot2Feeder = new Pivot2Angle(pivot, Constants.GoalPos.feeder);
+        toggleGamePiece = new PivotToggleGamePiece(pivot);
         holdInPlace = new HoldInPlace(pivot);
         calibPivot = new CalibratePivot(pivot);
     }
@@ -59,8 +64,16 @@ public class PivotContainer {
         return pivot2Home;
     }
 
+    public Command getPivot2Feeder(){
+        return pivot2Feeder;
+    }
+
     public Command getCalibratePivot() {
         return calibPivot;
+    }
+
+    public Command getToggleGamePieceCommand(){
+        return toggleGamePiece;
     }
 
     private void configureButtonBindings() {

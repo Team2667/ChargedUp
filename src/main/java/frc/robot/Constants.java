@@ -76,10 +76,35 @@ public final class Constants {
     public static double PINCHY_PERCENTAGE=20;
 
     public static double ARM_ROTATIONS[]={6,9,4.2};
-    public static double PIVOT_ROT_LOW=14;
-    public static double PIVOT_ROT_MEDIUM=37;
-    public static double PIVOT_ROT_HIGH=54;
+
+    public static double PIVOT_CUBE_ROT_LOW=14;
+    public static double PIVOT_CUBE_ROT_MEDIUM=37;
+    public static double PIVOT_CUBE_ROT_HIGH=50;
+
+    public static double PIVOT_CONE_ROT_LOW=14;
+    public static double PIVOT_CONE_ROT_MEDIUM=37;
+    public static double PIVOT_CONE_ROT_HIGH=54;
     public static double PIVOT_ROT_HOME=7;
+
+
+    public static double EXTEND_LOW = 10;
+    public static double EXTEND_MEDIUM = 10;
+    public static double EXTEND_HIGH = 10;
+    public static double EXTEND_FEEDER = 10;
+    public static double EXTEND_HOME = 10;
+
+
+    public enum GoalPos {
+        low,
+        med,
+        high,
+        home,
+        feeder
+    }
+
+
+
+    public static double PIVOT_ROT_FEEDER = 50;
 
     public static final double ROTATIONAL_LENIENCY=.5;
     public static final double PROTRUSION_LENIENCY=.5;

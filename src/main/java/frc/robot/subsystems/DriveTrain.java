@@ -84,7 +84,7 @@ public class DriveTrain extends SubsystemBase {
 
     @Override
     public void periodic() {
-        m_frontLeftModule.outputSteerAnglesToDashboard();
+  /*       m_frontLeftModule.outputSteerAnglesToDashboard();
         m_frontRightModule.outputSteerAnglesToDashboard();
         m_backLeftModule.outputSteerAnglesToDashboard();
         m_backRightModule.outputSteerAnglesToDashboard();
@@ -104,5 +104,6 @@ public class DriveTrain extends SubsystemBase {
         SmartDashboard.putNumber("Silly-Baro-Press",m_navx.getBarometricPressure());
         SmartDashboard.putNumber("LazyMath(Compass-Fused)", (m_navx.getCompassHeading()-m_navx.getFusedHeading()));
         SmartDashboard.putNumber("LazyMath(Fused-Yaw)", (m_navx.getFusedHeading()-m_navx.getYaw()));
+        */
     }
 }
