@@ -16,9 +16,8 @@ public class Pivot2Angle extends CommandBase {
 
     @Override
     public void initialize() {
-
         numRotations = pivot.getRotationsToGoalPosition(goalPos);
-        pivot.setPosition(pivot.getRotationsToGoalPosition(goalPos));
+        pivot.setPosition(numRotations);
     }
     
     @Override
