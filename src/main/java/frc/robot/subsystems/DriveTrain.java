@@ -39,11 +39,7 @@ public class DriveTrain extends SubsystemBase {
     );
 
     public Rotation2d getGyroscopeRotation() {    
-        SmartDashboard.putBoolean("MagnetomitorCalibration", m_navx.isMagnetometerCalibrated());
-        // We have to invert the angle of the NavX so that rotating the robot counter-clockwise makes the angle increase.
-        //return Rotation2d.fromDegrees(180 + m_navx.getYaw());
-        return Rotation2d.fromDegrees((180+m_navx.getYaw()));//-compass_at_startup);
-        //return Rotation2d.fromDegrees(m_navx.getFusedHeading());
+        return Rotation2d.fromDegrees(m_navx.getFusedHeading());
     }
       
     public DriveTrain(PhotonCamera camera){
