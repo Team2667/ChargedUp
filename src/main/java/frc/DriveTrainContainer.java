@@ -1,11 +1,13 @@
 package frc;
 
+import java.lang.Math;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.DriveFieldRelative;
 import frc.robot.commands.GetInRangeOfTarget;
 import frc.robot.commands.TurnToTarget;
 import frc.robot.subsystems.DriveTrain;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants;
 import org.photonvision.PhotonCamera;
@@ -15,7 +17,7 @@ public class DriveTrainContainer {
 
     DriveFieldRelative forwardCommand;
     DriveFieldRelative leftCommand;
-    DriveFieldRelative downCommand;
+    DriveFieldRelative backCommand;
     DriveFieldRelative rightCommand;
     GetInRangeOfTarget findAprilTag;
     TurnToTarget targetToTurn;
@@ -46,15 +48,14 @@ public class DriveTrainContainer {
     }
 
     private void createCommands(){
-      forwardCommand=new DriveFieldRelative(dt_sub,0,0.5);
-      leftCommand=new DriveFieldRelative(dt_sub,1.57,0.5);
-      downCommand=new DriveFieldRelative(dt_sub,3.14,0.5);
-      rightCommand=new DriveFieldRelative(dt_sub,4.71,0.5);
-      findAprilTag=new GetInRangeOfTarget(dt_sub, camera);
-      targetToTurn=new TurnToTarget(camera, dt_sub, 4);
+      double pi = Math.PI;
+
+      double magnitude = 0.25;
+
     }
 
     private void configureButtonBindings() {
+      /*
       JoystickButton forwardCommandButton=new JoystickButton(m_controller, XboxController.Button.kY.value);
       forwardCommandButton.whileTrue(forwardCommand);
       JoystickButton leftCommandButton=new JoystickButton(m_controller, XboxController.Button.kB.value);
@@ -65,7 +66,7 @@ public class DriveTrainContainer {
       rightCommandButton.whileTrue(targetToTurn);
       JoystickButton aprilTagButton=new JoystickButton(m_controller, XboxController.Button.kRightBumper.value);
       aprilTagButton.onTrue(findAprilTag);
-    
+      */
 
       
 
@@ -90,5 +91,8 @@ public class DriveTrainContainer {
         } else {
           return 0.0;
         }
+    }
+    public Command getBackComm() {
+      return new DriveFieldRelative(dt_sub,Math.PI,Constants.AUTO_MAGNITUDE);
     }
 }

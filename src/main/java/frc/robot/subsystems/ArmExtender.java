@@ -24,6 +24,8 @@ public class ArmExtender  extends SubsystemBase{
         extenderMotor=new CANSparkMax(Constants.ARM_CANID,MotorType.kBrushless);
         extenderEncoder=extenderMotor.getEncoder();
         sparkPidController=extenderMotor.getPIDController();
+        GoGoGadgetPID=sparkPidController;
+        extenderMotor.setInverted(true);
         
         // Initialize sparkPidController
         // May need to invert the motor
@@ -59,12 +61,19 @@ public class ArmExtender  extends SubsystemBase{
 
     private void updatePidVals() {
         // set the pid values in the controller
+        GoGoGadgetPID.setP(pV);
+        GoGoGadgetPID.setI(iV);
+        GoGoGadgetPID.setD(dV);
     }
 
-    private void setPosition(int numRevs) {
-        //sparkPidController.setReference
+    public void setPosition(Double numRevs) {
+        GoGoGadgetPID.setReference(numRevs, CANSparkMax.ControlType.kPosition);
         // update pid values
         // setReference
+    }
+
+    public boolean isAtSetPoint(double rotations) {
+        return (Math.abs(extenderEncoder.getPosition()-rotations) < Constants.PROTRUSION_LENIENCY);
     }
 
     public void stop() {

@@ -1,3 +1,4 @@
+
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.XboxController;
@@ -16,6 +17,7 @@ public class PivotCommand extends CommandBase{
         addRequirements(pivot);
         this.pivot=pivot;
         this.joystick=joystick;
+        //pivot.setDefaultCommand(this);
     }
     @Override
     public void execute()
@@ -24,7 +26,7 @@ public class PivotCommand extends CommandBase{
         //if(dPadDir==-1 || prevDir==-1)
         //    return;
         //    prevDir=dPadDir;
-        usableDpad=dPadDir;//((dPadDir/90));
+        usableDpad=dPadDir;
         if(dPadDir==-1)
         {
             pivot.stop();
@@ -34,15 +36,14 @@ public class PivotCommand extends CommandBase{
         switch(usableDpad)
         {
             case 0:
+            pivot.set(0.25);
             break;
             case 90:
-            //nothing
             break;
             case 180:
-            pivot.set(0.1);
+            pivot.set(-0.25);
             break;
             case 270:
-            pivot.set(-0.1);
             //nothing
             default:
 
