@@ -41,39 +41,32 @@ public class PivotContainer {
 
     private void createCommands() {
         pivotCommand = new PivotCommand(pivot, controller);
-        pivot2Low = new Pivot2Angle(pivot, Constants.GoalPos.low);
-        pivot2Med = new Pivot2Angle(pivot, Constants.GoalPos.med);
-        pivot2High = new Pivot2Angle(pivot, Constants.GoalPos.high);
-        pivot2Home = new Pivot2Angle(pivot, Constants.GoalPos.home);
-        pivot2Feeder = new Pivot2Angle(pivot, Constants.GoalPos.feeder);
-        toggleGamePiece = new PivotToggleGamePiece(pivot);
         holdInPlace = new HoldInPlace(pivot);
-        calibPivot = new CalibratePivot(pivot);
     }
 
     public Command getPivot2Low() {
-        return pivot2Low;
+        return new Pivot2Angle(pivot, Constants.GoalPos.low);
     }
     public Command getPivot2Med() {
-        return pivot2Med;
+        return new Pivot2Angle(pivot, Constants.GoalPos.med);
     }
     public Command getPivot2High() {
-        return pivot2High;
+        return new Pivot2Angle(pivot, Constants.GoalPos.high);
     }
     public Command getPivot2Home() {
-        return pivot2Home;
+        return new Pivot2Angle(pivot, Constants.GoalPos.home);
     }
 
     public Command getPivot2Feeder(){
-        return pivot2Feeder;
+        return new Pivot2Angle(pivot, Constants.GoalPos.feeder);
     }
 
     public Command getCalibratePivot() {
-        return calibPivot;
+        return new CalibratePivot(pivot);
     }
 
     public Command getToggleGamePieceCommand(){
-        return toggleGamePiece;
+        return new PivotToggleGamePiece(pivot);
     }
 
     private void configureButtonBindings() {

@@ -26,7 +26,7 @@ public class Pivot  extends SubsystemBase{
     private double pV = 0.04;
     private double iV = .00005;
     private double dV = 0;
-    private GamePiece currentGamePiece = GamePiece.cube;
+    private GamePiece currentGamePiece = GamePiece.cone;
 
     public enum GamePiece{
         cone,
@@ -91,6 +91,10 @@ public class Pivot  extends SubsystemBase{
         return currentGamePiece == GamePiece.cube ? Constants.PIVOT_CUBE_ROT_HIGH : Constants.PIVOT_CONE_ROT_HIGH;
     }
 
+    public double getFeedPosition(){
+        return Constants.PIVOT_ROT_FEEDER;
+    }
+
     public boolean isAtSetPoint(double rotations) {
         return (Math.abs(extenderEncoder.getPosition()-rotations) < Constants.ROTATIONAL_LENIENCY);
     }
@@ -129,6 +133,6 @@ public class Pivot  extends SubsystemBase{
         SmartDashboard.putNumber("Pivot I", iV);
         SmartDashboard.putNumber("Pivot D", dV);
 
-        SmartDashboard.putString("Game Piece", currentGamePiece == GamePiece.cone ? "Cone" : "Cube");
-    }
+        SmartDashboard.putNumber("Game Piece", currentGamePiece == GamePiece.cone ? 1 : 0);
+    }   //98 high
 }

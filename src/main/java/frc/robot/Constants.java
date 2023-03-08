@@ -52,7 +52,7 @@ public final class Constants {
 
     public static final int PCM_CAN_ID = 36;
     public static final double MAX_INPUT_SPEED = 1; //4.14528;
-    public static final double PERCENTAGE_MAX_SPEED = 60;
+    public static final double PERCENTAGE_MAX_SPEED = 67.5;
 
     public static final int PNEU_GRAB_CHNL = 0;
     
@@ -78,21 +78,23 @@ public final class Constants {
     public static double ARM_ROTATIONS[]={6,9,4.2};
 
     public static double PIVOT_CUBE_ROT_LOW=14;
-    public static double PIVOT_CUBE_ROT_MEDIUM=37;
-    public static double PIVOT_CUBE_ROT_HIGH=50;
+    public static double PIVOT_CUBE_ROT_MEDIUM=46;
+    public static double PIVOT_CUBE_ROT_HIGH=57;
 
     public static double PIVOT_CONE_ROT_LOW=14;
-    public static double PIVOT_CONE_ROT_MEDIUM=37;
-    public static double PIVOT_CONE_ROT_HIGH=54;
+    public static double PIVOT_CONE_ROT_MEDIUM=49;
+    public static double PIVOT_CONE_ROT_HIGH=61;
     public static double PIVOT_ROT_HOME=7;
-
+    public static double PIVOT_ROT_FEEDER = 46;
 
     public static double EXTEND_LOW = 10;
-    public static double EXTEND_MEDIUM = 10;
-    public static double EXTEND_HIGH = 10;
+    public static double EXTEND_MEDIUM = 35;
+    public static double EXTEND_HIGH = 94;
     public static double EXTEND_FEEDER = 10;
-    public static double EXTEND_HOME = 10;
+    public static double EXTEND_HOME = 0;
 
+    public static double AUTO_RUN_TIME = 3.0;
+    public static double AUTO_MAGNITUDE = 0.5;
 
     public enum GoalPos {
         low,
@@ -104,9 +106,9 @@ public final class Constants {
 
 
 
-    public static double PIVOT_ROT_FEEDER = 50;
+    
 
     public static final double ROTATIONAL_LENIENCY=.5;
-    public static final double PROTRUSION_LENIENCY=.5;
+    public static final double PROTRUSION_LENIENCY=1;
     //Obviously these are not the actual lengths replace these later
 }

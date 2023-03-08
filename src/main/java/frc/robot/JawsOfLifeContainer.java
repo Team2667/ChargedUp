@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.JawsCommand;
 import frc.robot.subsystems.JawsOfLife;
@@ -30,6 +31,9 @@ public class JawsOfLifeContainer {
     private void configureButtonBindings() {
         JoystickButton testToggleButton = new JoystickButton(controller, XboxController.Button.kRightBumper.value);
         testToggleButton.toggleOnTrue(jawsCommand);
+    }
+    public Command toggleComand(){
+        return new JawsCommand(jawsOfLifeSubsystem);
     }
 }
  

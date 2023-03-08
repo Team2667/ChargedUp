@@ -33,28 +33,28 @@ public class ArmExtenderContainer {
 
     private void createCommands() {
         extendCommand=new ExtendCommand(armExtender, controller);
-        ext2Low = new Protrude2Angle(armExtender, Constants.EXTEND_LOW);
-        ext2Med = new Protrude2Angle(armExtender, Constants.EXTEND_MEDIUM);
-        ext2High = new Protrude2Angle(armExtender, Constants.EXTEND_HIGH);
-        ext2Home = new Protrude2Angle(armExtender, Constants.EXTEND_HOME);
-        ext2Feeder = new Protrude2Angle(armExtender, Constants.EXTEND_FEEDER);
+        //ext2Low = new Protrude2Angle(armExtender, Constants.EXTEND_LOW);
+        //ext2Med = new Protrude2Angle(armExtender, Constants.EXTEND_MEDIUM);
+        //ext2High = new Protrude2Angle(armExtender, Constants.EXTEND_HIGH);
+        //ext2Home = new Protrude2Angle(armExtender, Constants.EXTEND_HOME);
+        //ext2Feeder = new Protrude2Angle(armExtender, Constants.EXTEND_FEEDER);
     }
 
     public Command getExt2Low() {
-        return ext2Low;
+        return new Protrude2Angle(armExtender, Constants.EXTEND_LOW);
     }
     public Command getExt2Med() {
-        return ext2Med;
+        return new Protrude2Angle(armExtender, Constants.EXTEND_MEDIUM);
     }
     public Command getExt2High() {
-        return ext2High;
+        return new Protrude2Angle(armExtender, Constants.EXTEND_HIGH);
     }
     public Command getExt2Home() {
-        return ext2Home;
+        return new Protrude2Angle(armExtender, Constants.EXTEND_HOME);
     }
 
     public Command getExtendToFeeder(){
-        return ext2Feeder;
+        return new Protrude2Angle(armExtender, Constants.EXTEND_FEEDER);
     }
     
     private void configureButtonBindings() {

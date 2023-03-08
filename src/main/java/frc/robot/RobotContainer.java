@@ -45,8 +45,14 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    // 1. Create trajectory settings
-    return null;
+     return pivotContainer.getPivot2Med()
+                         .andThen(armExtenderContainer.getExt2Med())
+                         .andThen(jolContainer.toggleComand())
+                         .andThen(armExtenderContainer.getExt2Home())
+                         .andThen(jolContainer.toggleComand())
+                         .andThen(pivotContainer.getPivot2Home())
+                         .andThen(driveTrainContainer.getBackComm().withTimeout(Constants.AUTO_RUN_TIME));
+   
   }
 
   public void configButtonBindings(){
@@ -58,15 +64,27 @@ public class RobotContainer {
       JoystickButton homeCommand = new JoystickButton(m_controller, XboxController.Button.kA.value);
       JoystickButton objectFromFeeder = new JoystickButton(m_controller, XboxController.Button.kRightStick.value);
       JoystickButton toggleGamePiece = new JoystickButton(m_controller, XboxController.Button.kLeftStick.value);
-      lowCommand.onTrue(pivotContainer.getPivot2Low())/*.andThen(armExtenderContainer.getExt2Low())*/;
-      medCommand.onTrue(pivotContainer.getPivot2Med())/*.andThen(armExtenderContainer.getExt2Med())*/;
-      highCommand.onTrue(pivotContainer.getPivot2High())/*.andThen(armExtenderContainer.getExt2High())*/;
-      homeCommand.onTrue(pivotContainer.getPivot2Home())/*.andThen(armExtenderContainer.getExt2Home())*/;
+      lowCommand.onTrue(armExtenderContainer.getExt2Home()
+                        .andThen(pivotContainer.getPivot2Low())
+                        .andThen(armExtenderContainer.getExt2Low()));
+
+      medCommand.onTrue(armExtenderContainer.getExt2Home()
+                        .andThen(pivotContainer.getPivot2Med()
+                        .andThen(armExtenderContainer.getExt2Med())));
+
+      highCommand.onTrue(armExtenderContainer.getExt2Home()
+                        .andThen(pivotContainer.getPivot2High()
+                        .andThen(armExtenderContainer.getExt2High())));
+
+      homeCommand.onTrue(armExtenderContainer.getExt2Home()
+                        .andThen(pivotContainer.getPivot2Home()
+                        .andThen(armExtenderContainer.getExt2Home())));
+      
       toggleGamePiece.onTrue(pivotContainer.getToggleGamePieceCommand());
 
-      objectFromFeeder.onTrue(
-        pivotContainer.getPivot2Feeder()
-        .andThen(armExtenderContainer.getExtendToFeeder()));
+      objectFromFeeder.onTrue(armExtenderContainer.getExt2Home()
+                              .andThen(pivotContainer.getPivot2Feeder()
+                              .andThen(armExtenderContainer.getExtendToFeeder())));
     }
   }
 }

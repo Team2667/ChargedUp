@@ -97,13 +97,13 @@ public class DriveTrain extends SubsystemBase {
         else {
             SmartDashboard.putNumber("AprilTag: ", 69); //rehehehe
             SmartDashboard.putNumber("AprilTag-Yaw", 420);
-        }
+        }*/
         SmartDashboard.putNumber("Debug-Yaw: ", m_navx.getYaw());
         SmartDashboard.putNumber("Debug-Fused-Heading: ", m_navx.getFusedHeading());
         SmartDashboard.putNumber("Debug-Compass-Head", m_navx.getCompassHeading());
         SmartDashboard.putNumber("Silly-Baro-Press",m_navx.getBarometricPressure());
         SmartDashboard.putNumber("LazyMath(Compass-Fused)", (m_navx.getCompassHeading()-m_navx.getFusedHeading()));
         SmartDashboard.putNumber("LazyMath(Fused-Yaw)", (m_navx.getFusedHeading()-m_navx.getYaw()));
-        */
+        
     }
 }
