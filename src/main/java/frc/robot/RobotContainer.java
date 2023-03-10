@@ -25,7 +25,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   private final XboxController m_controller = new XboxController(0);
-  private PhotonCamera camera = new PhotonCamera("Microsoft_LifeCam_HD-3000");
+  private PhotonCamera camera = new PhotonCamera("USB_webcam");
   // Dont remove
   private DriveTrainContainer driveTrainContainer;
   private JawsOfLifeContainer jolContainer;

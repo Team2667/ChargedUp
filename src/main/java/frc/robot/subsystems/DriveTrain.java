@@ -31,7 +31,7 @@ public class DriveTrain extends SubsystemBase {
     private final SwerveModule m_backLeftModule;
     private final SwerveModule m_backRightModule;
     private ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
-    SwerveDrivePoseEstimator m_PoseEstimator;
+    SwerveDrivePoseEstimator m_PosEstimator;
     public static final double MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0 *
                             (14.0 / 50.0) * (25.0 / 19.0) * (15.0 / 45.0) * 0.10033 * Math.PI;
 
@@ -64,7 +64,7 @@ public class DriveTrain extends SubsystemBase {
         m_frontRightModule = new SwerveModule(SwerveModuleConfiguration.frontRightConfig());
         m_backLeftModule  = new SwerveModule(SwerveModuleConfiguration.backLeftConfig());
         m_backRightModule = new SwerveModule(SwerveModuleConfiguration.backRightConfig());
-        m_PoseEstimator = new SwerveDrivePoseEstimator(m_kinematics, 
+        m_PosEstimator = new SwerveDrivePoseEstimator(m_kinematics, 
                                     getGyroscopeRotation(), getSwerveModulePositions(), new Pose2d());
     }
 
@@ -95,14 +95,14 @@ public class DriveTrain extends SubsystemBase {
     }
 
     public Pose2d getEstimatedPosition(){
-        return m_PoseEstimator.getEstimatedPosition();
+        return m_PosEstimator.getEstimatedPosition();
     }
 
     @Override
     public void periodic() {
-        m_PoseEstimator.update(getGyroscopeRotation(), getSwerveModulePositions());
+        m_PosEstimator.update(getGyroscopeRotation(), getSwerveModulePositions());
         cameraWrapper.getRobotPosFromCamera().ifPresent(pos -> {
-            m_PoseEstimator.addVisionMeasurement(pos.toPose2d(), cameraWrapper.getLatestResultTimestamp());
+            m_PosEstimator.addVisionMeasurement(pos.toPose2d(), cameraWrapper.getLatestResultTimestamp());
         });
         postDataToSmartDashboard();
     }
