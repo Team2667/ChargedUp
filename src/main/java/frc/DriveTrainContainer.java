@@ -8,7 +8,6 @@ import frc.robot.commands.GetInRangeOfTarget;
 import frc.robot.commands.TurnToTarget;
 import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants;
 import org.photonvision.PhotonCamera;
 public class DriveTrainContainer {
@@ -38,20 +37,12 @@ public class DriveTrainContainer {
               () -> modifyAxis(m_controller.getLeftX()),
               () -> -modifyAxis(m_controller.getRightX())
             ));
-            createCommands();
             configureButtonBindings();
         }
     }
 
     public boolean isSubsystemEnabled() {
         return Constants.DRIVE_TRAIN_ENABLED;
-    }
-
-    private void createCommands(){
-      double pi = Math.PI;
-
-      double magnitude = 0.25;
-
     }
 
     private void configureButtonBindings() {

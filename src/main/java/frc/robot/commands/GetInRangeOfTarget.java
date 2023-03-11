@@ -1,17 +1,9 @@
 package frc.robot.commands;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.photonvision.PhotonCamera;
-import org.photonvision.PhotonUtils;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
-
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class GetInRangeOfTarget extends CommandBase {
     private DriveTrain driveTrain;

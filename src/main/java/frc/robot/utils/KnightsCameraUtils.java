@@ -8,14 +8,12 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 public class KnightsCameraUtils {
     private final PhotonCamera camera;
     private final int fiducialId;
-    private Optional<PhotonTrackedTarget> currentTarget;
     private Optional<PhotonTrackedTarget> nullResult;
-    private double currentResultTS;
+    public double currentResultTS;
 
     public KnightsCameraUtils(PhotonCamera camera, int fiducialId){
         this.camera = camera;
         this.nullResult = Optional.ofNullable(null);
-        this.currentTarget = nullResult;
         this.currentResultTS = 0;
         this.fiducialId = fiducialId;
     }
@@ -27,7 +25,6 @@ public class KnightsCameraUtils {
             .filter(t -> t.getPoseAmbiguity() <= 0.2)
             .findFirst();
         if (target.isPresent()){
-            this.currentTarget = target;
             this.currentResultTS = latestResult.getTimestampSeconds();
             return target;
         }

@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 import com.kauailabs.navx.frc.*;
 import static frc.robot.Constants.*;
 
-import java.lang.StackWalker.Option;
 import java.util.Optional;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -128,13 +127,6 @@ public class DriveTrain extends SubsystemBase {
             new SwerveModulePosition(m_backRightModule.getWheelPosition(), Rotation2d.fromRadians(m_backRightModule.getAbsoluteAngle()))
         };
         return modulePositions;
-    }
-
-    private void postPosEstimatorData(){
-       SmartDashboard.putNumber("Robot - X", m_PosEstimator.getEstimatedPosition().getTranslation().getX());
-       SmartDashboard.putNumber("Robot - Y",  m_PosEstimator.getEstimatedPosition().getTranslation().getY());
-       SmartDashboard.putNumber("Rotation", m_PosEstimator.getEstimatedPosition().getRotation().getDegrees());
-       SmartDashboard.putNumber("To Tag Inches", distanceToBestTargetInInches());
     }
 
     private void postRobotPositionFromCamera(Pose3d pos3d, double distanceToTarget) {
