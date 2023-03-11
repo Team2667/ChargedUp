@@ -2,6 +2,9 @@ package frc.robot.subsystems;
 import com.kauailabs.navx.frc.*;
 import static frc.robot.Constants.*;
 
+import java.lang.StackWalker.Option;
+import java.util.Optional;
+
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -144,5 +147,23 @@ public class DriveTrain extends SubsystemBase {
         SmartDashboard.putNumber("Robot - Y",  pos2d.getTranslation().getY());
         SmartDashboard.putNumber("Rotation", Math.toDegrees(pos2d.getRotation().getDegrees()));
         SmartDashboard.putNumber("To Tag Inches", distanceToTarget);
+        var aprilTagPos0 = getAprilPos();
+        if (aprilTagPos0.isPresent()) {
+            var pos=aprilTagPos0.get();
+            SmartDashboard.putString("April Tag Pos: ","X: "+pos.getX()+"Y: "+pos.getY()+"Z: "+pos.getZ());
+        }
+        else {
+            SmartDashboard.putString("April Tag Pos: ","Not Found");
+        }
+
+    }
+
+    public Optional<Pose3d> getAprilPos() {
+        var targetO = cameraWrapper.getBestTarget();
+        if (targetO.isPresent()){
+            var target = targetO.get();
+            return cameraWrapper.getAprilTagPos(target.getFiducialId());
+        }
+        return Optional.empty();
     }
 }
