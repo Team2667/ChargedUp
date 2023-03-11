@@ -1,27 +1,40 @@
 package frc.robot.subsystems;
 import com.kauailabs.navx.frc.*;
 import static frc.robot.Constants.*;
+
+import java.lang.StackWalker.Option;
+import java.util.Optional;
+
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.swerveSupport.SwerveModule;
 import frc.robot.subsystems.swerveSupport.SwerveModuleConfiguration;
+import frc.robot.utils.PhotonCameraWrapper;
+
 import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonUtils;
 public class DriveTrain extends SubsystemBase {
     private final AHRS m_navx = new AHRS(SPI.Port.kMXP, (byte) 200); // NavX connected over MXP
 
-    private double compass_at_startup;
-    private PhotonCamera camera;
+    private PhotonCameraWrapper cameraWrapper;
     private final SwerveModule m_frontLeftModule;
     private final SwerveModule m_frontRightModule;
     private final SwerveModule m_backLeftModule;
     private final SwerveModule m_backRightModule;
     private ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
+    SwerveDrivePoseEstimator m_PosEstimator;
     public static final double MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0 *
                             (14.0 / 50.0) * (25.0 / 19.0) * (15.0 / 45.0) * 0.10033 * Math.PI;
 
@@ -43,13 +56,14 @@ public class DriveTrain extends SubsystemBase {
     }
       
     public DriveTrain(PhotonCamera camera){
-        this.camera=camera;
+        this.cameraWrapper = new PhotonCameraWrapper(camera);
         m_navx.calibrate();
-        this.compass_at_startup=m_navx.getCompassHeading();
         m_frontLeftModule = new SwerveModule(SwerveModuleConfiguration.frontLeftConfig());
         m_frontRightModule = new SwerveModule(SwerveModuleConfiguration.frontRightConfig());
         m_backLeftModule  = new SwerveModule(SwerveModuleConfiguration.backLeftConfig());
         m_backRightModule = new SwerveModule(SwerveModuleConfiguration.backRightConfig());
+        m_PosEstimator = new SwerveDrivePoseEstimator(m_kinematics, 
+                                    getGyroscopeRotation(), getSwerveModulePositions(), new Pose2d());
     }
 
     public void drive (ChassisSpeeds chassisSpeeds){
@@ -78,28 +92,74 @@ public class DriveTrain extends SubsystemBase {
         m_backLeftModule.stop();
     }
 
+    public Pose2d getEstimatedPosition(){
+        return m_PosEstimator.getEstimatedPosition();
+    }
+
+    public double distanceToBestTargetInInches(){
+        var targetO = cameraWrapper.getBestTarget();
+        if (targetO.isPresent()){
+            var target = targetO.get();
+            double targetHeight = cameraWrapper.getAprilTagPos(target.getFiducialId())
+                                .map(pos -> pos.getZ())
+                                .orElse(0.462788);
+            return Units.metersToInches(PhotonUtils.calculateDistanceToTargetMeters(
+                Constants.CAMERA_HEIGHT_METERS, 
+                targetHeight, Constants.CAMERA_PITCH_RADIANS, Units.degreesToRadians(target.getPitch())));
+        }
+        return Integer.MAX_VALUE;
+    }
+
     @Override
     public void periodic() {
-  /*       m_frontLeftModule.outputSteerAnglesToDashboard();
-        m_frontRightModule.outputSteerAnglesToDashboard();
-        m_backLeftModule.outputSteerAnglesToDashboard();
-        m_backRightModule.outputSteerAnglesToDashboard();
-        SmartDashboard.putNumber("NavX: ", m_navx.getFusedHeading());
-        var latestResult=camera.getLatestResult();
-        if (latestResult.hasTargets()) {
-            SmartDashboard.putNumber("AprilTag: ", latestResult.getBestTarget().getFiducialId());
-            SmartDashboard.putNumber("Yaw", latestResult.getBestTarget().getYaw());
+        m_PosEstimator.update(getGyroscopeRotation(), getSwerveModulePositions());
+         cameraWrapper.getRobotPoseFromCamera(m_PosEstimator.getEstimatedPosition()).ifPresent(cameraEstimate -> {
+            m_PosEstimator.addVisionMeasurement(cameraEstimate.estimatedPose.toPose2d(), cameraWrapper.getLatestResultTimestamp());
+            postRobotPositionFromCamera(cameraEstimate.estimatedPose, distanceToBestTargetInInches());
+        });
+    }
+
+    public SwerveModulePosition[] getSwerveModulePositions() {
+        SwerveModulePosition modulePositions[] =
+        {
+            new SwerveModulePosition(m_frontLeftModule.getWheelPosition(), Rotation2d.fromRadians(m_frontLeftModule.getAbsoluteAngle())),
+            new SwerveModulePosition(m_frontRightModule.getWheelPosition(), Rotation2d.fromRadians(m_frontRightModule.getAbsoluteAngle())),
+            new SwerveModulePosition(m_backLeftModule.getWheelPosition(), Rotation2d.fromRadians(m_backLeftModule.getAbsoluteAngle())),
+            new SwerveModulePosition(m_backRightModule.getWheelPosition(), Rotation2d.fromRadians(m_backRightModule.getAbsoluteAngle()))
+        };
+        return modulePositions;
+    }
+
+    private void postPosEstimatorData(){
+       SmartDashboard.putNumber("Robot - X", m_PosEstimator.getEstimatedPosition().getTranslation().getX());
+       SmartDashboard.putNumber("Robot - Y",  m_PosEstimator.getEstimatedPosition().getTranslation().getY());
+       SmartDashboard.putNumber("Rotation", m_PosEstimator.getEstimatedPosition().getRotation().getDegrees());
+       SmartDashboard.putNumber("To Tag Inches", distanceToBestTargetInInches());
+    }
+
+    private void postRobotPositionFromCamera(Pose3d pos3d, double distanceToTarget) {
+        var pos2d = pos3d.toPose2d();
+        SmartDashboard.putNumber("Robot - X", pos2d.getTranslation().getX());
+        SmartDashboard.putNumber("Robot - Y",  pos2d.getTranslation().getY());
+        SmartDashboard.putNumber("Rotation", Math.toDegrees(pos2d.getRotation().getDegrees()));
+        SmartDashboard.putNumber("To Tag Inches", distanceToTarget);
+        var aprilTagPos0 = getAprilPos();
+        if (aprilTagPos0.isPresent()) {
+            var pos=aprilTagPos0.get();
+            SmartDashboard.putString("April Tag Pos: ","X: "+pos.getX()+"Y: "+pos.getY()+"Z: "+pos.getZ());
         }
         else {
-            SmartDashboard.putNumber("AprilTag: ", 69); //rehehehe
-            SmartDashboard.putNumber("AprilTag-Yaw", 420);
-        }*/
-        SmartDashboard.putNumber("Debug-Yaw: ", m_navx.getYaw());
-        SmartDashboard.putNumber("Debug-Fused-Heading: ", m_navx.getFusedHeading());
-        SmartDashboard.putNumber("Debug-Compass-Head", m_navx.getCompassHeading());
-        SmartDashboard.putNumber("Silly-Baro-Press",m_navx.getBarometricPressure());
-        SmartDashboard.putNumber("LazyMath(Compass-Fused)", (m_navx.getCompassHeading()-m_navx.getFusedHeading()));
-        SmartDashboard.putNumber("LazyMath(Fused-Yaw)", (m_navx.getFusedHeading()-m_navx.getYaw()));
-        
+            SmartDashboard.putString("April Tag Pos: ","Not Found");
+        }
+
+    }
+
+    public Optional<Pose3d> getAprilPos() {
+        var targetO = cameraWrapper.getBestTarget();
+        if (targetO.isPresent()){
+            var target = targetO.get();
+            return cameraWrapper.getAprilTagPos(target.getFiducialId());
+        }
+        return Optional.empty();
     }
 }

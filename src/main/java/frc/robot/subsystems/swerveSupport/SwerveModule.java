@@ -77,6 +77,10 @@ public class SwerveModule {
         SmartDashboard.putNumber(getSteerLogLabel("Absolute Encoder"), getAbsoluteAngle());
     }
 
+    public double getWheelPosition(){
+        return driveMotor.getEncoder().getPosition();
+    }
+
     private void setPIDValues(CANSparkMax motor, double proportional, double integral, double derivative) {
         var pidController = motor.getPIDController();
         pidController.setP(proportional);
