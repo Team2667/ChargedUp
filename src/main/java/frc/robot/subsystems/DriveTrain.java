@@ -4,6 +4,7 @@ import static frc.robot.Constants.*;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -24,7 +25,6 @@ import org.photonvision.PhotonUtils;
 public class DriveTrain extends SubsystemBase {
     private final AHRS m_navx = new AHRS(SPI.Port.kMXP, (byte) 200); // NavX connected over MXP
 
-    private double compass_at_startup;
     private PhotonCameraWrapper cameraWrapper;
     private final SwerveModule m_frontLeftModule;
     private final SwerveModule m_frontRightModule;
@@ -52,14 +52,13 @@ public class DriveTrain extends SubsystemBase {
         SmartDashboard.putBoolean("MagnetomitorCalibration", m_navx.isMagnetometerCalibrated());
         // We have to invert the angle of the NavX so that rotating the robot counter-clockwise makes the angle increase.
         //return Rotation2d.fromDegrees(180 + m_navx.getYaw());
-        return Rotation2d.fromDegrees((180+m_navx.getYaw()));//-compass_at_startup);
-        //return Rotation2d.fromDegrees(m_navx.getFusedHeading());
+        //return Rotation2d.fromDegrees((180+m_navx.getYaw()));//-compass_at_startup);
+        return Rotation2d.fromDegrees(m_navx.getFusedHeading());
     }
       
     public DriveTrain(PhotonCamera camera){
         this.cameraWrapper = new PhotonCameraWrapper(camera);
         m_navx.calibrate();
-        this.compass_at_startup=m_navx.getCompassHeading();
         m_frontLeftModule = new SwerveModule(SwerveModuleConfiguration.frontLeftConfig());
         m_frontRightModule = new SwerveModule(SwerveModuleConfiguration.frontRightConfig());
         m_backLeftModule  = new SwerveModule(SwerveModuleConfiguration.backLeftConfig());
@@ -98,13 +97,27 @@ public class DriveTrain extends SubsystemBase {
         return m_PosEstimator.getEstimatedPosition();
     }
 
+    public double distanceToBestTargetInInches(){
+        var targetO = cameraWrapper.getBestTarget();
+        if (targetO.isPresent()){
+            var target = targetO.get();
+            double targetHeight = cameraWrapper.getAprilTagPos(target.getFiducialId())
+                                .map(pos -> pos.getZ())
+                                .orElse(0.462788);
+            return Units.metersToInches(PhotonUtils.calculateDistanceToTargetMeters(
+                Constants.CAMERA_HEIGHT_METERS, 
+                targetHeight, Constants.CAMERA_PITCH_RADIANS, Units.degreesToRadians(target.getPitch())));
+        }
+        return Integer.MAX_VALUE;
+    }
+
     @Override
     public void periodic() {
         m_PosEstimator.update(getGyroscopeRotation(), getSwerveModulePositions());
-        cameraWrapper.getRobotPosFromCamera().ifPresent(pos -> {
-            m_PosEstimator.addVisionMeasurement(pos.toPose2d(), cameraWrapper.getLatestResultTimestamp());
+         cameraWrapper.getRobotPoseFromCamera(m_PosEstimator.getEstimatedPosition()).ifPresent(cameraEstimate -> {
+            m_PosEstimator.addVisionMeasurement(cameraEstimate.estimatedPose.toPose2d(), cameraWrapper.getLatestResultTimestamp());
+            postRobotPositionFromCamera(cameraEstimate.estimatedPose, distanceToBestTargetInInches());
         });
-        postDataToSmartDashboard();
     }
 
     public SwerveModulePosition[] getSwerveModulePositions() {
@@ -118,22 +131,18 @@ public class DriveTrain extends SubsystemBase {
         return modulePositions;
     }
 
-    private void postDataToSmartDashboard(){
-        SmartDashboard.putNumber("To Tag Inches", distanceToBestTargetInInches());
-
+    private void postPosEstimatorData(){
+       SmartDashboard.putNumber("Robot - X", m_PosEstimator.getEstimatedPosition().getTranslation().getX());
+       SmartDashboard.putNumber("Robot - Y",  m_PosEstimator.getEstimatedPosition().getTranslation().getY());
+       SmartDashboard.putNumber("Rotation", m_PosEstimator.getEstimatedPosition().getRotation().getDegrees());
+       SmartDashboard.putNumber("To Tag Inches", distanceToBestTargetInInches());
     }
 
-    private double distanceToBestTargetInInches(){
-        var targetO = cameraWrapper.getBestTarget();
-        if (targetO.isPresent()){
-            var target = targetO.get();
-            double targetHeight = cameraWrapper.getAprilTagPos(target.getFiducialId())
-                                .map(pos -> pos.getZ())
-                                .orElse(0.462788);
-            return Units.metersToInches(PhotonUtils.calculateDistanceToTargetMeters(
-                Constants.CAMERA_HEIGHT_METERS, 
-                targetHeight, Constants.CAMERA_PITCH_RADIANS, Units.degreesToRadians(target.getPitch())));
-        }
-        return Integer.MAX_VALUE;
+    private void postRobotPositionFromCamera(Pose3d pos3d, double distanceToTarget) {
+        var pos2d = pos3d.toPose2d();
+        SmartDashboard.putNumber("Robot - X", pos2d.getTranslation().getX());
+        SmartDashboard.putNumber("Robot - Y",  pos2d.getTranslation().getY());
+        SmartDashboard.putNumber("Rotation", Math.toDegrees(pos2d.getRotation().getDegrees()));
+        SmartDashboard.putNumber("To Tag Inches", distanceToTarget);
     }
 }

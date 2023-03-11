@@ -4,20 +4,35 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 
 public class PhotonCameraWrapper {
     private PhotonCamera camera;
     private double lastResultTimeStamp;
     private AprilTagFieldLayout aprilTagLayout;
+    private Transform3d cameraToRobot;
+    private PhotonPoseEstimator photonPoseEstimator;
 
     public PhotonCameraWrapper(PhotonCamera camera) {
         this.camera = camera;
+        cameraToRobot = new Transform3d(
+                        new Translation3d(0.5, 0.0, 0.5),
+                        new Rotation3d(
+                                0, 0,
+                                0));
+        photonPoseEstimator = new PhotonPoseEstimator(getLayout(), PoseStrategy.LOWEST_AMBIGUITY, camera, cameraToRobot);
     }
 
     public Optional<PhotonTrackedTarget> getBestTargetForFiducialId(List<Integer> tagIds){
@@ -39,18 +54,10 @@ public class PhotonCameraWrapper {
         }
         return Optional.ofNullable(null);
     }
-    
-    public Optional<Pose3d> getRobotPosFromCamera(){
-        var latestResults = camera.getLatestResult();
-        if (latestResults.hasTargets()){
-            lastResultTimeStamp = latestResults.getTimestampSeconds();
-            var target = latestResults.getBestTarget();
-            var targetPos = getLayout().getTagPose(target.getFiducialId()).get();
-            var camToTargetTrans = target.getBestCameraToTarget();
-            var camPos = targetPos.transformBy(camToTargetTrans.inverse());
-            return Optional.of(camPos);
-        }
-        return Optional.ofNullable(null);
+
+    public Optional<EstimatedRobotPose> getRobotPoseFromCamera(Pose2d prevEstimatedRobotPose){
+        photonPoseEstimator.setReferencePose(prevEstimatedRobotPose);
+        return photonPoseEstimator.update();
     }
 
     public double getLatestResultTimestamp() {

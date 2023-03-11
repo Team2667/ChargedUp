@@ -28,7 +28,6 @@ import frc.robot.utils.KnightsCameraUtils;
 
 */
 public class TrackTarget extends CommandBase {
-    private final KnightsCameraUtils kCameraUtils;
     private DriveTrain driveTrain;
 
     private static final TrapezoidProfile.Constraints X_CONSTRAINTS = new TrapezoidProfile.Constraints(3, 2);
@@ -47,55 +46,35 @@ public class TrackTarget extends CommandBase {
         new Translation3d(.25, 0.0,0.0),
         new Rotation3d(0.0, 0.0, 0.0)
     );
-    private final Supplier<Pose2d> poseProvider;
     //private final ProfiledPIDController xController = new ProfiledPidController(3,)
 
-    public TrackTarget(PhotonCamera camera, DriveTrain driveTrain, int fiducialId, Supplier<Pose2d> poseProvider){
-        kCameraUtils = new KnightsCameraUtils(camera, fiducialId);
+    public TrackTarget(DriveTrain driveTrain, Pose2d goal){
+        addRequirements(driveTrain);
         this.driveTrain  = driveTrain;
         xController.setTolerance(.2);
+        xController.enableContinuousInput(.25, .25);
+        xController.setGoal(goal.getX());
         yController.setTolerance(.2);
+        yController.enableContinuousInput(.25, .25);
+        yController.setGoal(goal.getY());
         omegaController.setTolerance(Units.degreesToRadians(3));
         omegaController.enableContinuousInput(-Math.PI, Math.PI);
-        this.poseProvider = poseProvider;
-        addRequirements(driveTrain);;
+        omegaController.setGoal(goal.getRotation().getRadians());
     }
 
     @Override
     public void execute() {
-        var robotPos2d = poseProvider.get();
-        var robotPos = new Pose3d(
-            robotPos2d.getX(),
-            robotPos2d.getY(),
-            0.0,
-            new Rotation3d(0.0,0.0,robotPos2d.getRotation().getRadians()));
-        
-        var targetOpt = kCameraUtils.getBestTargetForFiducialId();
-        if (targetOpt.isPresent()){
-            var target = targetOpt.get();
-            var cameraPos = robotPos.transformBy(ROBOT_TO_CAMERA);
-            var camToTarget = target.getBestCameraToTarget();
-            var targetPos = cameraPos.transformBy(camToTarget);
-            var goalPos = targetPos.transformBy(TAG_TO_GOAL).toPose2d();
-    
-            xController.setGoal(goalPos.getX());
-            xController.setGoal(goalPos.getY());
-            omegaController.setGoal(goalPos.getRotation().getRadians());
-
-            var ySpeed = yController.atGoal() ? 0.0 : yController.calculate(robotPos.getX());
-            var xSpeed = xController.atGoal() ? 0.0 : xController.calculate(robotPos.getX());
-            var omegaSpeed = omegaController.atGoal() ? 0.0 : omegaController.calculate(robotPos2d.getRotation().getRadians());
+        var robotPos2d = driveTrain.getEstimatedPosition();
+        var ySpeed = yController.atGoal() ? 0.0 : yController.calculate(robotPos2d.getX());
+        var xSpeed = xController.atGoal() ? 0.0 : xController.calculate(robotPos2d.getX());
+        var omegaSpeed = omegaController.atGoal() ? 0.0 : omegaController.calculate(robotPos2d.getRotation().getRadians());
             
-            driveTrain.drive(ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, omegaSpeed, robotPos2d.getRotation()));
-        } else {
-            driveTrain.stop();
-        }
+        driveTrain.drive(ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, omegaSpeed, robotPos2d.getRotation()));
     }
 
     @Override
     public boolean isFinished() {
-        return (yController.atGoal() && xController.atGoal() && omegaController.atGoal()) ||
-            !kCameraUtils.getBestTargetForFiducialId().isPresent();
+        return (yController.atGoal() && xController.atGoal() && omegaController.atGoal());
     }
 
     @Override
