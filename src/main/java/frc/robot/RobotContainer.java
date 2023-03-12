@@ -6,7 +6,6 @@ package frc.robot;
 
 import org.photonvision.PhotonCamera;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.DriveTrainContainer;
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a
@@ -19,10 +18,17 @@ import frc.DriveTrainContainer;
 public class RobotContainer {
   private final XboxController m_controller = new XboxController(0);
   private PhotonCamera camera = new PhotonCamera("USB_webcam");
-  public DriveTrainContainer driveTrainContainer;
+  private DriveTrainContainer driveTrainContainer;
+  private ElevatorContainer elevatorContainer;
 
 
   public RobotContainer() {
     driveTrainContainer = new DriveTrainContainer(m_controller, camera);
+    elevatorContainer = new ElevatorContainer(m_controller);
+    createButtonBindings();
+  }
+
+  public void createButtonBindings(){
+    //TODO: Add button bindings for elevator commands;
   }
 }
