@@ -67,6 +67,10 @@ public final class Constants {
     public static final int ElevatorLeftID = 31;//I wanted to call it guillotine and everyone including joey supported it
     public static final int ElevatorRightID = 32;//"No fun allowed" -Kent
 
+    public static final int IntakeId = 40;
+
+    public static final int wristId = 50;
+
     public static final double LeftP = 1;
     public static final double LeftI = 1;
     public static final double LeftD = 1;

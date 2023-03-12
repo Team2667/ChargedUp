@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.SparkMaxLimitSwitch.Type;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -38,6 +39,15 @@ public class Elevator extends SubsystemBase {
 		return false;
     }
 
+	public boolean reverseLimmitSwitchPressed(){
+		return elevatorRight.getReverseLimitSwitch(Type.kNormallyOpen).isPressed();
+	}
+
+	public boolean forwardLimmitSwitchPressed(){
+		//TODO: Implement
+		return false;
+	}
+
 	public void stop() {
 		// stop the motors
 	}
@@ -46,6 +56,10 @@ public class Elevator extends SubsystemBase {
 		// TODO set elevator left to the specified value
 	}
 
+	@Override
+	public void periodic(){
+		// Output position information to smart dashboard.
+	}
 
 	private void updatePidVals()
     {
@@ -54,9 +68,4 @@ public class Elevator extends SubsystemBase {
         sparkPidController.setD(dV);
         // set the pid values in the controller
     }
-
-	@Override
-	public void periodic(){
-		// Output position information to smart dashboard.
-	}
 }

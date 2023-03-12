@@ -20,11 +20,13 @@ public class RobotContainer {
   private PhotonCamera camera = new PhotonCamera("USB_webcam");
   private DriveTrainContainer driveTrainContainer;
   private ElevatorContainer elevatorContainer;
+  private IntakeContainer intakeContainer;
 
 
   public RobotContainer() {
     driveTrainContainer = new DriveTrainContainer(m_controller, camera);
     elevatorContainer = new ElevatorContainer(m_controller);
+    intakeContainer = new IntakeContainer(m_controller);
     createButtonBindings();
   }
 
