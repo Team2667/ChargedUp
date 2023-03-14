@@ -28,24 +28,24 @@ public final class Constants {
      */
     public static final double DRIVETRAIN_WHEELBASE_METERS = 1.0;
 
-    public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 5;
-    public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 6;
-    public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 11;
+    public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 1;
+    public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 2;
+    public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 14;
     public static final double FRONT_LEFT_MODULE_STEER_OFFSET = 5.451768;
 
-    public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 3;
-    public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 4;
+    public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 5;
+    public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 6;
     public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 12;
     public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = 1.696583;
 
-    public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 7;
-    public static final int BACK_LEFT_MODULE_STEER_MOTOR = 8;
-    public static final int BACK_LEFT_MODULE_STEER_ENCODER = 13;
+    public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 3;
+    public static final int BACK_LEFT_MODULE_STEER_MOTOR = 4;
+    public static final int BACK_LEFT_MODULE_STEER_ENCODER = 11;
     public static final double BACK_LEFT_MODULE_STEER_OFFSET = 1.382117;
 
-    public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 1;
-    public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 2;
-    public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 14;
+    public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 7;
+    public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 8;
+    public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 13;
     public static final double BACK_RIGHT_MODULE_STEER_OFFSET = 1.6873793465;
 
     public static final double WHEEL_REVOLUTIONS_PER_METER = 3.0;
@@ -77,5 +77,5 @@ public final class Constants {
     public static final double RightP = 1;
     public static final double RightI = 1;
     public static final double RightD = 1;
-    
+ 
 }
