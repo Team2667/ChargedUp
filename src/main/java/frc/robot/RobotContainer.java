@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
+import java.lang.System;
 
 import org.photonvision.PhotonCamera;
 import edu.wpi.first.wpilibj.XboxController;
@@ -25,7 +26,9 @@ public class RobotContainer {
 
   public RobotContainer() {
     driveTrainContainer = new DriveTrainContainer(m_controller, camera);
-    elevatorContainer = new ElevatorContainer(m_controller);
+    elevatorContainer = new ElevatorContainer(m_controller);//They de-frenched it
+    System.out.println("Poopa Stinka===================================================");
+    System.out.println(elevatorContainer.toString());
     intakeContainer = new IntakeContainer(m_controller);
     createButtonBindings();
   }

@@ -116,6 +116,7 @@ public class DriveTrain extends SubsystemBase {
             m_PosEstimator.addVisionMeasurement(cameraEstimate.estimatedPose.toPose2d(), cameraWrapper.getLatestResultTimestamp());
             postRobotPositionFromCamera(cameraEstimate.estimatedPose, distanceToBestTargetInInches());
         });
+        putRads();
     }
 
     public SwerveModulePosition[] getSwerveModulePositions() {
@@ -144,6 +145,13 @@ public class DriveTrain extends SubsystemBase {
             SmartDashboard.putString("April Tag Pos: ","Not Found");
         }
 
+    }
+
+    public void putRads() {
+        SmartDashboard.putNumber("Radish-FL",m_frontLeftModule.getAbsoluteAngle());
+        SmartDashboard.putNumber("Radish-FR",m_frontRightModule.getAbsoluteAngle());//Oh no FR=french
+        SmartDashboard.putNumber("Radish-BL",m_backLeftModule.getAbsoluteAngle());
+        SmartDashboard.putNumber("Radish-BR",m_backRightModule.getAbsoluteAngle());
     }
 
     public Optional<Pose3d> getAprilPos() {

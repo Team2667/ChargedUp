@@ -8,6 +8,7 @@ import frc.robot.commands.GetInRangeOfTarget;
 import frc.robot.commands.TurnToTarget;
 import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import org.photonvision.PhotonCamera;
 public class DriveTrainContainer {
@@ -37,6 +38,7 @@ public class DriveTrainContainer {
               () -> modifyAxis(m_controller.getLeftX()),
               () -> -modifyAxis(m_controller.getRightX())
             ));
+            createCommands();
             configureButtonBindings();
         }
     }
@@ -44,20 +46,23 @@ public class DriveTrainContainer {
     public boolean isSubsystemEnabled() {
         return Constants.DRIVE_TRAIN_ENABLED;
     }
+    public void createCommands() {
+      forwardCommand=new DriveFieldRelative(dt_sub, 0, 0.25);
+    }
 
     private void configureButtonBindings() {
-      /*
+      
       JoystickButton forwardCommandButton=new JoystickButton(m_controller, XboxController.Button.kY.value);
-      forwardCommandButton.whileTrue(forwardCommand);
+      forwardCommandButton.whileTrue(forwardCommand);/* 
       JoystickButton leftCommandButton=new JoystickButton(m_controller, XboxController.Button.kB.value);
       leftCommandButton.whileTrue(leftCommand);
       JoystickButton downCommandButton=new JoystickButton(m_controller, XboxController.Button.kA.value);
-      downCommandButton.whileTrue(downCommand);
+      downCommandButton.whileTrue(backCommand);
       JoystickButton rightCommandButton=new JoystickButton(m_controller, XboxController.Button.kX.value);
-      rightCommandButton.whileTrue(targetToTurn);
+      rightCommandButton.whileTrue(rightCommand);
       JoystickButton aprilTagButton=new JoystickButton(m_controller, XboxController.Button.kRightBumper.value);
-      aprilTagButton.onTrue(findAprilTag);
-      */
+      aprilTagButton.onTrue(findAprilTag);*/
+      
 
       
 

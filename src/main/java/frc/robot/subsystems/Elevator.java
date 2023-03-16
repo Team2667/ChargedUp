@@ -6,27 +6,26 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxLimitSwitch.Type;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 public class Elevator extends SubsystemBase {
-	private CANSparkMax elevatorLeft, elevatorRight;
-	private int LeftID, RightID;
+	private CANSparkMax leftMotor, rightMotor;
 	private SparkMaxPIDController sparkPidController;
 	private RelativeEncoder encoder;
-	private double pV = 0.04;
-    private double iV = .00005;
+	private double pV = 4e-2;
+	private double iV = 0;
     private double dV = 0;
 
 
 	public Elevator() {
-		LeftID=Constants.ElevatorLeftID;
-		RightID=Constants.ElevatorRightID;
-		elevatorLeft= new CANSparkMax(LeftID, MotorType.kBrushless);
-		elevatorRight= new CANSparkMax(RightID, MotorType.kBrushless);
-		elevatorLeft.follow(elevatorRight);
-		sparkPidController = elevatorRight.getPIDController();
-		encoder = elevatorRight.getEncoder();
-		updatePidVals();
+		leftMotor= new CANSparkMax(Constants.ElevatorLeftID, MotorType.kBrushless);
+		rightMotor= new CANSparkMax(Constants.ElevatorRightID, MotorType.kBrushless);
+		leftMotor.follow(rightMotor);
+		leftMotor.setInverted(true);
+		sparkPidController = rightMotor.getPIDController();
+		encoder = rightMotor.getEncoder();
+		//updatePidVals();
 	}
 
 	public void setElevatorPosition(double position){
@@ -39,21 +38,23 @@ public class Elevator extends SubsystemBase {
 		return false;
     }
 
-	public boolean reverseLimmitSwitchPressed(){
-		return elevatorRight.getReverseLimitSwitch(Type.kNormallyOpen).isPressed();
+	public boolean reverseLimitSwitchPressed(){//Limpet
+		return rightMotor.getReverseLimitSwitch(Type.kNormallyOpen).isPressed();
 	}
 
-	public boolean forwardLimmitSwitchPressed(){
+	public boolean forwardLimitSwitchPressed(){
 		//TODO: Implement
 		return false;
 	}
 
 	public void stop() {
 		// stop the motors
+		rightMotor.stopMotor();
 	}
 
 	public void set(double speed){
-		// TODO set elevator left to the specified value
+		SmartDashboard.putNumber("elevator speed", speed);
+		rightMotor.set(speed);
 	}
 
 	@Override
