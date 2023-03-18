@@ -5,8 +5,12 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import static frc.robot.Constants.GamePieceType;;
+
 public class Intake extends SubsystemBase {
 	private CANSparkMax intakeMotor;
+	private GamePieceType currentGamePieceType = GamePieceType.Cube;
+
 
 	public Intake() {
 		intakeMotor = new CANSparkMax(Constants.IntakeId, MotorType.kBrushless);
@@ -14,14 +18,20 @@ public class Intake extends SubsystemBase {
 
 	public void set(double speed){
 		// TODO set elevator left to the specified value
+		// Use cone/cube to determine if need to multiply speed by -1;
 	}
 
 	public void stop() {
 		// stop the motors
 	}
 
+	public void setGamePieceType(GamePieceType type){
+        this.currentGamePieceType = type;
+    }
+
 	@Override
 	public void periodic(){
 		// Output position information to smart dashboard.
+
 	}
 }

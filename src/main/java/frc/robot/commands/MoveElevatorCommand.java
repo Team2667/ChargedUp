@@ -30,12 +30,12 @@ public class MoveElevatorCommand extends CommandBase{
         switch(dPadDir)
         {
             case 0:
-                elevator.set(0.2);
+                elevator.set(0.5);
             break;
             case 90:
             break;
             case 180:           
-                elevator.set(-0.2);//Ingsoc got us... it was supposed to be guillotine :(
+                elevator.set(-0.5);//Ingsoc got us... it was supposed to be guillotine :(
             break;
             case 270:
             break;

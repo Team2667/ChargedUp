@@ -64,6 +64,8 @@ public final class Constants {
     public static double AUTO_RUN_TIME = 3.0;
     public static double AUTO_MAGNITUDE = 0.5;
 
+    public static double ELEVATOR_MOE = .5;
+
     public static final int ElevatorLeftID = 31;//I wanted to call it guillotine and everyone including joey supported it
     public static final int ElevatorRightID = 32;//"No fun allowed" -Kent
 
@@ -77,5 +79,23 @@ public final class Constants {
     public static final double RightP = 1;
     public static final double RightI = 1;
     public static final double RightD = 1;
- 
+
+    public enum GamePieceType {
+        Cone,
+        Cube
+    }
+
+    public static final double CUBE_LOW = 0;
+    public static final double CUBE_MID = 20;
+    public static final double CUBE_HIGH = 30;
+    public static final double HOME = 0;
+    public static final double CONE_LOW = 10;
+    public static final double CONE_MID = 30;
+    public static final double CONE_HIGH = 40;
+
+    public enum GoalPosition {
+        low,
+        mid,
+        high
+    }
 }

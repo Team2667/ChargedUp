@@ -22,11 +22,13 @@ public class RobotContainer {
   private DriveTrainContainer driveTrainContainer;
   private ElevatorContainer elevatorContainer;
   private IntakeContainer intakeContainer;
+  private WristContainer wristContainer;
 
 
   public RobotContainer() {
     driveTrainContainer = new DriveTrainContainer(m_controller, camera);
     elevatorContainer = new ElevatorContainer(m_controller);//They de-frenched it
+    wristContainer=new WristContainer(m_controller);
     System.out.println("Poopa Stinka===================================================");
     System.out.println(elevatorContainer.toString());
     intakeContainer = new IntakeContainer(m_controller);

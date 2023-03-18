@@ -3,19 +3,26 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxLimitSwitch.Type;
+import static frc.robot.Constants.GamePieceType;
+import static frc.robot.Constants.GoalPosition;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.commands.ZeroElevator;
 public class Elevator extends SubsystemBase {
 	private CANSparkMax leftMotor, rightMotor;
 	private SparkMaxPIDController sparkPidController;
 	private RelativeEncoder encoder;
+
 	private double pV = 4e-2;
 	private double iV = 0;
     private double dV = 0;
+	GamePieceType currentGamePieceType = GamePieceType.Cube;
 
 
 	public Elevator() {
@@ -25,12 +32,26 @@ public class Elevator extends SubsystemBase {
 		leftMotor.setInverted(true);
 		sparkPidController = rightMotor.getPIDController();
 		encoder = rightMotor.getEncoder();
+
+		
 		//updatePidVals();
 	}
 
-	public void setElevatorPosition(double position){
-		// TODO Set the elevator position like 
-		// https://github.com/Team2667/ChargedUp/blob/handle_cones_cubes/src/main/java/frc/robot/subsystems/Pivot.java#L56
+	public void setElevatorPosition(GoalPosition position){
+		double pos = currentGamePieceType == GamePieceType.Cone ? getPositionForCones(position) :
+										getPositionForCubes(position);
+		sparkPidController.setReference(pos, ControlType.kPosition);
+	}
+
+	public boolean isAtGoalPos(GoalPosition goalPos){
+		double pos = currentGamePieceType == GamePieceType.Cone ? getPositionForCones(goalPos) :
+						getPositionForCubes(goalPos);
+		return Math.abs(pos - encoder.getPosition()) < Constants.ELEVATOR_MOE;
+	}
+
+
+	public void zeroElevator(){
+		encoder.setPosition(0);
 	}
 
 	public boolean isAtSetPoint(double rotations) {
@@ -43,8 +64,16 @@ public class Elevator extends SubsystemBase {
 	}
 
 	public boolean forwardLimitSwitchPressed(){
-		//TODO: Implement
-		return false;
+		return rightMotor.getForwardLimitSwitch(Type.kNormallyOpen).isPressed();
+	}
+
+	public double getSpeed()
+	{
+		return rightMotor.get();
+	}
+
+	public void setGamePieceType(GamePieceType type) {
+		this.currentGamePieceType = type;
 	}
 
 	public void stop() {
@@ -59,7 +88,26 @@ public class Elevator extends SubsystemBase {
 
 	@Override
 	public void periodic(){
-		// Output position information to smart dashboard.
+		SmartDashboard.putNumber("Elevator Position", encoder.getPosition());
+	}
+
+
+	private double getPositionForCubes(GoalPosition pos){
+		switch(pos){
+			case low: return Constants.CUBE_LOW;
+			case mid: return Constants.CUBE_MID;
+			case high: return Constants.CUBE_HIGH;
+			default: return Constants.HOME;
+		}
+	}
+
+	private double getPositionForCones(GoalPosition pos){
+		switch(pos){
+			case low: return Constants.CONE_LOW;
+			case mid: return Constants.CONE_MID;
+			case high: return Constants.CONE_HIGH;
+			default: return Constants.HOME;
+		}
 	}
 
 	private void updatePidVals()
