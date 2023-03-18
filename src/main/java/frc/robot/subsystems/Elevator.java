@@ -10,10 +10,8 @@ import static frc.robot.Constants.GamePieceType;
 import static frc.robot.Constants.GoalPosition;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.commands.ZeroElevator;
 public class Elevator extends SubsystemBase {
 	private CANSparkMax leftMotor, rightMotor;
 	private SparkMaxPIDController sparkPidController;
@@ -97,6 +95,8 @@ public class Elevator extends SubsystemBase {
 			case low: return Constants.CUBE_LOW;
 			case mid: return Constants.CUBE_MID;
 			case high: return Constants.CUBE_HIGH;
+		//	case feeder: return Constants.CUBE_FEEDER;
+		//	case ground: return Constants.CUBE_GROUND;
 			default: return Constants.HOME;
 		}
 	}
@@ -106,6 +106,8 @@ public class Elevator extends SubsystemBase {
 			case low: return Constants.CONE_LOW;
 			case mid: return Constants.CONE_MID;
 			case high: return Constants.CONE_HIGH;
+		//	case feeder: return Constants.CONE_FEEDER;
+		//	case ground: return Constants.CONE_GROUND;
 			default: return Constants.HOME;
 		}
 	}

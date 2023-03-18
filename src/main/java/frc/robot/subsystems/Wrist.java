@@ -16,7 +16,7 @@ public class Wrist extends SubsystemBase {
 
     public Wrist(){
         wristMotor = new CANSparkMax(Constants.wristId, MotorType.kBrushless);
-        encoder = wristMotor.getAlternateEncoder(8192);
+        encoder = wristMotor.getEncoder();
     }
 
     public void set(double speed){

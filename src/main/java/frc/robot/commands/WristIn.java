@@ -9,6 +9,7 @@ public class WristIn extends CommandBase{
 	
 	public WristIn(Wrist wrist){
 		this.wrist = wrist;
+		addRequirements(wrist);
 	}
 
 	@Override
@@ -25,5 +26,4 @@ public class WristIn extends CommandBase{
 	public void end(boolean interrupted){
 		wrist.stop();
 	}
-	
 }

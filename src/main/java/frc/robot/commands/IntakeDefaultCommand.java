@@ -16,8 +16,8 @@ public class IntakeDefaultCommand extends CommandBase{
 
     @Override
     public void execute(){
-        // If the left trigger is is pulled, suck game piece in.
-        // If the right trigger is pulled, spit game piece out.
+        System.out.println("!!!!!!!!!!!!!!" + controller.getLeftTriggerAxis());
+       intake.set(controller.getLeftTriggerAxis());
     }
     
 }

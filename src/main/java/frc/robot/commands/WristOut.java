@@ -9,6 +9,7 @@ public class WristOut extends CommandBase{
 	
 	public WristOut(Wrist wrist){
 		this.wrist = wrist;
+		this.addRequirements(wrist);
 	}
 
 	@Override

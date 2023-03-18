@@ -17,12 +17,11 @@ public class Intake extends SubsystemBase {
 	}
 
 	public void set(double speed){
-		// TODO set elevator left to the specified value
-		// Use cone/cube to determine if need to multiply speed by -1;
+		intakeMotor.set(speed);
 	}
 
 	public void stop() {
-		// stop the motors
+		intakeMotor.stopMotor();
 	}
 
 	public void setGamePieceType(GamePieceType type){

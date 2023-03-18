@@ -92,10 +92,14 @@ public final class Constants {
     public static final double CONE_LOW = 10;
     public static final double CONE_MID = 30;
     public static final double CONE_HIGH = 40;
+    
 
     public enum GoalPosition {
         low,
         mid,
-        high
+        high,
+        home,
+        feeder,
+        ground
     }
 }

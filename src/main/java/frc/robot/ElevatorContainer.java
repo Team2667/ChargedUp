@@ -3,9 +3,12 @@ package frc.robot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Constants.GoalPosition;
+import frc.robot.commands.Elevator2Position;
 import frc.robot.commands.MoveElevatorCommand;
 import frc.robot.commands.ZeroElevator;
 import frc.robot.subsystems.Elevator;
+import static frc.robot.Constants.GoalPosition;
 
 public class ElevatorContainer {
     private Elevator elevator;
@@ -27,19 +30,19 @@ public class ElevatorContainer {
     //TODO: Implement the following
 
     public Command createElevatorHome(){
-        return null;
+        return new Elevator2Position(elevator, GoalPosition.home);
     }
 
     public Command createElevatorLow() {
-        return null;
+        return new Elevator2Position(elevator, GoalPosition.low);
     }
 
     public Command createElevatorMid() {
-        return null;
+        return new Elevator2Position(elevator, GoalPosition.mid);
     }
 
     public Command createElevatorHigh() {
-        return null;
+        return new Elevator2Position(elevator, GoalPosition.high);
     }
     
 }
