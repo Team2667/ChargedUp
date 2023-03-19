@@ -16,8 +16,12 @@ public class IntakeDefaultCommand extends CommandBase{
 
     @Override
     public void execute(){
-        System.out.println("!!!!!!!!!!!!!!" + controller.getLeftTriggerAxis());
-       intake.set(controller.getLeftTriggerAxis());
+        if (controller.getLeftTriggerAxis() != 0){
+            intake.set(-1 * controller.getLeftTriggerAxis());
+        } else if (controller.getRightTriggerAxis() != 0){
+            intake.set(controller.getRightTriggerAxis());
+        } else {
+            intake.stop();
+        }
     }
-    
 }

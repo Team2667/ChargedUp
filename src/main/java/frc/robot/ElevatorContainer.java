@@ -12,15 +12,11 @@ import static frc.robot.Constants.GoalPosition;
 public class ElevatorContainer {
     public Elevator elevator;
     private Command moveElevatorCommand;
-    private ZeroElevator zeroElevator;
 
     public ElevatorContainer(XboxController controller){
         elevator = new Elevator();
         moveElevatorCommand = new MoveElevatorCommand(elevator, controller);
         elevator.setDefaultCommand(moveElevatorCommand);
-        zeroElevator=new ZeroElevator(elevator);
-        JoystickButton zeroCommandButton=new JoystickButton(controller, XboxController.Button.kLeftStick.value);
-        zeroCommandButton.onTrue(zeroElevator);
     }
 
 
@@ -46,6 +42,10 @@ public class ElevatorContainer {
 
     public Command createElevatorFeederCommand() {
         return new Elevator2Position(elevator, GoalPosition.feeder);
+    }
+
+    public Command create0ElevatorCommand() {
+        return new ZeroElevator(elevator);
     }
     
 }

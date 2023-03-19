@@ -84,6 +84,8 @@ public class Elevator extends SubsystemBase {
 	@Override
 	public void periodic(){
 		SmartDashboard.putNumber("Elevator Position", encoder.getPosition());
+		var gamePiece = currentGamePieceType == GamePieceType.Cone ? "Cones" : "Cubes";
+		SmartDashboard.putString("Game Piece Mode",gamePiece);
 	}
 
 

@@ -38,7 +38,8 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand(){
-    return wristContainer.createWristOutCommand()
+    return elevatorContainer.create0ElevatorCommand()
+                         .andThen(wristContainer.createWristOutCommand())
                          .andThen(elevatorContainer.createElevatorHigh())
                          .andThen(intakeContainer.createIntakeOutCommand().withTimeout(1))
                          .andThen(driveTrainContainer.createDriveBackCommand().withTimeout(3));
@@ -56,6 +57,7 @@ public class RobotContainer {
     var leftStick = new JoystickButton(m_controller, XboxController.Button.kLeftStick.value);
 
     startButton.onTrue(new ToggleConesCubes(elevatorContainer.elevator, intakeContainer.intake));
+    backButton.onTrue(elevatorContainer.create0ElevatorCommand());
     leftStick.onTrue(driveTrainContainer.createResetHeadingCommand());
     xButton.onTrue(wristContainer.createWristOutCommand().andThen(elevatorContainer.createElevatorLow()));
     yButton.onTrue(wristContainer.createWristOutCommand().andThen(elevatorContainer.createElevatorMid()));

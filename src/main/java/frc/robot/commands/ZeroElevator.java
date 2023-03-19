@@ -19,7 +19,6 @@ public class ZeroElevator extends CommandBase {
 	@Override
 	public boolean isFinished()
 	{
-		System.out.println(elevator.reverseLimitSwitchPressed() + "  !!!!!!!!!!!!!!!!!!!!!!");
 		return elevator.reverseLimitSwitchPressed();
 	}
 
