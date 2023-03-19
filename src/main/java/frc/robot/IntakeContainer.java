@@ -5,7 +5,7 @@ import frc.robot.commands.IntakeDefaultCommand;
 import frc.robot.subsystems.Intake;
 
 public class IntakeContainer {
-    private Intake intake;
+    public Intake intake;
     private IntakeDefaultCommand intakeCmd;
 
     public IntakeContainer(XboxController controller){

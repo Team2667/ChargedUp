@@ -4,6 +4,7 @@ import java.lang.Math;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.DriveFieldRelative;
+import frc.robot.commands.DriveTrainResetHeading;
 import frc.robot.commands.GetInRangeOfTarget;
 import frc.robot.commands.TurnToTarget;
 import frc.robot.subsystems.DriveTrain;
@@ -48,6 +49,10 @@ public class DriveTrainContainer {
     }
     public void createCommands() {
       forwardCommand=new DriveFieldRelative(dt_sub, 0, 0.25);
+    }
+
+    public Command createResetHeadingCommand(){
+      return new DriveTrainResetHeading(dt_sub);
     }
 
     private void configureButtonBindings() {

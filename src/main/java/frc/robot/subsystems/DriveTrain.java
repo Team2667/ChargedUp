@@ -36,6 +36,7 @@ public class DriveTrain extends SubsystemBase {
     SwerveDrivePoseEstimator m_PosEstimator;
     public static final double MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0 *
                             (14.0 / 50.0) * (25.0 / 19.0) * (15.0 / 45.0) * 0.10033 * Math.PI;
+    private float headingOffset = 0;
 
     public static final double MAX_VOLTAGE = 12.0;
 
@@ -51,7 +52,11 @@ public class DriveTrain extends SubsystemBase {
     );
 
     public Rotation2d getGyroscopeRotation() {    
-        return Rotation2d.fromDegrees(m_navx.getFusedHeading());
+        return Rotation2d.fromDegrees(m_navx.getFusedHeading() - headingOffset);
+    }
+
+    public void setRotationalOffsetToCurrent(){
+        headingOffset =  m_navx.getFusedHeading();
     }
       
     public DriveTrain(PhotonCamera camera){

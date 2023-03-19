@@ -14,9 +14,6 @@ public class Elevator2Position extends CommandBase{
         this.goalPos = goalPos;
     }
 
-    // TODO: Implement the following methods similar to
-    //https://github.com/Team2667/ChargedUp/blob/handle_cones_cubes/src/main/java/frc/robot/commands/Pivot2Angle.java
-
     @Override
     public void initialize() {
         elevator.setElevatorPosition(goalPos);
@@ -24,7 +21,7 @@ public class Elevator2Position extends CommandBase{
 
     @Override 
     public boolean isFinished() {
-        return elevator.isAtGoalPos(goalPos);
+        return elevator.isAtSetPoint(goalPos);
     }
 
     @Override

@@ -17,7 +17,8 @@ public class Intake extends SubsystemBase {
 	}
 
 	public void set(double speed){
-		intakeMotor.set(speed);
+		double actualSpeed = currentGamePieceType == GamePieceType.Cone ? speed : -1 * speed;
+		intakeMotor.set(actualSpeed);
 	}
 
 	public void stop() {

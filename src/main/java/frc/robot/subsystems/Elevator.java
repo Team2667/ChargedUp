@@ -31,8 +31,7 @@ public class Elevator extends SubsystemBase {
 		sparkPidController = rightMotor.getPIDController();
 		encoder = rightMotor.getEncoder();
 
-		
-		//updatePidVals();
+		updatePidVals();
 	}
 
 	public void setElevatorPosition(GoalPosition position){
@@ -41,21 +40,15 @@ public class Elevator extends SubsystemBase {
 		sparkPidController.setReference(pos, ControlType.kPosition);
 	}
 
-	public boolean isAtGoalPos(GoalPosition goalPos){
+	public boolean isAtSetPoint(GoalPosition goalPos){
 		double pos = currentGamePieceType == GamePieceType.Cone ? getPositionForCones(goalPos) :
 						getPositionForCubes(goalPos);
 		return Math.abs(pos - encoder.getPosition()) < Constants.ELEVATOR_MOE;
 	}
 
-
 	public void zeroElevator(){
 		encoder.setPosition(0);
 	}
-
-	public boolean isAtSetPoint(double rotations) {
-		// TODO: Check to see if encoder.getPosition() is within a specified number of rotations from value being passed in.
-		return false;
-    }
 
 	public boolean reverseLimitSwitchPressed(){//Limpet
 		return rightMotor.getReverseLimitSwitch(Type.kNormallyOpen).isPressed();
@@ -72,6 +65,10 @@ public class Elevator extends SubsystemBase {
 
 	public void setGamePieceType(GamePieceType type) {
 		this.currentGamePieceType = type;
+	}
+
+	public GamePieceType getCurrentGamePieceType(){
+		return currentGamePieceType;
 	}
 
 	public void stop() {
@@ -117,6 +114,5 @@ public class Elevator extends SubsystemBase {
         sparkPidController.setP(pV);
         sparkPidController.setI(iV);
         sparkPidController.setD(dV);
-        // set the pid values in the controller
     }
 }
