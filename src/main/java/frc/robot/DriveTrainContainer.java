@@ -40,8 +40,7 @@ public class DriveTrainContainer {
               () -> modifyAxis(m_controller.getLeftX()),
               () -> -modifyAxis(m_controller.getRightX())
             ));
-            createCommands();
-            configureButtonBindings();
+
         }
     }
 

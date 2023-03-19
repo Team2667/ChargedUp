@@ -116,11 +116,11 @@ public class DriveTrain extends SubsystemBase {
 
     @Override
     public void periodic() {
-        m_PosEstimator.update(getGyroscopeRotation(), getSwerveModulePositions());
+   /*      m_PosEstimator.update(getGyroscopeRotation(), getSwerveModulePositions());
          cameraWrapper.getRobotPoseFromCamera(m_PosEstimator.getEstimatedPosition()).ifPresent(cameraEstimate -> {
             m_PosEstimator.addVisionMeasurement(cameraEstimate.estimatedPose.toPose2d(), cameraWrapper.getLatestResultTimestamp());
             postRobotPositionFromCamera(cameraEstimate.estimatedPose, distanceToBestTargetInInches());
-        });
+        });*/
         putRads();
     }
 

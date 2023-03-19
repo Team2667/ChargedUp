@@ -88,10 +88,14 @@ public final class Constants {
     public static final double CUBE_LOW = 0;
     public static final double CUBE_MID = 20;
     public static final double CUBE_HIGH = 30;
+    public static final double CUBE_FEEDER = 30;
+    public static final double CUBE_GROUND = 5;
     public static final double HOME = 0;
     public static final double CONE_LOW = 10;
     public static final double CONE_MID = 30;
     public static final double CONE_HIGH = 40;
+    public static final double CONE_FEEDER = 40;
+    public static final double CONE_GROUND = 7;
     
 
     public enum GoalPosition {

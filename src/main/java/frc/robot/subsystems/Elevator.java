@@ -27,7 +27,7 @@ public class Elevator extends SubsystemBase {
 		leftMotor= new CANSparkMax(Constants.ElevatorLeftID, MotorType.kBrushless);
 		rightMotor= new CANSparkMax(Constants.ElevatorRightID, MotorType.kBrushless);
 		leftMotor.follow(rightMotor);
-		leftMotor.setInverted(true);
+		//leftMotor.setInverted(true);
 		sparkPidController = rightMotor.getPIDController();
 		encoder = rightMotor.getEncoder();
 
@@ -94,8 +94,8 @@ public class Elevator extends SubsystemBase {
 			case low: return Constants.CUBE_LOW;
 			case mid: return Constants.CUBE_MID;
 			case high: return Constants.CUBE_HIGH;
-		//	case feeder: return Constants.CUBE_FEEDER;
-		//	case ground: return Constants.CUBE_GROUND;
+			case feeder: return Constants.CUBE_FEEDER;
+			case ground: return Constants.CUBE_GROUND;
 			default: return Constants.HOME;
 		}
 	}
@@ -105,8 +105,8 @@ public class Elevator extends SubsystemBase {
 			case low: return Constants.CONE_LOW;
 			case mid: return Constants.CONE_MID;
 			case high: return Constants.CONE_HIGH;
-		//	case feeder: return Constants.CONE_FEEDER;
-		//	case ground: return Constants.CONE_GROUND;
+			case feeder: return Constants.CONE_FEEDER;
+			case ground: return Constants.CONE_GROUND;
 			default: return Constants.HOME;
 		}
 	}

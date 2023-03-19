@@ -2,7 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.WristDefaultCommand;
+import frc.robot.commands.WristMoveCommand;
 import frc.robot.commands.WristIn;
 import frc.robot.commands.WristOut;
 import frc.robot.subsystems.Wrist;
@@ -13,7 +13,7 @@ public class WristContainer {
 
     public WristContainer(XboxController controller){
         wrist = new Wrist();
-        wristDefaultCommand = new WristDefaultCommand(wrist, controller);
+        wristDefaultCommand = new WristMoveCommand(wrist, controller);
         wrist.setDefaultCommand(wristDefaultCommand);
     }
 

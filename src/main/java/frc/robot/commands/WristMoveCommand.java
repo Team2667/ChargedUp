@@ -4,12 +4,13 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.*;
 
-public class WristDefaultCommand extends CommandBase{
+public class WristMoveCommand extends CommandBase{
 	Wrist wrist;
 	XboxController controller;
-	public WristDefaultCommand(Wrist wrist,XboxController controller)
+	public WristMoveCommand(Wrist wrist,XboxController controller)
 	{
 			addRequirements(wrist);
+            wrist.setDefaultCommand(this);
 			this.wrist=wrist;
 			this.controller=controller;
 	}

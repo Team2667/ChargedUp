@@ -33,7 +33,7 @@ public class DefaultDriveCommand extends CommandBase {
                  ChassisSpeeds.fromFieldRelativeSpeeds(
                          m_translationXSupplier.getAsDouble(),
                          m_translationYSupplier.getAsDouble(),
-                         m_rotationSupplier.getAsDouble(),
+                         -1 * m_rotationSupplier.getAsDouble(),
                          m_drivetrainSubsystem.getGyroscopeRotation()
                  )
          );
