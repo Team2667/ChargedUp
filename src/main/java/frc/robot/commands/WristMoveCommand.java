@@ -10,7 +10,6 @@ public class WristMoveCommand extends CommandBase{
 	public WristMoveCommand(Wrist wrist,XboxController controller)
 	{
 			addRequirements(wrist);
-            wrist.setDefaultCommand(this);
 			this.wrist=wrist;
 			this.controller=controller;
 	}
