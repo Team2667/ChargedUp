@@ -7,6 +7,7 @@ import java.lang.System;
 
 import org.photonvision.PhotonCamera;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.DriveTrainResetHeading;
 import frc.robot.commands.ToggleConesCubes;
@@ -34,6 +35,13 @@ public class RobotContainer {
     wristContainer=new WristContainer(m_controller);
     intakeContainer = new IntakeContainer(m_controller);
     createButtonBindings();
+  }
+
+  public Command getAutonomousCommand(){
+    return wristContainer.createWristOutCommand()
+                         .andThen(elevatorContainer.createElevatorHigh())
+                         .andThen(intakeContainer.createIntakeOutCommand().withTimeout(1))
+                         .andThen(driveTrainContainer.createDriveBackCommand().withTimeout(3));
   }
 
   public void createButtonBindings(){

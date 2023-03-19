@@ -38,6 +38,16 @@ public class Robot extends TimedRobot {
    * SmartDashboard integrated updating.
    */
 
+   @Override
+   public void autonomousInit() {
+     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+ 
+     // schedule the autonomous command (example)
+     if (m_autonomousCommand != null) {
+       m_autonomousCommand.schedule();
+     }
+   }
+
   @Override
   public void robotPeriodic() {
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
