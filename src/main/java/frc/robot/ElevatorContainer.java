@@ -36,9 +36,10 @@ public class ElevatorContainer {
         return new Elevator2Position(elevator, GoalPosition.high);
     }
 
-    public Command createElevatorGroundCommand() {
-        return new Elevator2Position(elevator, GoalPosition.ground);
+    public Command createElevatorSlideCommand() {
+        return new Elevator2Position(elevator, GoalPosition.slide);
     }
+    
 
     public Command createElevatorFeederCommand() {
         return new Elevator2Position(elevator, GoalPosition.feeder);

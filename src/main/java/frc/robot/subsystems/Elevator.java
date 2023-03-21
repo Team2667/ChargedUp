@@ -37,6 +37,7 @@ public class Elevator extends SubsystemBase {
 	public void setElevatorPosition(GoalPosition position){
 		double pos = currentGamePieceType == GamePieceType.Cone ? getPositionForCones(position) :
 										getPositionForCubes(position);
+		System.out.println("!!!!!!!!!!!!! set Elevator position" + pos);
 		sparkPidController.setReference(pos, ControlType.kPosition);
 	}
 
@@ -95,7 +96,7 @@ public class Elevator extends SubsystemBase {
 			case mid: return Constants.CUBE_MID;
 			case high: return Constants.CUBE_HIGH;
 			case feeder: return Constants.CUBE_FEEDER;
-			case ground: return Constants.CUBE_GROUND;
+			case slide: return Constants.CUBE_SLIDE;
 			default: return Constants.HOME;
 		}
 	}
@@ -106,7 +107,6 @@ public class Elevator extends SubsystemBase {
 			case mid: return Constants.CONE_MID;
 			case high: return Constants.CONE_HIGH;
 			case feeder: return Constants.CONE_FEEDER;
-			case ground: return Constants.CONE_GROUND;
 			default: return Constants.HOME;
 		}
 	}

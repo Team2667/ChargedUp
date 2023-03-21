@@ -40,8 +40,9 @@ public class DriveTrainContainer {
               () -> modifyAxis(m_controller.getLeftX()),
               () -> -modifyAxis(m_controller.getRightX())
             ));
-
         }
+       // createCommands();
+       //     configureButtonBindings();
     }
 
     public boolean isSubsystemEnabled() {
@@ -50,6 +51,9 @@ public class DriveTrainContainer {
 
     public void createCommands() {
       forwardCommand=new DriveFieldRelative(dt_sub, 0, 0.25);
+      backCommand =new DriveFieldRelative(dt_sub, Math.PI, 0.25);
+      leftCommand = new DriveFieldRelative(dt_sub, (2 * Math.PI * 3)/4, 0.25);
+      rightCommand =new DriveFieldRelative(dt_sub, Math.PI / 2, 0.25);
     }
 
     public Command createDriveBackCommand() {
@@ -63,14 +67,14 @@ public class DriveTrainContainer {
     private void configureButtonBindings() {
       
       JoystickButton forwardCommandButton=new JoystickButton(m_controller, XboxController.Button.kY.value);
-      forwardCommandButton.whileTrue(forwardCommand);/* 
-      JoystickButton leftCommandButton=new JoystickButton(m_controller, XboxController.Button.kB.value);
+      forwardCommandButton.whileTrue(forwardCommand);
+      JoystickButton leftCommandButton=new JoystickButton(m_controller, XboxController.Button.kX.value);
       leftCommandButton.whileTrue(leftCommand);
       JoystickButton downCommandButton=new JoystickButton(m_controller, XboxController.Button.kA.value);
       downCommandButton.whileTrue(backCommand);
-      JoystickButton rightCommandButton=new JoystickButton(m_controller, XboxController.Button.kX.value);
+      JoystickButton rightCommandButton=new JoystickButton(m_controller, XboxController.Button.kB.value);
       rightCommandButton.whileTrue(rightCommand);
-      JoystickButton aprilTagButton=new JoystickButton(m_controller, XboxController.Button.kRightBumper.value);
+     /*  JoystickButton aprilTagButton=new JoystickButton(m_controller, XboxController.Button.kRightBumper.value);
       aprilTagButton.onTrue(findAprilTag);*/
       
 

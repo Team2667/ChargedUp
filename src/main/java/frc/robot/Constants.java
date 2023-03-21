@@ -31,22 +31,22 @@ public final class Constants {
     public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 1;
     public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 2;
     public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 14;
-    public static final double FRONT_LEFT_MODULE_STEER_OFFSET = 4.344234;
+    public static final double FRONT_LEFT_MODULE_STEER_OFFSET = 4.344234 +Math.PI;
 
     public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 5;
     public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 6;
     public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 12;
-    public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = 0.794602+Math.PI;
+    public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = 0.794602;
 
     public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 3;
     public static final int BACK_LEFT_MODULE_STEER_MOTOR = 4;
     public static final int BACK_LEFT_MODULE_STEER_ENCODER = 11;
-    public static final double BACK_LEFT_MODULE_STEER_OFFSET = 3.393166;
+    public static final double BACK_LEFT_MODULE_STEER_OFFSET = 3.393166 +Math.PI;
 
     public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 7;
     public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 8;
     public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 13;
-    public static final double BACK_RIGHT_MODULE_STEER_OFFSET = 1.583068+Math.PI;
+    public static final double BACK_RIGHT_MODULE_STEER_OFFSET = 1.583068;
 
     public static final double WHEEL_REVOLUTIONS_PER_METER = 3.0;
 
@@ -87,14 +87,14 @@ public final class Constants {
 
     public static final double CUBE_LOW = 0;
     public static final double CUBE_MID = 20;
-    public static final double CUBE_HIGH = 30;
+    public static final double CUBE_HIGH = 121;
     public static final double CUBE_FEEDER = 30;
-    public static final double CUBE_GROUND = 5;
+    public static final double CUBE_SLIDE = 29.76;
     public static final double HOME = 0;
     public static final double CONE_LOW = 10;
     public static final double CONE_MID = 30;
     public static final double CONE_HIGH = 40;
-    public static final double CONE_FEEDER = 40;
+    public static final double CONE_FEEDER = 120.998;
     public static final double CONE_GROUND = 7;
     
 
@@ -104,6 +104,6 @@ public final class Constants {
         high,
         home,
         feeder,
-        ground
+        slide
     }
 }

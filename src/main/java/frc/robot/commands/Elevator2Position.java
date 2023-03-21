@@ -12,6 +12,7 @@ public class Elevator2Position extends CommandBase{
     public Elevator2Position(Elevator elevator, GoalPosition goalPos) {
         this.elevator = elevator;
         this.goalPos = goalPos;
+        addRequirements(elevator);
     }
 
     @Override

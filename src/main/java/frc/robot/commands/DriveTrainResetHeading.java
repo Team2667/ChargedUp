@@ -13,6 +13,7 @@ public class DriveTrainResetHeading extends CommandBase{
 
     @Override()
     public void initialize(){
+        System.out.println("!!!!!!!!!!!!!! Resetting Heading !!!!!!!!");
         driveTrain.setRotationalOffsetToCurrent();
     }
 

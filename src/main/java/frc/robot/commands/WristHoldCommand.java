@@ -5,6 +5,7 @@ import frc.robot.subsystems.Wrist;
 
 public class WristHoldCommand extends CommandBase{
     private Wrist wrist;
+    private double holdPos;
 
     public WristHoldCommand(Wrist wrist){
         this.wrist = wrist;
@@ -12,9 +13,13 @@ public class WristHoldCommand extends CommandBase{
         wrist.setDefaultCommand(this);    
     }
 
+    @Override()
+    public void initialize(){
+       holdPos = wrist.getPosition();
+    }
+
     @Override
     public void execute(){
-        var pos = wrist.getPosition();
-        wrist.setPosition(pos);
+        wrist.setPosition(holdPos);
     }
 }

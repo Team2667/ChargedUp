@@ -9,8 +9,11 @@ import org.photonvision.PhotonCamera;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Constants.GamePieceType;
 import frc.robot.commands.DriveTrainResetHeading;
+import frc.robot.commands.SetMode;
 import frc.robot.commands.ToggleConesCubes;
+import frc.robot.subsystems.Elevator;
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a
@@ -36,11 +39,15 @@ public class RobotContainer {
     intakeContainer = new IntakeContainer(m_controller);
     createButtonBindings();
   }
-
+public Command CreateSetMode(GamePieceType gamePieceType)
+{
+  return new SetMode(elevatorContainer.elevator, intakeContainer.intake, gamePieceType);
+}
   public Command getAutonomousCommand(){
     return elevatorContainer.create0ElevatorCommand()
-                         .andThen(wristContainer.createWristOutCommand())
-                         .andThen(elevatorContainer.createElevatorHigh())
+                         .andThen(CreateSetMode(GamePieceType.Cube))
+                         .andThen(wristContainer.createWristInCommand())
+                         .andThen(elevatorContainer.createElevatorSlideCommand())
                          .andThen(intakeContainer.createIntakeOutCommand().withTimeout(1))
                          .andThen(driveTrainContainer.createDriveBackCommand().withTimeout(3));
   }
@@ -54,16 +61,15 @@ public class RobotContainer {
     var aButton = new JoystickButton(m_controller, XboxController.Button.kA.value);
     var leftBumper = new JoystickButton(m_controller, XboxController.Button.kLeftBumper.value);
     var rightBumper = new JoystickButton(m_controller, XboxController.Button.kRightBumper.value);
-    var leftStick = new JoystickButton(m_controller, XboxController.Button.kLeftStick.value);
+    var rightStick = new JoystickButton(m_controller, XboxController.Button.kRightStick.value);
 
-    startButton.onTrue(new ToggleConesCubes(elevatorContainer.elevator, intakeContainer.intake));
     backButton.onTrue(elevatorContainer.create0ElevatorCommand());
-    leftStick.onTrue(driveTrainContainer.createResetHeadingCommand());
+    rightStick.onTrue(driveTrainContainer.createResetHeadingCommand());
     xButton.onTrue(wristContainer.createWristOutCommand().andThen(elevatorContainer.createElevatorLow()));
     yButton.onTrue(wristContainer.createWristOutCommand().andThen(elevatorContainer.createElevatorMid()));
     bButton.onTrue(wristContainer.createWristOutCommand().andThen(elevatorContainer.createElevatorHigh()));
     aButton.onTrue(wristContainer.createWristInCommand().andThen(elevatorContainer.createElevatorHome()));
-    leftBumper.onTrue(wristContainer.createWristOutCommand().andThen(elevatorContainer.createElevatorGroundCommand()));
-    rightBumper.onTrue(wristContainer.createWristOutCommand().andThen(elevatorContainer.createElevatorFeederCommand()));
+    leftBumper.onTrue(CreateSetMode(GamePieceType.Cube).andThen(wristContainer.createWristInCommand()).andThen(elevatorContainer.createElevatorSlideCommand()));
+    rightBumper.onTrue(CreateSetMode(GamePieceType.Cone).andThen(wristContainer.createWristOutCommand()).andThen(elevatorContainer.createElevatorFeederCommand()));
   }
 }
