@@ -7,6 +7,8 @@ import java.lang.System;
 
 import org.photonvision.PhotonCamera;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.DriveTrainResetHeading;
@@ -27,6 +29,7 @@ public class RobotContainer {
   private ElevatorContainer elevatorContainer;
   private IntakeContainer intakeContainer;
   private WristContainer wristContainer;
+  private SendableChooser<Command> autonomouseChooser;
 
 
   public RobotContainer() {
@@ -38,11 +41,22 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand(){
+    return autonomouseChooser.getSelected();
+  }
+
+  public Command createAutonomouseDefault(){
     return elevatorContainer.create0ElevatorCommand()
                          .andThen(wristContainer.createWristOutCommand())
                          .andThen(elevatorContainer.createElevatorHigh())
                          .andThen(intakeContainer.createIntakeOutCommand().withTimeout(1))
                          .andThen(driveTrainContainer.createDriveBackCommand().withTimeout(3));
+  }
+
+  public void addSendableChooser(){
+    autonomouseChooser = new SendableChooser<>();
+    autonomouseChooser.setDefaultOption("Default", createAutonomouseDefault());
+    // Add others
+    SmartDashboard.putData(autonomouseChooser);
   }
 
   public void createButtonBindings(){
