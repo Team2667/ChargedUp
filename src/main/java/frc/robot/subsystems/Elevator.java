@@ -17,7 +17,7 @@ public class Elevator extends SubsystemBase {
 	private SparkMaxPIDController sparkPidController;
 	private RelativeEncoder encoder;
 
-	private double pV = 4e-2;
+	private double pV = 4e-1;
 	private double iV = 0;
     private double dV = 0;
 	GamePieceType currentGamePieceType = GamePieceType.Cube;

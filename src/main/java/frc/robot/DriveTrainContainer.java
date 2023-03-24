@@ -60,6 +60,18 @@ public class DriveTrainContainer {
       return new DriveFieldRelative(dt_sub, PI, 0.25);
     }
 
+    public Command createLeftCommand() {
+      return new DriveFieldRelative(dt_sub, (Math.PI*3)/2, 0.25);
+    }
+
+    public Command createRightCommand() {
+      return new DriveFieldRelative(dt_sub, Math.PI/2, 0.25);
+    }
+
+    public Command createForwardCommand() {
+      return new DriveFieldRelative(dt_sub, 0, 0.25);
+    }
+
     public Command createResetHeadingCommand(){
       return new DriveTrainResetHeading(dt_sub);
     }

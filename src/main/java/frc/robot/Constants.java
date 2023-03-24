@@ -86,10 +86,10 @@ public final class Constants {
     }
 
     public static final double CUBE_LOW = 0;
-    public static final double CUBE_MID = 20;
+    public static final double CUBE_MID = 29.76;
     public static final double CUBE_HIGH = 121;
     public static final double CUBE_FEEDER = 30;
-    public static final double CUBE_SLIDE = 29.76;
+    public static final double CUBE_SLIDE = 27.76;
     public static final double HOME = 0;
     public static final double CONE_LOW = 10;
     public static final double CONE_MID = 30;

@@ -6,7 +6,12 @@ package frc.robot;
 import java.lang.System;
 
 import org.photonvision.PhotonCamera;
+
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.GamePieceType;
@@ -14,6 +19,8 @@ import frc.robot.commands.DriveTrainResetHeading;
 import frc.robot.commands.SetMode;
 import frc.robot.commands.ToggleConesCubes;
 import frc.robot.subsystems.Elevator;
+import static frc.robot.Constants.GamePieceType.Cube;
+
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a
@@ -30,6 +37,8 @@ public class RobotContainer {
   private ElevatorContainer elevatorContainer;
   private IntakeContainer intakeContainer;
   private WristContainer wristContainer;
+  private SendableChooser<Command> mailman;
+  
 
 
   public RobotContainer() {
@@ -38,18 +47,19 @@ public class RobotContainer {
     wristContainer=new WristContainer(m_controller);
     intakeContainer = new IntakeContainer(m_controller);
     createButtonBindings();
+    mailman=new SendableChooser<Command>();
+    populateMailbox();
+    SmartDashboard.putData("autonomous mode", mailman);
   }
+
+
+
 public Command CreateSetMode(GamePieceType gamePieceType)
 {
   return new SetMode(elevatorContainer.elevator, intakeContainer.intake, gamePieceType);
 }
   public Command getAutonomousCommand(){
-    return elevatorContainer.create0ElevatorCommand()
-                         .andThen(CreateSetMode(GamePieceType.Cube))
-                         .andThen(wristContainer.createWristInCommand())
-                         .andThen(elevatorContainer.createElevatorSlideCommand())
-                         .andThen(intakeContainer.createIntakeOutCommand().withTimeout(1))
-                         .andThen(driveTrainContainer.createDriveBackCommand().withTimeout(3));
+    return mailman.getSelected();
   }
 
   public void createButtonBindings(){
@@ -65,11 +75,41 @@ public Command CreateSetMode(GamePieceType gamePieceType)
 
     backButton.onTrue(elevatorContainer.create0ElevatorCommand());
     rightStick.onTrue(driveTrainContainer.createResetHeadingCommand());
-    xButton.onTrue(wristContainer.createWristOutCommand().andThen(elevatorContainer.createElevatorLow()));
-    yButton.onTrue(wristContainer.createWristOutCommand().andThen(elevatorContainer.createElevatorMid()));
-    bButton.onTrue(wristContainer.createWristOutCommand().andThen(elevatorContainer.createElevatorHigh()));
-    aButton.onTrue(wristContainer.createWristInCommand().andThen(elevatorContainer.createElevatorHome()));
-    leftBumper.onTrue(CreateSetMode(GamePieceType.Cube).andThen(wristContainer.createWristInCommand()).andThen(elevatorContainer.createElevatorSlideCommand()));
-    rightBumper.onTrue(CreateSetMode(GamePieceType.Cone).andThen(wristContainer.createWristOutCommand()).andThen(elevatorContainer.createElevatorFeederCommand()));
+  //  xButton.onTrue(wristContainer.createWristInCommand().andThen(elevatorContainer.createElevatorLow()));
+    yButton.onTrue(wristContainer.createWristInCommand().andThen(elevatorContainer.createElevatorMid()));
+    bButton.onTrue(wristContainer.createWristOutCommand().alongWith(elevatorContainer.createElevatorHigh()));
+    aButton.onTrue(wristContainer.createWristInCommand().alongWith(elevatorContainer.createElevatorHome()));
+    leftBumper.onTrue(CreateSetMode(GamePieceType.Cube).andThen(wristContainer.createWristInCommand().alongWith(elevatorContainer.createElevatorSlideCommand())));
+   // rightBumper.onTrue(CreateSetMode(GamePieceType.Cone).andThen(wristContainer.createWristOutCommand()).andThen(elevatorContainer.createElevatorFeederCommand()));
+  }
+  private void populateMailbox()
+  {
+    mailman.setDefaultOption("deploy cube only",
+    elevatorContainer.create0ElevatorCommand()
+    .andThen(CreateSetMode(Cube))
+    .andThen(wristContainer.createWristInCommand())
+    .andThen(elevatorContainer.createElevatorSlideCommand())
+    .andThen(intakeContainer.createIntakeOutCommand().withTimeout(1))
+     );
+
+     mailman.addOption("Deploy Cube, Go Left",
+     elevatorContainer.create0ElevatorCommand()
+    .andThen(CreateSetMode(Cube))
+    .andThen(wristContainer.createWristInCommand())
+    .andThen(elevatorContainer.createElevatorSlideCommand())
+    .andThen(intakeContainer.createIntakeOutCommand().withTimeout(1))
+    .andThen(driveTrainContainer.createLeftCommand().withTimeout(1))
+    .andThen(driveTrainContainer.createDriveBackCommand().withTimeout(3))
+    );
+
+     mailman.addOption("Deploy Cube, Go Right",  elevatorContainer.create0ElevatorCommand()
+     .andThen(CreateSetMode(Cube))
+     .andThen(wristContainer.createWristInCommand())
+     .andThen(elevatorContainer.createElevatorSlideCommand())
+     .andThen(intakeContainer.createIntakeOutCommand().withTimeout(1))
+     .andThen(driveTrainContainer.createRightCommand().withTimeout(1))
+     .andThen(driveTrainContainer.createDriveBackCommand().withTimeout(3))
+     );
+
   }
 }

@@ -13,7 +13,7 @@ public class IntakeOutCommand extends CommandBase{
 
     @Override()
     public void initialize(){
-        intake.set(-2);
+        intake.set(1);
     }
 
     @Override()
