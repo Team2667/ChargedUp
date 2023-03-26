@@ -52,7 +52,7 @@ public final class Constants {
 
     public static final int PCM_CAN_ID = 36;
     public static final double MAX_INPUT_SPEED = 1; //4.14528;
-    public static final double PERCENTAGE_MAX_SPEED = 67.5;
+    public static final double PERCENTAGE_MAX_SPEED = 100.0;
     
     public static final boolean DRIVE_TRAIN_ENABLED = true;
 
@@ -85,7 +85,7 @@ public final class Constants {
         Cube
     }
 
-    public static final double CUBE_LOW = 0;
+    public static final double CUBE_LOW = 5;
     public static final double CUBE_MID = 29.76;
     public static final double CUBE_HIGH = 121;
     public static final double CUBE_FEEDER = 30;

@@ -80,7 +80,7 @@ public Command CreateSetMode(GamePieceType gamePieceType)
     bButton.onTrue(wristContainer.createWristOutCommand().alongWith(elevatorContainer.createElevatorHigh()));
     aButton.onTrue(wristContainer.createWristInCommand().alongWith(elevatorContainer.createElevatorHome()));
     leftBumper.onTrue(CreateSetMode(GamePieceType.Cube).andThen(wristContainer.createWristInCommand().alongWith(elevatorContainer.createElevatorSlideCommand())));
-   // rightBumper.onTrue(CreateSetMode(GamePieceType.Cone).andThen(wristContainer.createWristOutCommand()).andThen(elevatorContainer.createElevatorFeederCommand()));
+    rightBumper.onTrue(CreateSetMode(GamePieceType.Cube).andThen(wristContainer.createWristOutCommand()).andThen(elevatorContainer.createElevatorLow()));
   }
   private void populateMailbox()
   {
@@ -98,8 +98,8 @@ public Command CreateSetMode(GamePieceType gamePieceType)
     .andThen(wristContainer.createWristInCommand())
     .andThen(elevatorContainer.createElevatorSlideCommand())
     .andThen(intakeContainer.createIntakeOutCommand().withTimeout(1))
-    .andThen(driveTrainContainer.createLeftCommand().withTimeout(1))
-    .andThen(driveTrainContainer.createDriveBackCommand().withTimeout(3))
+    .andThen(driveTrainContainer.createLeftCommand().withTimeout(.75))
+    .andThen(driveTrainContainer.createDriveBackCommand().withTimeout(5.0))
     );
 
      mailman.addOption("Deploy Cube, Go Right",  elevatorContainer.create0ElevatorCommand()
@@ -107,8 +107,8 @@ public Command CreateSetMode(GamePieceType gamePieceType)
      .andThen(wristContainer.createWristInCommand())
      .andThen(elevatorContainer.createElevatorSlideCommand())
      .andThen(intakeContainer.createIntakeOutCommand().withTimeout(1))
-     .andThen(driveTrainContainer.createRightCommand().withTimeout(1))
-     .andThen(driveTrainContainer.createDriveBackCommand().withTimeout(3))
+     .andThen(driveTrainContainer.createRightCommand().withTimeout(.75))
+     .andThen(driveTrainContainer.createDriveBackCommand().withTimeout(5.0))
      );
 
   }
