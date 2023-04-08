@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.GamePieceType;
 import frc.robot.subsystems.Intake;
 
 public class IntakeDefaultCommand extends CommandBase{
@@ -16,10 +17,11 @@ public class IntakeDefaultCommand extends CommandBase{
 
     @Override
     public void execute(){
+        int direction=1;//intake.getGamePieceType()==GamePieceType.Cube?-1:1;
         if (controller.getLeftTriggerAxis() != 0){
-            intake.set(-1 * controller.getLeftTriggerAxis());
+            intake.set(direction * -controller.getLeftTriggerAxis());
         } else if (controller.getRightTriggerAxis() != 0){
-            intake.set(controller.getRightTriggerAxis());
+            intake.set(direction* controller.getRightTriggerAxis());
         } else {
             intake.stop();
         }

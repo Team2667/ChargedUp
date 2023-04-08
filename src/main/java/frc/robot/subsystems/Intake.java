@@ -15,7 +15,10 @@ public class Intake extends SubsystemBase {
 	public Intake() {
 		intakeMotor = new CANSparkMax(Constants.IntakeId, MotorType.kBrushless);
 	}
-
+	public GamePieceType getGamePieceType()
+	{
+		return currentGamePieceType;
+	}
 	public void set(double speed){
 		double actualSpeed = currentGamePieceType == GamePieceType.Cone ? -1 * speed : speed;
 		intakeMotor.set(actualSpeed);

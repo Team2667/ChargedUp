@@ -14,7 +14,7 @@ public class WristIn extends CommandBase{
 
 	@Override
 	public void initialize(){
-		wrist.set(-0.2);
+		wrist.set(-0.3);
 	}
 
 	@Override

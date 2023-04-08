@@ -20,6 +20,7 @@ import frc.robot.commands.SetMode;
 import frc.robot.commands.ToggleConesCubes;
 import frc.robot.subsystems.Elevator;
 import static frc.robot.Constants.GamePieceType.Cube;
+import static frc.robot.Constants.GamePieceType.Cone;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -75,12 +76,12 @@ public Command CreateSetMode(GamePieceType gamePieceType)
 
     backButton.onTrue(elevatorContainer.create0ElevatorCommand());
     rightStick.onTrue(driveTrainContainer.createResetHeadingCommand());
-  //  xButton.onTrue(wristContainer.createWristInCommand().andThen(elevatorContainer.createElevatorLow()));
-    yButton.onTrue(wristContainer.createWristInCommand().andThen(elevatorContainer.createElevatorMid()));
+    xButton.onTrue(wristContainer.createWristOutCommand().alongWith(elevatorContainer.createElevatorLow()));
+    yButton.onTrue(wristContainer.createWristOutCommand().alongWith(elevatorContainer.createElevatorMid()));
     bButton.onTrue(wristContainer.createWristOutCommand().alongWith(elevatorContainer.createElevatorHigh()));
     aButton.onTrue(wristContainer.createWristInCommand().alongWith(elevatorContainer.createElevatorHome()));
-    leftBumper.onTrue(CreateSetMode(GamePieceType.Cube).andThen(wristContainer.createWristInCommand().alongWith(elevatorContainer.createElevatorSlideCommand())));
-    rightBumper.onTrue(CreateSetMode(GamePieceType.Cube).andThen(wristContainer.createWristOutCommand()).andThen(elevatorContainer.createElevatorLow()));
+    leftBumper.onTrue(CreateSetMode(Cube).andThen(wristContainer.createWristOutCommand().alongWith(elevatorContainer.createElevatorLow())));
+    rightBumper.onTrue(CreateSetMode(Cone).andThen(wristContainer.createWristOutCommand().alongWith(elevatorContainer.createElevatorFeederCommand())));
   }
   private void populateMailbox()
   {
