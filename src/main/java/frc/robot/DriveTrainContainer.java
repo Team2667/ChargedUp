@@ -56,6 +56,8 @@ public class DriveTrainContainer {
       rightCommand =new DriveFieldRelative(dt_sub, Math.PI / 2, 0.25);
     }
 
+    // TODO: Add a magnitude parameter to each of the next 4 methods.
+    
     public Command createDriveBackCommand() {
       return new DriveFieldRelative(dt_sub, PI, 0.25);
     }
@@ -71,6 +73,8 @@ public class DriveTrainContainer {
     public Command createForwardCommand() {
       return new DriveFieldRelative(dt_sub, 0, 0.25);
     }
+
+    // TODO: Create a method that returns a RotateRobot command given an angle in Radians.
 
     public Command createResetHeadingCommand(){
       return new DriveTrainResetHeading(dt_sub);
