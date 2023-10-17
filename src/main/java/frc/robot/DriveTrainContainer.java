@@ -7,6 +7,7 @@ import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.DriveFieldRelative;
 import frc.robot.commands.DriveTrainResetHeading;
 import frc.robot.commands.GetInRangeOfTarget;
+import frc.robot.commands.RotateRobot;
 import frc.robot.commands.TurnToTarget;
 import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -58,20 +59,36 @@ public class DriveTrainContainer {
 
     // TODO: Add a magnitude parameter to each of the next 4 methods.
     
+    public Command createDriveBackCommand(double magnitude) {
+      return new DriveFieldRelative(dt_sub, PI, magnitude);
+    }
     public Command createDriveBackCommand() {
-      return new DriveFieldRelative(dt_sub, PI, 0.25);
+      return new DriveFieldRelative(dt_sub, PI, .25);
     }
 
+    public Command createLeftCommand(double magnitude) {
+      return new DriveFieldRelative(dt_sub, (Math.PI*3)/2, magnitude);
+    }
     public Command createLeftCommand() {
       return new DriveFieldRelative(dt_sub, (Math.PI*3)/2, 0.25);
     }
 
+    public Command createRightCommand(double magnitude) {
+      return new DriveFieldRelative(dt_sub, Math.PI/2,magnitude);
+    }
     public Command createRightCommand() {
       return new DriveFieldRelative(dt_sub, Math.PI/2, 0.25);
     }
 
+    public Command createForwardCommand(double magnitude) {
+      return new DriveFieldRelative(dt_sub, 0, magnitude);
+    }
     public Command createForwardCommand() {
       return new DriveFieldRelative(dt_sub, 0, 0.25);
+    }
+    public Command createTurnCommand(double angleInRadians)
+    {
+      return new RotateRobot(dt_sub, angleInRadians);
     }
 
     // TODO: Create a method that returns a RotateRobot command given an angle in Radians.

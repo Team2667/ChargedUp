@@ -52,7 +52,7 @@ public final class Constants {
 
     public static final int PCM_CAN_ID = 36;
     public static final double MAX_INPUT_SPEED = 1; //4.14528;
-    public static final double PERCENTAGE_MAX_SPEED = 100.0;
+    public static final double PERCENTAGE_MAX_SPEED =100.0;
     
     public static final boolean DRIVE_TRAIN_ENABLED = true;
 
@@ -91,11 +91,11 @@ public final class Constants {
     public static final double CUBE_FEEDER = 30;
     public static final double CUBE_SLIDE = 27.76;
     public static final double HOME = 0;
-    public static final double CONE_LOW = 13.3;
+    public static final double CONE_LOW = 12.5;
     public static final double CONE_MID = 86;
     public static final double CONE_HIGH = 125;
-    public static final double CONE_FEEDER = 110;
-    public static final double CONE_GROUND = 15;
+    public static final double CONE_FEEDER = 114.92940521240234;
+    public static final double CONE_GROUND = 35;
     
 
     public enum GoalPosition {

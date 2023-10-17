@@ -85,32 +85,40 @@ public Command CreateSetMode(GamePieceType gamePieceType)
   }
   private void populateMailbox()
   {
-    mailman.setDefaultOption("deploy cube only",
+    mailman.addOption("deploy cube only",
     elevatorContainer.create0ElevatorCommand()
     .andThen(CreateSetMode(Cube))
-    .andThen(wristContainer.createWristInCommand())
+    .andThen(wristContainer.createWristOutCommand())
     .andThen(elevatorContainer.createElevatorSlideCommand())
     .andThen(intakeContainer.createIntakeOutCommand().withTimeout(1))
      );
-
-     mailman.addOption("Deploy Cube, Go Left",
-     elevatorContainer.create0ElevatorCommand()
-    .andThen(CreateSetMode(Cube))
-    .andThen(wristContainer.createWristInCommand())
-    .andThen(elevatorContainer.createElevatorSlideCommand())
-    .andThen(intakeContainer.createIntakeOutCommand().withTimeout(1))
-    .andThen(driveTrainContainer.createLeftCommand().withTimeout(.75))
-    .andThen(driveTrainContainer.createDriveBackCommand().withTimeout(5.0))
-    );
 
      mailman.addOption("Deploy Cube, Go Right",  elevatorContainer.create0ElevatorCommand()
      .andThen(CreateSetMode(Cube))
-     .andThen(wristContainer.createWristInCommand())
-     .andThen(elevatorContainer.createElevatorSlideCommand())
+     .andThen(wristContainer.createWristOutCommand().alongWith(elevatorContainer.createElevatorHigh()))
      .andThen(intakeContainer.createIntakeOutCommand().withTimeout(1))
+     .andThen(elevatorContainer.create0ElevatorCommand().alongWith(wristContainer.createWristInCommand()))
      .andThen(driveTrainContainer.createRightCommand().withTimeout(.75))
-     .andThen(driveTrainContainer.createDriveBackCommand().withTimeout(5.0))
-     );
+     .andThen(driveTrainContainer.createDriveBackCommand().withTimeout(5.0)));
+    
+     mailman.setDefaultOption("deploy cone on end, go back", elevatorContainer.create0ElevatorCommand()
+     .andThen(CreateSetMode(Cone))
+     .andThen(elevatorContainer.createElevatorHigh().alongWith(wristContainer.createWristOutCommand()))
+     .andThen(intakeContainer.createIntakeOutCommand().withTimeout(0.07))
+     .andThen(elevatorContainer.create0ElevatorCommand().alongWith(wristContainer.createWristInCommand()))
+     .andThen(driveTrainContainer.createDriveBackCommand(0.3).withTimeout(3.5)));
 
+     mailman.addOption("deploy cone middle, go to pad", elevatorContainer.create0ElevatorCommand()
+     .andThen(CreateSetMode(Cone))
+     .andThen(elevatorContainer.createElevatorHigh().alongWith(wristContainer.createWristOutCommand()))
+     .andThen(intakeContainer.createIntakeOutCommand().withTimeout(0.07))
+     .andThen(elevatorContainer.create0ElevatorCommand().alongWith(wristContainer.createWristInCommand()))
+     .andThen(driveTrainContainer.createDriveBackCommand(0.5).withTimeout(0.3)));
+
+     mailman.addOption("deploy cone only", elevatorContainer.create0ElevatorCommand()
+     .andThen(CreateSetMode(Cone))
+     .andThen(elevatorContainer.createElevatorHigh().alongWith(wristContainer.createWristOutCommand()))
+     .andThen(intakeContainer.createIntakeOutCommand().withTimeout(0.07))
+     .andThen(elevatorContainer.create0ElevatorCommand().alongWith(wristContainer.createWristInCommand())));
   }
 }

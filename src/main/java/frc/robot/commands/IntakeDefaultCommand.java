@@ -17,11 +17,10 @@ public class IntakeDefaultCommand extends CommandBase{
 
     @Override
     public void execute(){
-        int direction=1;//intake.getGamePieceType()==GamePieceType.Cube?-1:1;
         if (controller.getLeftTriggerAxis() != 0){
-            intake.set(direction * -controller.getLeftTriggerAxis());
+            intake.set(-controller.getLeftTriggerAxis());
         } else if (controller.getRightTriggerAxis() != 0){
-            intake.set(direction* controller.getRightTriggerAxis());
+            intake.set(controller.getRightTriggerAxis());
         } else {
             intake.stop();
         }

@@ -37,7 +37,6 @@ public class Elevator extends SubsystemBase {
 	public void setElevatorPosition(GoalPosition position){
 		double pos = currentGamePieceType == GamePieceType.Cone ? getPositionForCones(position) :
 										getPositionForCubes(position);
-		System.out.println("!!!!!!!!!!!!! set Elevator position" + pos);
 		sparkPidController.setReference(pos, ControlType.kPosition);
 	}
 

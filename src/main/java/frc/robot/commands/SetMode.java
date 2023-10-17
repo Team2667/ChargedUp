@@ -15,13 +15,18 @@ public class SetMode extends CommandBase{
         this.elevator = elevator;
         this.intake = intake;
         this.type=type;
-        addRequirements(elevator, intake);
+        //addRequirements(elevator, intake);
     }
     
     @Override()
     public void initialize(){
         elevator.setGamePieceType(type);
         intake.setGamePieceType(type);
+    }
+    @Override
+    public void execute()
+    {
+        return;
     }
 
     @Override()
