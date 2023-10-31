@@ -1,7 +1,7 @@
 package frc.robot.subsystems;
 import com.kauailabs.navx.frc.*;
 import static frc.robot.Constants.*;
-
+import java.lang.Math;
 import java.util.Optional;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -21,12 +21,13 @@ import frc.robot.Constants;
 import frc.robot.subsystems.swerveSupport.SwerveModule;
 import frc.robot.subsystems.swerveSupport.SwerveModuleConfiguration;
 import frc.robot.utils.PhotonCameraWrapper;
-
+import com.ctre.phoenix.sensors.Pigeon2;
+import com.ctre.phoenix.sensors.Pigeon2Configuration;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonUtils;
 public class DriveTrain extends SubsystemBase {
-    private final AHRS m_navx = new AHRS(SPI.Port.kMXP, (byte) 200); // NavX connected over MXP
 
+    Pigeon2 pigeon2;
     private PhotonCameraWrapper cameraWrapper;
     private final SwerveModule m_frontLeftModule;
     private final SwerveModule m_frontRightModule;
@@ -36,7 +37,7 @@ public class DriveTrain extends SubsystemBase {
     SwerveDrivePoseEstimator m_PosEstimator;
     public static final double MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0 *
                             (14.0 / 50.0) * (25.0 / 19.0) * (15.0 / 45.0) * 0.10033 * Math.PI;
-    private float headingOffset = 0;
+    private double headingOffset = 0;
 
     public static final double MAX_VOLTAGE = 12.0;
 
@@ -51,17 +52,39 @@ public class DriveTrain extends SubsystemBase {
         new Translation2d(-DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -DRIVETRAIN_WHEELBASE_METERS / 2.0)
     );
 
-    public Rotation2d getGyroscopeRotation() {    
-        return Rotation2d.fromDegrees(m_navx.getFusedHeading() - headingOffset);
+    public Rotation2d getGyroscopeRotation() 
+    {
+
+        double yaww=pigeon2.getYaw()%360;
+        if(yaww<0){
+            yaww+=360;
+        }
+        yaww=360-yaww;
+        return Rotation2d.fromDegrees(yaww - headingOffset);
     }
 
     public void setRotationalOffsetToCurrent(){
-        headingOffset =  m_navx.getFusedHeading();
+        double yaww=pigeon2.getYaw()%360;
+        if(yaww<0){
+            yaww+=360;
+        }
+        yaww=360-yaww;
+        headingOffset = yaww;
     }
       
-    public DriveTrain(PhotonCamera camera){
+    public DriveTrain(PhotonCamera camera)
+    {
         this.cameraWrapper = new PhotonCameraWrapper(camera);
-        m_navx.calibrate();
+        pigeon2 = new Pigeon2(Constants.pigeon);
+        Pigeon2Configuration pigeon_conf = new Pigeon2Configuration();
+
+        pigeon_conf.MountPosePitch = 0.0;
+        pigeon_conf.MountPoseRoll = 0.0;
+        pigeon_conf.MountPoseYaw = 0.0;
+        pigeon_conf.EnableCompass=false;
+        pigeon2.configAllSettings(pigeon_conf);
+    
+
         m_frontLeftModule = new SwerveModule(SwerveModuleConfiguration.frontLeftConfig());
         m_frontRightModule = new SwerveModule(SwerveModuleConfiguration.frontRightConfig());
         m_backLeftModule  = new SwerveModule(SwerveModuleConfiguration.backLeftConfig());

@@ -73,6 +73,8 @@ public final class Constants {
 
     public static final int wristId = 50;
 
+    public static final int pigeon = 60;
+
     public static final double LeftP = 1;
     public static final double LeftI = 1;
     public static final double LeftD = 1;
