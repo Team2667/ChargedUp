@@ -77,6 +77,7 @@ public class DriveTrain extends SubsystemBase {
         this.cameraWrapper = new PhotonCameraWrapper(camera);
         pigeon2 = new Pigeon2(Constants.pigeon);
         Pigeon2Configuration pigeon_conf = new Pigeon2Configuration();
+        pigeon2.configEnableCompass(false, 0);
 
         pigeon_conf.MountPosePitch = 0.0;
         pigeon_conf.MountPoseRoll = 0.0;
